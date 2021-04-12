@@ -1,0 +1,70 @@
+name: CTWserver
+version: ${project.version}
+main: net.craftersland.ctw.server.CTW
+api-version: 1.16
+authors: [ CraftersLand ]
+load: POSTWORLD
+softdepend: [Vault, EffectLib, AAC, TitleManager, WorldEdit, PlayerPoints]
+description: Plugin CTW
+
+permissions:
+  CTW.admin:
+    description: Admin commands access
+    default: op
+  CTW.pickupteam:
+    description: Can select the team to play on.
+    default: op
+  CTW.joinfullteams:
+    description: Can join a team even if it's full.
+    default: op
+  CTW.fancySuit:
+    description: Get a fancy startup suit.
+    default: op
+  CTW.particles:
+    description: VIP particle effects.
+    default: op
+  CTW.2xCoinMultiplier:
+    description: Get 2x coin rewards.
+    default: op
+  CTW.3xCoinMultiplier:
+    description: Get 3x coin rewards.
+    default: op
+  CTW.kit.bypassrequirements:
+    description: Unlock all kits bypassing requirements.
+    default: op
+  CTW.enchant.bypassrequirements:
+    description: Unlock all enchants bypassing requirements.
+    default: op
+  CTW.enchant.SharpnessIII:
+    description: Access to the SharpnessIII Enchant.
+    default: op
+  CTW.enchant.SharpnessIV:
+    description: Access to the SharpnessIV Enchant.
+    default: op
+  CTW.enchant.PowerIII:
+    description: Access to the PowerIII Enchant.
+    default: op
+  CTW.enchant.PowerIV:
+    description: Access to the PowerIV Enchant.
+    default: op
+  CTW.enchant.KnockbackII:
+    description: Access to the KnockbackII Enchant.
+    default: op
+  CTW.enchant.FireAspectII:
+    description: Access to the FireAspectII Enchant.
+    default: op
+  CTW.enchant.PunchII:
+    description: Access to the PunchII Enchant.
+    default: op
+  CTW.enchant.ProtectionIII:
+    description: Access to the ProtectionIII Enchant.
+    default: op
+  CTW.enchant.ProtectionIV:
+    description: Access to the ProtectionIV Enchant.
+    default: op
+  CTW.enchant.ThornsII:
+    description: Access to the ThornsII Enchant.
+    default: op
+  CTW.enchant.FeatherFallingII:
+    description: Access to the FeatherFallingII Enchant.
+    default: op
