@@ -18,7 +18,7 @@ public class InfinityI {
     private final ShooterAchievementHandler.ShooterAchievements requiredAchievement;
 
     public InfinityI(final CTW ctw) {
-        this.price = 40.0;
+        this.price = 250.0;
         this.requiredAchievement = ShooterAchievementHandler.ShooterAchievements.SHOOTER4;
         this.ctw = ctw;
     }

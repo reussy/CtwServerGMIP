@@ -3,6 +3,7 @@ package net.craftersland.ctw.server.commands;
 
 // TODO Dependencia WE
 
+import com.sk89q.worldedit.bukkit.selections.Selection;
 import net.craftersland.ctw.server.CTW;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
@@ -20,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Setup implements CommandExecutor {
     private final CTW ctw;
@@ -69,7 +71,7 @@ public class Setup implements CommandExecutor {
                         this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
                         p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.SetTimeUsage"));
                     } else if (args[0].matches("setarenaarea")) {
-                        final Selection sel = this.ctw.getWorldEditPlugin().getSelection(p);
+                            Selection sel = this.ctw.getWorldEditPlugin().getSelection(p);
                         if (sel != null) {
                             this.ctw.getMapConfigHandler().setArenaArea("ArenaArea", sel);
                             this.ctw.getSoundHandler().sendConfirmSound(p.getLocation(), p);
@@ -206,8 +208,8 @@ public class Setup implements CommandExecutor {
     }
 
     private void setItemDropMobSpawner(final Player p, final int woolValue) {
-        final Block block = p.getTargetBlock(null, 6);
-        block.setType(Material.COMMAND_BLOCK);
+        final Block block = p.getTargetBlock((Set<Material>) null, 6);
+        block.setType(Material.COMMAND);
         final CommandBlock cb = (CommandBlock) block.getLocation().getBlock().getState();
         cb.setCommand("/setblock ~ ~ ~ minecraft:mob_spawner 0 replace {EntityId:Item,SpawnData:{Item:{id:35,Count:1,Damage:" + woolValue + "}},SpawnRange:0,SpawnCount:1,MinSpawnDelay:250,MaxSpawnDelay:250,RequiredPlayerRange:3,MaxNearbyEntities:2}");
         cb.update();
@@ -332,13 +334,13 @@ public class Setup implements CommandExecutor {
 
     private void setBlockLoc(final String blockLoc, final Player p) {
         if (blockLoc.matches("redwool")) {
-            this.ctw.getMapConfigHandler().setBlockLocation(p.getTargetBlock(null, 6).getLocation(), "RedTeam.RedWool");
+            this.ctw.getMapConfigHandler().setBlockLocation(p.getTargetBlock((Set<Material>) null, 6).getLocation(), "RedTeam.RedWool");
         } else if (blockLoc.matches("pinkwool")) {
-            this.ctw.getMapConfigHandler().setBlockLocation(p.getTargetBlock(null, 6).getLocation(), "RedTeam.PinkWool");
+            this.ctw.getMapConfigHandler().setBlockLocation(p.getTargetBlock((Set<Material>) null, 6).getLocation(), "RedTeam.PinkWool");
         } else if (blockLoc.matches("bluewool")) {
-            this.ctw.getMapConfigHandler().setBlockLocation(p.getTargetBlock(null, 6).getLocation(), "BlueTeam.BlueWool");
+            this.ctw.getMapConfigHandler().setBlockLocation(p.getTargetBlock((Set<Material>) null, 6).getLocation(), "BlueTeam.BlueWool");
         } else if (blockLoc.matches("cyanwool")) {
-            this.ctw.getMapConfigHandler().setBlockLocation(p.getTargetBlock(null, 6).getLocation(), "BlueTeam.CyanWool");
+            this.ctw.getMapConfigHandler().setBlockLocation(p.getTargetBlock((Set<Material>) null, 6).getLocation(), "BlueTeam.CyanWool");
         }
         this.ctw.getSoundHandler().sendConfirmSound(p.getLocation(), p);
         p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.SetupPointSet").replaceAll("&", "§"));

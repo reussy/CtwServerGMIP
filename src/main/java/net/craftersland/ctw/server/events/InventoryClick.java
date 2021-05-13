@@ -9,7 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 public class InventoryClick implements Listener {
     private final CTW ctw;
@@ -53,51 +52,32 @@ public class InventoryClick implements Listener {
                 if (event.isShiftClick()) {
                     event.setCancelled(true);
                 }
+
+                if (event.getCursor() != null && event.getCursor().getType() != Material.AIR && event.getSlot() < 27) {
+                    event.setCancelled(true);
+                }
+
                 if (event.getSlot() == 0) {
                     event.setCancelled(true);
                     this.ctw.getEnchantSharpnessI().giveKit(p);
                 } else if (event.getSlot() == 1) {
                     event.setCancelled(true);
                     this.ctw.getEnchantSharpnessII().giveKit(p);
-                } else if (event.getSlot() == 2) {
-                    event.setCancelled(true);
-                    this.ctw.getEnchantSharpnessIII().giveKit(p);
-                } else if (event.getSlot() == 3) {
-                    event.setCancelled(true);
-                    this.ctw.getEnchantSharpnessIV().giveKit(p);
-                } else if (event.getSlot() == 5) {
-                    event.setCancelled(true);
-                    this.ctw.getEnchantPowerI().giveKit(p);
-                } else if (event.getSlot() == 6) {
-                    event.setCancelled(true);
-                    this.ctw.getEnchantPowerII().giveKit(p);
                 } else if (event.getSlot() == 7) {
                     event.setCancelled(true);
-                    this.ctw.getEnchantPowerIII().giveKit(p);
+                    this.ctw.getEnchantPowerI().giveKit(p);
                 } else if (event.getSlot() == 8) {
                     event.setCancelled(true);
-                    this.ctw.getEnchantPowerIV().giveKit(p);
+                    this.ctw.getEnchantPowerII().giveKit(p);
                 } else if (event.getSlot() == 9) {
                     event.setCancelled(true);
                     this.ctw.getEnchantKnockbackI().giveKit(p);
                 } else if (event.getSlot() == 10) {
                     event.setCancelled(true);
-                    this.ctw.getEnchantKnockbackII().giveKit(p);
-                } else if (event.getSlot() == 11) {
-                    event.setCancelled(true);
                     this.ctw.getEnchantFireAspectI().giveKit(p);
-                } else if (event.getSlot() == 12) {
-                    event.setCancelled(true);
-                    this.ctw.getEnchantFireAspectII().giveKit(p);
-                } else if (event.getSlot() == 14) {
-                    event.setCancelled(true);
-                    this.ctw.getEnchantPunchI().giveKit(p);
-                } else if (event.getSlot() == 15) {
-                    event.setCancelled(true);
-                    this.ctw.getEnchantPunchII().giveKit(p);
                 } else if (event.getSlot() == 16) {
                     event.setCancelled(true);
-                    this.ctw.getEnchantFlameI().giveKit(p);
+                    this.ctw.getEnchantPunchI().giveKit(p);
                 } else if (event.getSlot() == 17) {
                     event.setCancelled(true);
                     this.ctw.getEnchantInfinityI().giveKit(p);
@@ -107,18 +87,6 @@ public class InventoryClick implements Listener {
                 } else if (event.getSlot() == 19) {
                     event.setCancelled(true);
                     this.ctw.getEnchantProtectionII().giveKit(p);
-                } else if (event.getSlot() == 20) {
-                    event.setCancelled(true);
-                    this.ctw.getEnchantProtectionIII().giveKit(p);
-                } else if (event.getSlot() == 21) {
-                    event.setCancelled(true);
-                    this.ctw.getEnchantProtectionIV().giveKit(p);
-                } else if (event.getSlot() == 23) {
-                    event.setCancelled(true);
-                    this.ctw.getEnchantThornsI().giveKit(p);
-                } else if (event.getSlot() == 24) {
-                    event.setCancelled(true);
-                    this.ctw.getEnchantThornsII().giveKit(p);
                 } else if (event.getSlot() == 25) {
                     event.setCancelled(true);
                     this.ctw.getEnchantFeatherFallingI().giveKit(p);
@@ -127,9 +95,8 @@ public class InventoryClick implements Listener {
                     this.ctw.getEnchantFeatherFallingII().giveKit(p);
                 } else if (event.getSlot() < 27) {
                     event.setCancelled(true);
-                } else if (event.getCursor() != null && event.getCursor().getType() != Material.AIR && event.getSlot() < 27) {
-                    event.setCancelled(true);
                 }
+
             } else if (event.getInventory().getTitle().matches(this.ctw.getJoinMenu().joinMenuTitle())) {
                 if (event.isShiftClick()) {
                     event.setCancelled(true);
@@ -155,8 +122,7 @@ public class InventoryClick implements Listener {
                     }
                 }
 
-                // TODO Legacy Wool?
-            } else if ((event.getCurrentItem().getType() == Material.LEGACY_WOOL && p.getGameMode() == GameMode.SURVIVAL) || (event.getCursor().getType() == Material.LEGACY_WOOL && p.getGameMode() == GameMode.SURVIVAL)) {
+            } else if ((event.getCurrentItem().getType() == Material.WOOL && p.getGameMode() == GameMode.SURVIVAL) || (event.getCursor().getType() == Material.WOOL && p.getGameMode() == GameMode.SURVIVAL)) {
                 final ItemStack item = event.getCurrentItem();
                 final ItemStack cursor = event.getCursor();
                 if (!event.getViewers().isEmpty()) {

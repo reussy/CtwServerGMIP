@@ -18,7 +18,7 @@ public class SharpnessII {
     private final MeleeAchievementHandler.MeleeAchievements requiredAchievement;
 
     public SharpnessII(final CTW ctw) {
-        this.price = 60.0;
+        this.price = 200.0;
         this.requiredAchievement = MeleeAchievementHandler.MeleeAchievements.MELEE3;
         this.ctw = ctw;
     }

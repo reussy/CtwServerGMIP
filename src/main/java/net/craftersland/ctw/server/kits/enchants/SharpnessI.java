@@ -18,7 +18,7 @@ public class SharpnessI {
     private final MeleeAchievementHandler.MeleeAchievements requiredAchievement;
 
     public SharpnessI(final CTW ctw) {
-        this.price = 40.0;
+        this.price = 100.0;
         this.requiredAchievement = MeleeAchievementHandler.MeleeAchievements.MELEE2;
         this.ctw = ctw;
     }
@@ -62,7 +62,7 @@ public class SharpnessI {
             if (balance >= this.price) {
                 final ItemStack item = p.getItemInHand();
                 if (item != null) {
-                    if (item.getType() == Material.WOOD_SWORD || item.getType() == Material.STONE_SWORD || item.getType() == Material.GOLD_SWORD || item.getType() == Material.IRON_SWORD || item.getType() == Material.DIAMOND_SWORD) {
+                    if (item.getType() == Material.WOOD_AXE || item.getType() == Material.STONE_SWORD || item.getType() == Material.GOLD_SWORD || item.getType() == Material.IRON_SWORD || item.getType() == Material.DIAMOND_SWORD) {
                         this.setEnchant(p, item);
                     } else if (item.getType() == Material.WOOD_AXE || item.getType() == Material.STONE_AXE || item.getType() == Material.GOLD_AXE || item.getType() == Material.IRON_AXE || item.getType() == Material.DIAMOND_AXE) {
                         this.setEnchant(p, item);

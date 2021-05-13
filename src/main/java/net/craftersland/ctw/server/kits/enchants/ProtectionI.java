@@ -18,7 +18,7 @@ public class ProtectionI {
     private final WoolAchievementHandler.WoolAchievements requiredAchievement;
 
     public ProtectionI(final CTW ctw) {
-        this.price = 40.0;
+        this.price = 100.0;
         this.requiredAchievement = WoolAchievementHandler.WoolAchievements.WOOLMASTER3;
         this.ctw = ctw;
     }

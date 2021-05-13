@@ -1,0 +1,152 @@
+# default config.yml for CTWserver
+# config version 1.4.3
+
+#Database settings
+Database:
+  #Data table name.
+  TableName: 'ctw_scores'
+  #MySQL database type connection details.
+  mysql:
+    host: 127.0.0.1
+    port: 3306
+    databaseName: 'mydatabase'
+    user: 'admin'
+    password: 'cheesecake'
+    ssl: false
+  #This task will scan the mysql database or flat file storage for inactive players and remove them.
+  #The scanning takes place after server starts with a 2min delay. Runs on a async thread so server performance will not be affected.
+  removeOldUsers:
+    #Enable or disable database maintenance. | (true or false)
+    enabled: false
+    #Inactivity in days. Default 60 days.
+    inactive: 60
+
+#Add here the maps names. The name must be the same (case sensitive) as the folder where the world files area.
+#A server restart is required for changes here!
+GameMaps:
+  - Map1
+  - Map2
+
+#Add here the lobby servers, they will be used when players do /leave
+#If you add more then 1 server players will be teleported to the lobby with less players on.
+LobbyServers:
+  - ctwLobby
+
+#Various settings.
+Settings:
+  #The system language. Available options: EN
+  #Info: EN = English
+  #Note: Only English is available at this time! If you translate this to other languages please send me the file and I will add it into the plugin. Thx
+  SystemLanguage: EN
+  #How many games should be played before the server will restart. Set to 0 to disable.
+  #NOTE!!! that the server will auto restart (even with this option disabled) if memory usage goes above 90% and also if the server is online for more then 2h and there are no players online.
+  #Disabling this option does not mean that the server will no longer auto restart. Only disables the condition that the server will restart after a number of games played.
+  ServerRestartAfterGamesPlayed: 0
+  #Server will auto restart if memory usage goes above 95%
+  ServerLowMemoryRestart: true
+  #Join message delay in mili-seconds. Set to 0 for no delay. Default value is 2000 (2 seconds, 1000 mili-seconds = 1 second)
+  JoinMessageDelay: 2000
+  #Enable the sound effects on kill streak messages. I recommend you use the custom sounds, check the plugin page for details.
+  EnableKillStreakSounds: true
+  #Allow fire to spread.
+  allowFireSpread: false
+  #Allow block damage on explosions outside protected areas.
+  allowBlockExplode: true
+  #Allow snow, ice to melt or to form.
+  allowBlockMeltForm: false
+  #Allow leaf to decay or grow.
+  allowDecayGrowth: false
+  #These recipes will be removed from the game.
+  #Add here the result item from the crafting table.
+  #Valid item names here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+  DisabledRecipes:
+    - WOOL
+  #Anti Cheat integration to prevent gliches.
+  AntiCheatIntegration:
+    #Support for Advanced Anti Cheat: https://www.spigotmc.org/resources/aac-advanced-anti-cheat-hack-kill-aura-blocker.6442/
+    AAC: false
+
+
+#Chat format with color code support.
+ChatFormat:
+  Spectator: '&f<TeamPrefix><PlayerName>&7: <Message>'
+  BlueTeam: '&9<TeamPrefix><PlayerName>&7: <Message>'
+  RedTeam: '&c<TeamPrefix><PlayerName>&7: <Message>'
+  GlobalChatCmd: '&f<GlobalPrefix><PlayerName>&7:&f <Message>'
+
+
+#Score and Currency rewards settings.
+Rewards:
+  #Score settings.
+  Score:
+    #Amount of points you lose if you die.
+    death: 1
+    #Amount of points you receive for each kill.
+    kill: 1
+    #Amount of points you receive for placing a wool.
+    placeWool: 5
+    #Amount of points you receive for placing both wools.
+    doubleBonus: 10
+    #Amount of points you receive if your team wins. (Will be awarded to the entire team.)
+    victory: 5
+  #Currency settings.
+  Coins:
+    #Coins received for each kill.
+    kill: 5
+    #Coins received for placing a wool.
+    placeWool: 25
+    #Coins received for placing both wools.
+    doubleBonus: 100
+    #Coins received if your team wins. (Will be awarded to the entire team.)
+    victory: 5
+
+
+#Achievements settings
+Achievements:
+  #Sniper achievement - is rewarded for distance bow kills.
+  Sniper:
+    #Distance in blocks required to get the achievement.
+    Distance-For-I: 25
+    Distance-For-II: 35
+    Distance-For-III: 45
+    Distance-For-IV: 55
+  #Melee Kills achievement - is rewarded for the number of melee kills.
+  Melee-Kills:
+    #Melee kills required to get the achievement.
+    Kills-For-I: 50
+    Kills-For-II: 100
+    Kills-For-III: 150
+    Kills-For-IV: 200
+  #Bow Kills achievement - is rewarded for the number of bow kills.
+  Bow-Kills:
+    #Bow kills required to get the achievement.
+    Kills-For-I: 50
+    Kills-For-II: 100
+    Kills-For-III: 150
+    Kills-For-IV: 200
+  #Overpowered achievement - is rewarded for the total amount of kills (melee + bow).
+  Overpowered:
+    #Kills (melee + bow) required to get the achievement.
+    Kills-For-I: 120
+    Kills-For-II: 250
+    Kills-For-III: 500
+    Kills-For-IV: 1000
+  #Wool Master achievement - is rewarded for the amount of wools placed.
+  WoolMaster:
+    #Wools placed required to get the achievement.
+    Wools-For-I: 10
+    Wools-For-II: 22
+    Wools-For-III: 50
+    Wools-For-IV: 100
+
+
+#This feature allows you to remove unneeded data when the server shuts down or restarts.
+#For example: Players data, stats, or other plugins that store data as file based and are not needed.
+#As in time the server will store many players data there is a need to clean up unneeded files.
+DataCleanup:
+  #Enable or disabled data clean up | true or false
+  Enabled: false
+  #This can include folders or files. The root directory is the server main folder.
+  CleanUp-Paths:
+    - 'world/playerdata'
+    - 'world/stats'

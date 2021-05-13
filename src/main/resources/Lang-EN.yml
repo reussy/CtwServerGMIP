@@ -1,0 +1,801 @@
+# English language file for CTWserver
+# version 1.4.3
+
+
+#Chat messages. Full color and format codes support.
+#Codes: http://minecraft.gamepedia.com/Formatting_codes#Color_codes
+ChatMessages:
+  #This message is sent when you join the game. Each line represents a new row, you can add/remove lines if you need.
+  #To disable set to:  JoinMessage: {}
+  JoinMessage:
+    - ' '
+    - ' &f&l** You are spectating! **'
+    - '&6Join the game with: &e/join'
+  #This message is sent when joining the Red Team.
+  #To disable set to:  JoinRedTeam: {}
+  JoinRedTeam:
+    - ' '
+    - '&cYou joined the RED Team!'
+    - '   &eGet a kit! &6/kit'
+    - ' '
+  #This message is sent when joining the Blue Team.
+  #To disable set to:  JoinBlueTeam: {}
+  JoinBlueTeam:
+    - ' '
+    - '&9You joined the BLUE Team!'
+    - '   &eGet a kit! &6/kit'
+    - ' '
+  #Team full messages.
+  RedTeamFull: '&cRed Team is full! Try again in a few seconds...'
+  BlueTeamFull: '&cBlue Team is full! Try again in a few seconds...'
+  AllTeamsFull: '&cAll teams are full! Try again in few seconds...'
+  #This message is broadcasted to all online players when a new map starts.
+  NewGameBroadcast: '   &eGet a kit! &6/kit'
+  #This message is sent when an achievement is complete.
+  #Variables:
+  #    %AchievementName% - will be replaced by the achievement name.
+  AwardAchievement: '&5&lAchievement complete: %AchievementName%'
+  #Death messages format.
+  #Variables:
+  #    %WeaponLogo% - will be replaced by the weapon logo (You need to add the icons in your resource pack - http://imgur.com/a/oHvbX ).
+  #    %KilledPlayer% - will be replaced by the killed player name and will have the team color.
+  #    %Killer% - will be replaced by the killer name and will have the team color.
+  #    %distance% - will be replaced by the distance a bow kill took place.
+  MeleeDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7was killed by %Killer%'
+  BowDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7was shoot by %Killer% &7from %distance% blocks.'
+  VoidDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7was sent into the void by %Killer%'
+  #Countdown messages. Each line represents a new row, you can add/remove lines if you need.
+  #To disable set to:  CountdownStart: {}
+  #Variables:
+  #    %MapName% - will be replaced by the map name.
+  #    %countdown% - will be replaced by the countdown time in seconds.
+  CountdownStart:
+    - '&6Next map:&e %MapName%'
+    - '&eStarting in: %countdown% sec.'
+  CountdownProgress: '&eStarting in: %countdown% sec.'
+  CountdownLast5sec: '&eStarting in: %countdown% sec.'
+  #Victory messages. Each line represents a new row, you can add/remove lines if you need.
+  #To disable set to:  RedVictory: {}
+  RedVictory:
+    - ' '
+    - '&f-=-=-=-X &c&lRed Team Won! &fX-=-=-=-'
+    - ' '
+  BlueVictory:
+    - ' '
+    - '&f-=-=-=-X &1&lBlue Team Won! &fX-=-=-=-'
+    - ' '
+  #Other chat messages.
+  GlobalChatUsage: '&cUsage:&7 /g <message>'
+  GlobalPrefix: '[ALL] '
+  SpectatorPrefix: '[Spec] '
+  TeamPrefix: '[Team] '
+  JoinUsage: '&cCommand usage:&7 /join'
+  AreadyJoinedTeam: '&cYou already joined a team! To leave do:&7 /leave'
+  KitUsage: '&cUsage:&7 /kit'
+  LeaveMsg: '&6Returning to CTW lobby! Please wait...'
+  StatsUsage: '&cCommand usage:&7 /stats'
+  GameStartingUp: '&6The game is starting up! Please wait...'
+  SelectTeamNoPermission: '&cGet VIP in order to pickup a team!'
+  CantGetKit: '&cYou can only get a kit when the game is running and when you are not a spectator!'
+  PlaceArmorInHand: '&cPlace the armor in your hand!'
+  PlaceSwordOrAxe: '&cPlace the sword or an axe in your hand!'
+  PlaceBowInHand: '&cPlace the bow in your hand!'
+  NotEnoughCoins: '&cYou dont have enough coins! You need:&e %coinsNeeded% â›€ &7(%balance% â›€)'
+  EnchantLockedWools: '&cUnlock this enchantment with Achievement:&d %achievement% &7(%amount% Placed Wools)'
+  EnchantLockedBowKills: '&cUnlock this enchantment with Achievement:&d %achievement% &7(%amount% Bow Kills)'
+  EnchantLockedMeleeKills: '&cUnlock this enchantment with Achievement:&d %achievement% &7(%amount% Melee Kills)'
+  EnchantSet: '&aEnchantment set! Coins left:&e %balance% â›€'
+  EnchantConflict: '&cEnchant already added or conflicts with another enchant already set.'
+  EnchantVIP: '&cYou need a VIP rank to unlock this enchant!'
+  KitReceived: '&aKit received! Coins left:&e %balance% â›€'
+  KitLocked: '&cComplete the achievement to unlock this kit!'
+  CantEnterArea: '&cYou cant enter this area!'
+  ScoreMessage: '&a   %points% Points &7(Score: %score%)'
+  Coins3xMultiplier: '   &e+%coins% â›€ &8(3x) &7(Coins: %balance%)'
+  Coins2xMultiplier: '   &e+%coins% â›€ &8(2x) &7(Coins: %balance%)'
+  CoinsNoMultiplier: '   &e+%coins% â›€ &7(Coins: %balance%)'
+  #Setup chat messages
+  NoSetupPermission: '&cYou dont have permission for setup command!'
+  SetupPointSet: '&aLocation set!'
+  SetupNumberSet: '&aNumber set!'
+  SetupTimeSet: '&aTime set!'
+  SetupAreaSet: '&aArea set!'
+  SetupKitSet: '&aKit saved!'
+  SetupSpawnerSet: '&aSpawner set!'
+  SetupSave: '&aMap save and config reload complete!'
+  SetupCmdNotFound: '&cCommand not found! For commands do /setup'
+  SetupAreaDeleted: '&aArea removed!'
+  SetupNoArea: '&cNo regions saved here!'
+  SetupWrongAreaNo: '&cCould not find a region with that number!'
+  SetupSelectionError: '&cMake a WorldEdit selection first!'
+  SetTeamMaxPlayersUsage: '&cCommand usage: &9/setup setteammaxplayers <number> &c(Default is 25)'
+  SetMaxHightUsage: '&cCommand usage: &9/setup setmaxhight <number>'
+  SetMinHightUsage: '&cCommand usage: &9/setup setminhight <number>'
+  DelProtectedAreaUsage: '&cCommand usage: &9/setup delprotectedarea <area number>'
+  DelRedNoAccessUsage: '&cCommand usage: &9/setup delrednoaccess <area number>'
+  DelBlueNoAccessUsage: '&cCommand usage: &9/setup delbluenoaccess <area number>'
+  SetTimeUsage: '&cCommand usage: &9/setup settime <time> &c(Options: day or night)'
+  ReloadCmd: '&aConfiguration files reload complete!'
+  #Setup help messages.
+  SetupHelp:
+    - ' '
+    - '&e--------< &6&lGame Setup Guide &e>--------'
+    - '&91. &cSet spectator spawn point:&9 /setup setspectatorspawn'
+    - '&92. &cSet red team spawn point:&9 /setup setredspawn'
+    - '&93. &cSet blue team spawn point:&9 /setup setbluespawn'
+    - '&94. &cSet red wool location:&9 /setup setredwool'
+    - '&95. &cSet pink wool location:&9 /setup setpinkwool'
+    - '&96. &cSet blue wool location:&9 /setup setbluewool'
+    - '&97. &cSet cyan wool location:&9 /setup setcyanwool'
+    - '&98. &cSet arena area:&9 /setup setarenaarea'
+    - '&99. &cSet protected area:&9 /setup setprotectedarea'
+    - '&910. &cSet red no access area:&9 /setup setrednoaccess'
+    - '&911. &cSet blue no access area:&9 /setup setbluenoaccess'
+    - '&912. &cSet startup kit:&9 /setup setstartupkit'
+    - '&912. &cSave settings:&9 /setup save'
+    - ' '
+    - '&e&lFull setup details on plugin spigot page!'
+    - ' '
+  #Game Stats broadcast messages
+  GameStats:
+    - ' '
+    - ' &5&lGame Stats'
+    - ' &fVictory: &c%RedTeamVictory% &7vs &1%BlueTeamVictory%'
+    - ' &fPoints earned: &c%RedTeamScore% &7vs &1%BlueTeamScore%'
+    - ' &fKills: &c%RedTeamKills% &7vs &1%BlueTeamKills%'
+    - ' &fDamage: &c%RedTeamDamage% &7vs &1%BlueTeamDamage%'
+    - ' &fWools Captured: &c%RedTeamWools% &7vs &1%BlueTeamWools%'
+    - ' '
+    - ' &7Check your stats: &f/stats'
+    - ' '
+
+
+
+#Title/subtitle messages. Full color codes support.
+#Codes: http://minecraft.gamepedia.com/Formatting_codes#Color_codes
+TitleMessages:
+  #When joining the Red Team.
+  JoinRedTeam:
+    title: '&cRED TEAM'
+    subtitle: '&7Blue is your enemy!'
+  #When joining the Blue Team.
+  JoinBlueTeam:
+    title: '&1BLUE TEAM'
+    subtitle: '&7Red is your enemy!'
+  #When and achievement is complete.
+  AwardAchievement:
+    title: '%AchievementName%'
+    subtitle: '&7Achievement Complete!'
+  #When wool is captured
+  RedWoolCaptured:
+    title: ''
+    subtitle: '&cRED Wool Captured!'
+  PinkWoolCaptured:
+    title: ''
+    subtitle: '&dPINK Wool Captured!'
+  BlueWoolCaptured:
+    title: ''
+    subtitle: '&1BLUE Wool Captured!'
+  CyanWoolCaptured:
+    title: ''
+    subtitle: '&3CYAN Wool Captured!'
+  #Victory messages.
+  #Variables:
+  #    %PlayerName% - will be replaced by player name.
+  RedDouble:
+    title: '&6Double!'
+    subtitle: '&c%PlayerName% &7placed the &cRED &7and &dPINK &7Wools!'
+  BlueDouble:
+    title: '&6Double!'
+    subtitle: '&1%PlayerName% &7placed the &1BLUE &7and &3CYAN &7Wools!'
+  RedWool:
+    title: ''
+    subtitle: '&c%PlayerName% &7placed the &cRED Wool!'
+  PinkWool:
+    title: ''
+    subtitle: '&c%PlayerName% &7placed the &dPINK Wool!'
+  BlueWool:
+    title: ''
+    subtitle: '&1%PlayerName% &7placed the &1Blue Wool!'
+  CyanWool:
+    title: ''
+    subtitle: '&1%PlayerName% &7placed the &3Cyan Wool!'
+  RedVictory:
+    title: '&cRed Team Won!'
+    subtitle: '&fCongratulations!'
+  BlueVictory:
+    title: '&1Blue Team Won!'
+    subtitle: '&fCongratulations!'
+  #Countdown title messages:
+  #Variables:
+  #    %MapName% - will be replaced by the map name.
+  #    %countdown% - will be replaced by the countdown time in seconds.
+  CountdownStart:
+    title: '&6Next map:&e %MapName%'
+    subtitle: '&6Starting in:&e %countdown% sec.'
+  CountdownProgress:
+    title: ''
+    subtitle: '&6Starting in:&e %countdown% sec.'
+  CountdownLast5sec:
+    title: '&e%countdown%'
+    subtitle: ''
+  CountdownOver:
+    title: ''
+    subtitle: '&6Go get that wool!'
+  #Kill streak title messages.
+  DoubleKill:
+    title: ''
+    subtitle: '&cDouble Kill!'
+  TripleKill:
+    title: ''
+    subtitle: '&cTriple Kill!'
+  QuadraKill:
+    title: ''
+    subtitle: '&cQuadra Kill!'
+  PentaKill:
+    title: ''
+    subtitle: '&cPenta Kill!'
+  KillingSpree:
+    title: ''
+    subtitle: '&cKilling Spree!'
+  Unstoppable:
+    title: ''
+    subtitle: '&cUnstoppable!'
+
+
+#Action Bar messages
+ActionBarMessages:
+  SpectatorJoinMessage: '&6&lJoin the game with: &e&l/join'
+  RedWoolCaptureFirst: '&c&l%PlayerName% &7&lis the first to capture the &c&lRED Wool!'
+  RedWoolCapture: '&c&l%PlayerName% &7&lcaptured the &c&lRED Wool!'
+  PinkWoolCaptureFirst: '&c&l%PlayerName% &7&lis the first to capture the &d&lPINK Wool!'
+  PinkWoolCapture: '&c&l%PlayerName% &7&lcaptured the &d&lPINK Wool!'
+  BlueWoolCaptureFirst: '&c&l%PlayerName% &7&lis the first to capture the &1&lBLUE Wool!'
+  BlueWoolCapture: '&c&l%PlayerName% &7&lcaptured the &1&lBLUE Wool!'
+  CyanWoolCaptureFirst: '&c&l%PlayerName% &7&lis the first to capture the &3&lCYAN Wool!'
+  CyanWoolCapture: '&c&l%PlayerName% &7&lcaptured the &3&lCYAN Wool!'
+  AllWoolsLost: '%PlayerName% &7&llost the all wools!'
+  RedWoolLost: '%PlayerName% &7&llost the &c&lRED Wool!'
+  PinkWoolLost: '%PlayerName% &7&llost the &d&lPINK Wool!'
+  BlueWoolLost: '%PlayerName% &7&llost the &1&lBLUE Wool!'
+  CyanWoolLost: '%PlayerName% &7&llost the &3&lCYAN Wool!'
+
+
+#Tab messages
+TabList:
+  Header: '&6&lMAP: &e&l%MapName%'
+  Footer: '&fWINS: &c%RedTeamVictory%&7 vs &1%BlueTeamVictory%'
+
+
+#Kick messages
+KickMessages:
+  Error: '&cThere was an error! Please re-join.'
+
+
+#Scoreboard text.
+Scoreboard:
+  #Health is shown under the player name.
+  Health: '&cHP'
+  #Wool symbols.
+  WoolNotPlaced: ' â¬œ'
+  WoolPickedUp: ' âƒž'
+  WoolPlaced: ' â¬›'
+
+#Words
+Words:
+  RedTeam: 'Red Team'
+  BlueTeam: 'Blue Team'
+  Red: 'Red'
+  Pink: 'Pink'
+  Blue: 'Blue'
+  Cyan: 'Cyan'
+  Locked: 'Locked'
+  RedTeamWon: 'Red Team Won!'
+  BlueTeamWon: 'Blue Team Won!'
+
+  #MOTD status. The server MOTD will have the name of the map that will be used on signs in the lobby. Full color codes support.
+  #Codes: http://minecraft.gamepedia.com/Formatting_codes#Color_codes
+  #Variables:
+  #    %MapName% - will be replaced by the current map name.
+MOTD-Status:
+  Loading: '&6&lLoading...'
+  Status: '&c&l%MapName%'
+
+
+#These icons are used in the death messages to make them more fancy.
+#The variable %WeaponLogo% on death messages will get replaced by these icons.
+#To see these icons you need to add to your server resource pack this: http://imgur.com/a/oHvbX
+Icons:
+  WoodSword: 'é€€'
+  StoneSword: 'é€…'
+  IronSword: 'é€�'
+  GoldSword: 'é€Š'
+  DiamondSword: 'é€•'
+  Bow: 'é€š'
+  Other: 'é‘±'
+
+
+#Stats format, displayed in chat. Each line represents a new row. Full color and format codes support.
+#Codes: http://minecraft.gamepedia.com/Formatting_codes#Color_codes
+#Variables:
+#    %score% - will be replaced by player score.
+#    %meleeKills% - will be replaced by the player melee kills.
+#    %bowKills% - will be replaced by the player bow kills.
+#    %totalKills% - will be replaced by the total player kills (bow + melee).
+#    %distance% - will be replaced by the player max distance a bow kill took place.
+#    %wools% - will be replaced by the player wools placed count.
+#Below this the server will add the players achievements.
+ChatStats:
+  - ' '
+  - ' &d&lYour Stats'
+  - '   &fScore:&d %score%'
+  - '   &fMelee kills:&d %meleeKills% &7| &fBow kills:&d %bowKills% &7| &fTotal:&d %totalKills%'
+  - '   &fBow distance kill:&d %distance% &fblocks.'
+  - '   &fWools Placed:&d %wools%'
+  - ' &d&lYour Achievements'
+
+
+#Achievements names. Full color and format codes support.
+#Codes: http://minecraft.gamepedia.com/Formatting_codes#Color_codes
+Achievements:
+  #Sniper achievement - is rewarded for distance bow kills.
+  Sniper-I: 'Sniper I'
+  Sniper-II: 'Sniper II'
+  Sniper-III: 'Sniper III'
+  Sniper-IV: 'Sniper IV'
+  #Melee Kills achievement - is rewarded for the number of melee kills.
+  Melee-Kills-I: 'Sword Master I'
+  Melee-Kills-II: 'Sword Master II'
+  Melee-Kills-III: 'Sword Master III'
+  Melee-Kills-IV: 'Sword Master IV'
+  #Bow Kills achievement - is rewarded for the number of bow kills.
+  Bow-Kills-I: 'Shooter I'
+  Bow-Kills-II: 'Shooter II'
+  Bow-Kills-III: 'Shooter III'
+  Bow-Kills-IV: 'Shooter IV'
+  #Overpowered achievement - is rewarded for the total amount of kills (melee + bow).
+  Overpowered-I: 'Overpowered I'
+  Overpowered-II: 'Overpowered II'
+  Overpowered-III: 'Overpowered III'
+  Overpowered-IV: 'Overpowered IV'
+  #Wool Master achievement - is rewarded for the amount of wools placed.
+  WoolMaster-I: 'Wool Master I'
+  WoolMaster-II: 'Wool Master II'
+  WoolMaster-III: 'Wool Master III'
+  WoolMaster-IV: 'Wool Master IV'
+
+
+#Kit menu. Full color and format codes support.
+#Codes: http://minecraft.gamepedia.com/Formatting_codes#Color_codes
+MenuGUI:
+  #GUI Menu titles
+  MenuTitles:
+    MainMenu: '&lKit Menu'
+    KitsMenu: '&5&lKits'
+    EnchantsMenu: '&5&lEnchants'
+    TrashMenu: '&lTrash Can'
+  #Menu Item names
+  ItemNames:
+    KitMenuItem: '&f&lKits'
+    TrashMenuItem: '&f&lTrash Can'
+    EnchantsMenuItem: '&f&lEnchants'
+
+#Variables:
+#    %RedTeamCount% - will be replaced by red team count.
+#    %BlueTeamCount% - will be replaced by blue team count.
+#    %SpectatorCount% - will be replaced by spectator count.
+#    %TeamMax% - will be replaced by the max number of players in a team.
+JoinGUI:
+  Title: '&5Join the game'
+  AutoJoinItem:
+    Title: '&f&lAuto Join'
+    Lore:
+      - '&7Auto join a team.'
+      - ' '
+      - '&cRed Team:&f %RedTeamCount%&7/&f%TeamMax%'
+      - '&9Blue Team:&f %BlueTeamCount%&7/&f%TeamMax%'
+      - '&7Spectators:&f %SpectatorCount%'
+  JoinRedTeamItem:
+    Title: '&c&lRed Team'
+    Lore:
+      - '&7Join the Red Team.'
+      - ' '
+      - '&cRed Team:&f %RedTeamCount%&7/&f%TeamMax%'
+      - '&9Blue Team:&f %BlueTeamCount%&7/&f%TeamMax%'
+      - '&7Spectators:&f %SpectatorCount%'
+  JoinBlueTeamItem:
+    Title: '&9&lBlue Team'
+    Lore:
+      - '&7Join the Blue Team.'
+      - ' '
+      - '&cRed Team:&f %RedTeamCount%&7/&f%TeamMax%'
+      - '&9Blue Team:&f %BlueTeamCount%&7/&f%TeamMax%'
+      - '&7Spectators:&f %SpectatorCount%'
+
+
+#Enchant Menu
+Enchants:
+  FeatherFallingI:
+    NameUnlocked: '&a&lFeather Falling I'
+    NameLocked: '&c&lFeather Falling I &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Feather Falling I Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Boots'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  FeatherFallingII:
+    NameUnlocked: '&a&lFeather Falling II'
+    NameLocked: '&c&lFeather Falling II &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Feather Falling II Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Boots'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cRank: VIP'
+  FireAspectI:
+    NameUnlocked: '&a&lFire Aspect I'
+    NameLocked: '&c&lFire Aspect I &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Fire Aspect I Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Sword or Axe'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  FireAspectII:
+    NameUnlocked: '&a&lFire Aspect II'
+    NameLocked: '&c&lFire Aspect II &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Fire Aspect II Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Sword or Axe'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cRank: VIP'
+  FlameI:
+    NameUnlocked: '&a&lFlame I'
+    NameLocked: '&c&lFlame I &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Flame I Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Bow'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  InfinityI:
+    NameUnlocked: '&a&lInfinity I'
+    NameLocked: '&c&lInfinity I &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Infinity I Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Bow'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  KnockbackI:
+    NameUnlocked: '&a&lKnockback I'
+    NameLocked: '&c&lKnockback I &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Knockback I Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Sword or Axe'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  KnockbackII:
+    NameUnlocked: '&a&lKnockback II'
+    NameLocked: '&c&lKnockback II &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Knockback II Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Sword or Axe'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cRank: VIP'
+  PowerI:
+    NameUnlocked: '&a&lPower I'
+    NameLocked: '&c&lPower I &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Power I Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Bow'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  PowerII:
+    NameUnlocked: '&a&lPower II'
+    NameLocked: '&c&lPower II &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Power II Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Bow'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  PowerIII:
+    NameUnlocked: '&a&lPower III'
+    NameLocked: '&c&lPower III &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Power III Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Bow'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cRank: VIP'
+  PowerIV:
+    NameUnlocked: '&a&lPower IV'
+    NameLocked: '&c&lPower IV &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Power IV Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Bow'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cRank: VIP'
+  ProtectionI:
+    NameUnlocked: '&a&lProtection I'
+    NameLocked: '&c&lProtection I &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Protection I Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Armor'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  ProtectionII:
+    NameUnlocked: '&a&lProtection II'
+    NameLocked: '&c&lProtection II &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Protection II Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Armor'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  ProtectionIII:
+    NameUnlocked: '&a&lProtection III'
+    NameLocked: '&c&lProtection III &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Protection III Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Armor'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cRank: VIP'
+  ProtectionIV:
+    NameUnlocked: '&a&lProtection IV'
+    NameLocked: '&c&lProtection IV &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Protection IV Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Armor'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cRank: VIP'
+  PunchI:
+    NameUnlocked: '&a&lPunch I'
+    NameLocked: '&c&lPunch I &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Punch I Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Bow'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  PunchII:
+    NameUnlocked: '&a&lPunch II'
+    NameLocked: '&c&lPunch II &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Punch II Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Bow'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cRank: VIP'
+  SharpnessI:
+    NameUnlocked: '&a&lSharpness I'
+    NameLocked: '&c&lSharpness I &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Sharpness I Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Sword or Axe'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  SharpnessII:
+    NameUnlocked: '&a&lSharpness II'
+    NameLocked: '&c&lSharpness II &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Sharpness II Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Sword or Axe'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  SharpnessIII:
+    NameUnlocked: '&a&lSharpness III'
+    NameLocked: '&c&lSharpness III &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Sharpness III Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Sword or Axe'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cRank: VIP'
+  SharpnessIV:
+    NameUnlocked: '&a&lSharpness IV'
+    NameLocked: '&c&lSharpness IV &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Sharpness IV Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Sword or Axe'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cRank: VIP'
+  ThornsI:
+    NameUnlocked: '&a&lThorns I'
+    NameLocked: '&c&lThorns I &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Thorns I Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Armor'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cAchievement:&6 %achievement%'
+  ThornsII:
+    NameUnlocked: '&a&lThorns II'
+    NameLocked: '&c&lThorns II &7(Locked)'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &7Thorns II Enchant'
+      - ' '
+      - '&8Applies to:'
+      - '&8>> &7Armor'
+      - ' '
+    UnlockedLore:
+      - '&aPrice:&e %price% â›€'
+    LockedLore:
+      - '&4Requirements:'
+      - '&cRank: VIP'

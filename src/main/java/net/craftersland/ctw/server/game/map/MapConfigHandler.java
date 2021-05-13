@@ -1,8 +1,9 @@
 package net.craftersland.ctw.server.game.map;
 
-
+import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
+import com.sk89q.worldedit.bukkit.selections.Selection;
 import net.craftersland.ctw.server.CTW;
-import org.apache.commons.io.*;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,12 +28,12 @@ public class MapConfigHandler {
     public Location blueWonParticle;
     public int maxHight;
     public int minHight;
-    public List<CuboidRegionSelector> protectedAreas;
+    public List<CuboidSelection> protectedAreas;
     public List<CuboidSelection> redNoAccess;
     public List<CuboidSelection> blueNoAccess;
     public CuboidSelection gameArea;
     public ItemStack[] startupKit;
-    private final CTW ctw;
+    private CTW ctw;
 
     public MapConfigHandler(final CTW ctw) {
         this.protectedAreas = new ArrayList<CuboidSelection>();
@@ -62,7 +63,7 @@ public class MapConfigHandler {
     }
 
     public void loadConfig(final String mapName) {
-        Bukkit.getScheduler().runTaskAsynchronously(this.ctw, new Runnable() {
+        Bukkit.getScheduler().runTaskAsynchronously((Plugin) this.ctw, (Runnable) new Runnable() {
             @Override
             public void run() {
                 final File mapConfigFolder = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs");
@@ -82,7 +83,7 @@ public class MapConfigHandler {
                         e.printStackTrace();
                     }
                 }
-                final FileConfiguration cfg = YamlConfiguration.loadConfiguration(mapConfig);
+                final FileConfiguration cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(mapConfig);
                 MapConfigHandler.this.maxPlayers = cfg.getInt("MaxPlayersPerTeam");
                 MapConfigHandler.this.time = cfg.getString("Time");
                 final String[] spectatorSpawnString = cfg.getString("SpectatorSpawn").split("#");
@@ -92,30 +93,30 @@ public class MapConfigHandler {
                 final String[] blueSpawnString = cfg.getString("BlueTeam.Spawn").split("#");
                 MapConfigHandler.this.blueSpawn = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(blueSpawnString[0]), Double.parseDouble(blueSpawnString[1]), Double.parseDouble(blueSpawnString[2]), Float.parseFloat(blueSpawnString[3]), Float.parseFloat(blueSpawnString[4]));
                 final String[] redWoolString = cfg.getString("RedTeam.RedWool").split("#");
-                MapConfigHandler.this.redWool = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(redWoolString[0]), Integer.parseInt(redWoolString[1]), Integer.parseInt(redWoolString[2]));
+                MapConfigHandler.this.redWool = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, (double) Integer.parseInt(redWoolString[0]), (double) Integer.parseInt(redWoolString[1]), (double) Integer.parseInt(redWoolString[2]));
                 final String[] pinkWoolString = cfg.getString("RedTeam.PinkWool").split("#");
-                MapConfigHandler.this.pinkWool = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(pinkWoolString[0]), Integer.parseInt(pinkWoolString[1]), Integer.parseInt(pinkWoolString[2]));
+                MapConfigHandler.this.pinkWool = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, (double) Integer.parseInt(pinkWoolString[0]), (double) Integer.parseInt(pinkWoolString[1]), (double) Integer.parseInt(pinkWoolString[2]));
                 final String[] blueWoolString = cfg.getString("BlueTeam.BlueWool").split("#");
-                MapConfigHandler.this.blueWool = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(blueWoolString[0]), Integer.parseInt(blueWoolString[1]), Integer.parseInt(blueWoolString[2]));
+                MapConfigHandler.this.blueWool = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, (double) Integer.parseInt(blueWoolString[0]), (double) Integer.parseInt(blueWoolString[1]), (double) Integer.parseInt(blueWoolString[2]));
                 final String[] cyanWoolString = cfg.getString("BlueTeam.CyanWool").split("#");
-                MapConfigHandler.this.cyanWool = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(cyanWoolString[0]), Integer.parseInt(cyanWoolString[1]), Integer.parseInt(cyanWoolString[2]));
+                MapConfigHandler.this.cyanWool = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, (double) Integer.parseInt(cyanWoolString[0]), (double) Integer.parseInt(cyanWoolString[1]), (double) Integer.parseInt(cyanWoolString[2]));
                 final String[] redWonEffectString = cfg.getString("VictoryParticles.Red").split("#");
                 MapConfigHandler.this.redWonParticle = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(redWonEffectString[0]), Double.parseDouble(redWonEffectString[1]), Double.parseDouble(redWonEffectString[2]), Float.parseFloat(redWonEffectString[3]), Float.parseFloat(redWonEffectString[4]));
                 final String[] blueWonEffectString = cfg.getString("VictoryParticles.Blue").split("#");
                 MapConfigHandler.this.blueWonParticle = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(blueWonEffectString[0]), Double.parseDouble(blueWonEffectString[1]), Double.parseDouble(blueWonEffectString[2]), Float.parseFloat(blueWonEffectString[3]), Float.parseFloat(blueWonEffectString[4]));
                 MapConfigHandler.this.maxHight = cfg.getInt("ProtectedHight.maxHight");
                 MapConfigHandler.this.minHight = cfg.getInt("ProtectedHight.minHight");
-                final List<String> protectedString = cfg.getStringList("ProtectedAreas");
+                final List<String> protectedString = (List<String>) cfg.getStringList("ProtectedAreas");
                 if (!protectedString.isEmpty()) {
                     for (final String s : protectedString) {
                         final String[] data = s.split("#");
-                        final Location l1 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-                        final Location l2 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]));
+                        final Location l1 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, (double) Integer.parseInt(data[0]), (double) Integer.parseInt(data[1]), (double) Integer.parseInt(data[2]));
+                        final Location l2 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, (double) Integer.parseInt(data[3]), (double) Integer.parseInt(data[4]), (double) Integer.parseInt(data[5]));
                         final CuboidSelection cs = new CuboidSelection(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, l1, l2);
                         MapConfigHandler.this.protectedAreas.add(cs);
                     }
                 }
-                final List<String> redNoAcc = cfg.getStringList("RedNoAccess");
+                final List<String> redNoAcc = (List<String>) cfg.getStringList("RedNoAccess");
                 if (!redNoAcc.isEmpty()) {
                     for (final String s2 : redNoAcc) {
                         final String[] data2 = s2.split("#");
@@ -125,7 +126,7 @@ public class MapConfigHandler {
                         MapConfigHandler.this.redNoAccess.add(cs2);
                     }
                 }
-                final List<String> blueNoAcc = cfg.getStringList("BlueNoAccess");
+                final List<String> blueNoAcc = (List<String>) cfg.getStringList("BlueNoAccess");
                 if (!blueNoAcc.isEmpty()) {
                     for (final String s3 : blueNoAcc) {
                         final String[] data3 = s3.split("#");
@@ -136,8 +137,8 @@ public class MapConfigHandler {
                     }
                 }
                 final String[] arenaA = cfg.getString("ArenaArea").split("#");
-                final Location arenaLoc1 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(arenaA[0]), Integer.parseInt(arenaA[1]), Integer.parseInt(arenaA[2]));
-                final Location arenaLoc2 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(arenaA[3]), Integer.parseInt(arenaA[4]), Integer.parseInt(arenaA[5]));
+                final Location arenaLoc1 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, (double) Integer.parseInt(arenaA[0]), (double) Integer.parseInt(arenaA[1]), (double) Integer.parseInt(arenaA[2]));
+                final Location arenaLoc2 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, (double) Integer.parseInt(arenaA[3]), (double) Integer.parseInt(arenaA[4]), (double) Integer.parseInt(arenaA[5]));
                 MapConfigHandler.this.gameArea = new CuboidSelection(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, arenaLoc1, arenaLoc2);
                 final ArrayList<ItemStack> items = new ArrayList<ItemStack>();
                 for (int i = 0; i < 36; ++i) {
@@ -152,14 +153,14 @@ public class MapConfigHandler {
 
     public List<String> getArea(final String path, final Location loc) {
         final File mapConfig = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs" + System.getProperty("file.separator") + this.ctw.getMapHandler().currentMap + ".yml");
-        final FileConfiguration cfg = YamlConfiguration.loadConfiguration(mapConfig);
+        final FileConfiguration cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(mapConfig);
         final Set<String> areaList = new HashSet<String>(cfg.getStringList(path));
         final List<String> areas = new ArrayList<String>();
         if (!areaList.isEmpty()) {
             for (final String s : areaList) {
                 final String[] data = s.split("#");
-                final Location l1 = new Location(this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-                final Location l2 = new Location(this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]));
+                final Location l1 = new Location(this.ctw.getMapHandler().currentMapWorld, (double) Integer.parseInt(data[0]), (double) Integer.parseInt(data[1]), (double) Integer.parseInt(data[2]));
+                final Location l2 = new Location(this.ctw.getMapHandler().currentMapWorld, (double) Integer.parseInt(data[3]), (double) Integer.parseInt(data[4]), (double) Integer.parseInt(data[5]));
                 final CuboidSelection cs = new CuboidSelection(this.ctw.getMapHandler().currentMapWorld, l1, l2);
                 if (cs.contains(loc)) {
                     areas.add(s);
@@ -171,10 +172,10 @@ public class MapConfigHandler {
 
     public void removeArea(final String path, final String data) {
         final File mapConfig = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs" + System.getProperty("file.separator") + this.ctw.getMapHandler().currentMap + ".yml");
-        final FileConfiguration cfg = YamlConfiguration.loadConfiguration(mapConfig);
+        final FileConfiguration cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(mapConfig);
         final Set<String> areaList = new HashSet<String>(cfg.getStringList(path));
         areaList.remove(data);
-        cfg.set(path, Arrays.asList(areaList.toArray()));
+        cfg.set(path, (Object) Arrays.asList(areaList.toArray()));
         try {
             cfg.save(mapConfig);
         } catch (Exception e) {
@@ -186,10 +187,10 @@ public class MapConfigHandler {
     public void addArea(final String path, final Selection sel) {
         final String data = String.valueOf(sel.getMinimumPoint().getBlockX()) + "#" + sel.getMinimumPoint().getBlockY() + "#" + sel.getMinimumPoint().getBlockZ() + "#" + sel.getMaximumPoint().getBlockX() + "#" + sel.getMaximumPoint().getBlockY() + "#" + sel.getMaximumPoint().getBlockZ();
         final File mapConfig = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs" + System.getProperty("file.separator") + this.ctw.getMapHandler().currentMap + ".yml");
-        final FileConfiguration cfg = YamlConfiguration.loadConfiguration(mapConfig);
+        final FileConfiguration cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(mapConfig);
         final Set<String> areaList = new HashSet<String>(cfg.getStringList(path));
         areaList.add(data);
-        cfg.set(path, Arrays.asList(areaList.toArray()));
+        cfg.set(path, (Object) Arrays.asList(areaList.toArray()));
         try {
             cfg.save(mapConfig);
         } catch (Exception e) {
@@ -201,8 +202,8 @@ public class MapConfigHandler {
     public void setArenaArea(final String path, final Selection sel) {
         final String data = String.valueOf(sel.getMinimumPoint().getBlockX()) + "#" + sel.getMinimumPoint().getBlockY() + "#" + sel.getMinimumPoint().getBlockZ() + "#" + sel.getMaximumPoint().getBlockX() + "#" + sel.getMaximumPoint().getBlockY() + "#" + sel.getMaximumPoint().getBlockZ();
         final File mapConfig = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs" + System.getProperty("file.separator") + this.ctw.getMapHandler().currentMap + ".yml");
-        final FileConfiguration cfg = YamlConfiguration.loadConfiguration(mapConfig);
-        cfg.set(path, data);
+        final FileConfiguration cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(mapConfig);
+        cfg.set(path, (Object) data);
         try {
             cfg.save(mapConfig);
         } catch (Exception e) {
@@ -213,8 +214,8 @@ public class MapConfigHandler {
 
     public void setString(final String data, final String path) {
         final File mapConfig = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs" + System.getProperty("file.separator") + this.ctw.getMapHandler().currentMap + ".yml");
-        final FileConfiguration cfg = YamlConfiguration.loadConfiguration(mapConfig);
-        cfg.set(path, data);
+        final FileConfiguration cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(mapConfig);
+        cfg.set(path, (Object) data);
         try {
             cfg.save(mapConfig);
         } catch (Exception e) {
@@ -225,8 +226,8 @@ public class MapConfigHandler {
 
     public void setInteger(final int number, final String path) {
         final File mapConfig = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs" + System.getProperty("file.separator") + this.ctw.getMapHandler().currentMap + ".yml");
-        final FileConfiguration cfg = YamlConfiguration.loadConfiguration(mapConfig);
-        cfg.set(path, number);
+        final FileConfiguration cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(mapConfig);
+        cfg.set(path, (Object) number);
         try {
             cfg.save(mapConfig);
         } catch (Exception e) {
@@ -237,8 +238,8 @@ public class MapConfigHandler {
 
     public void setBlockLocation(final Location loc, final String path) {
         final File mapConfig = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs" + System.getProperty("file.separator") + this.ctw.getMapHandler().currentMap + ".yml");
-        final FileConfiguration cfg = YamlConfiguration.loadConfiguration(mapConfig);
-        cfg.set(path, loc.getBlockX() + "#" + loc.getBlockY() + "#" + loc.getBlockZ());
+        final FileConfiguration cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(mapConfig);
+        cfg.set(path, (Object) (String.valueOf(loc.getBlockX()) + "#" + loc.getBlockY() + "#" + loc.getBlockZ()));
         try {
             cfg.save(mapConfig);
         } catch (Exception e) {
@@ -249,8 +250,8 @@ public class MapConfigHandler {
 
     public void setSpawnPoint(final Location loc, final String path) {
         final File mapConfig = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs" + System.getProperty("file.separator") + this.ctw.getMapHandler().currentMap + ".yml");
-        final FileConfiguration cfg = YamlConfiguration.loadConfiguration(mapConfig);
-        cfg.set(path, loc.getX() + "#" + loc.getY() + "#" + loc.getZ() + "#" + loc.getYaw() + "#" + loc.getPitch());
+        final FileConfiguration cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(mapConfig);
+        cfg.set(path, (Object) (String.valueOf(loc.getX()) + "#" + loc.getY() + "#" + loc.getZ() + "#" + loc.getYaw() + "#" + loc.getPitch()));
         try {
             cfg.save(mapConfig);
         } catch (Exception e) {
@@ -261,8 +262,8 @@ public class MapConfigHandler {
 
     public void saveStartupKit(final ItemStack i, final int slot) {
         final File mapConfig = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs" + System.getProperty("file.separator") + this.ctw.getMapHandler().currentMap + ".yml");
-        final FileConfiguration cfg = YamlConfiguration.loadConfiguration(mapConfig);
-        cfg.set("StartupKit." + slot, i);
+        final FileConfiguration cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(mapConfig);
+        cfg.set("StartupKit." + slot, (Object) i);
         try {
             cfg.save(mapConfig);
         } catch (Exception e) {

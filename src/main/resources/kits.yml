@@ -1,0 +1,1478 @@
+# default config.yml for CTWserver
+# config version 1.4.3
+
+#After you create a kit add it here in order to enable it.
+#Add here the kit names.
+EnabledKits:
+  - Arrows
+  - Glass
+  - Wood
+  - Porkchop
+  - ChainArmor
+  - IronArmor
+  - DiamondArmor
+  - DiamondSword
+  - Cobweb
+  - Ironbars
+  - Enderpearl
+  - Goldenapples
+  - Enchantedgoldenapples
+  - Emptybucket
+  - Waterbucket
+  - Lavabucket
+  - Snowballs
+  - Flintsteel
+  - Tnt
+  - Cake
+  - Enchanter
+  - Sponge
+  - Regenerate
+  - RegenerateII
+  - Swiftness
+  - SwiftnessII
+  - FireRessist
+  - Healing
+  - HealingII
+  - NightVision
+  - Strength
+  - StrengthII
+  - Leaping
+  - LeapingII
+  - Breathing
+  - Invisibility
+  - Poison
+  - PoisonII
+  - Weakness
+  - Slowness
+  - Harming
+  - HarmingII
+
+
+#================================================================================
+# Kits - Use the below example to create kits.
+#================================================================================
+
+#Kit Name.
+Arrows:
+  #Kit display item settings.
+  DisplayItem:
+    #Display item material.
+    #Material list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+    Material: 'ARROW'
+    #Display item data or damage value.
+    Data: 0
+    #Display item name.
+    DisplayName: 'Arrow Supplies'
+    #Display item base lore. All lores support multi lines, so you can add or remove lore lines.
+    #The base lore will always be displayed.
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &764 Arrows'
+    #This lore will be added to the base lore if a permission is required to unlock the kit.
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    #This lore will be added to the base lore if an achievement is required to unlock the kit.
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    #The final lore will be added if the kit is unlocked and will display the kit price.
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 50 â›€'
+  #The kit will trigger these commands when bought. It supports multiple commands.
+  KitCommands:
+    - 'give %player% ARROW 64'
+  #Kit requirements to unlock.
+  Requirements:
+    #Kit price.
+    Price: 50.0
+    #Kit permission. (optional)
+    Premission:
+      #Enable or disable permission requirement.
+      Enabled: false
+      #Permission node. It can be anything you like, and also the same as other kits.
+      Node: 'CTW.kit.Arrows'
+      #This message will be sent when the player does not have the permission to use this kit.
+      NoPermissionMessage: ''
+    #Kit Achievement requirement. (optional)
+    Achievement:
+      #Enable or disable the achievement requirement.
+      Enabled: false
+      #The achievement name that is required to unlock the kit.
+      #Valid achievement names:
+      # SNIPER1 | SNIPER2 | SNIPER3 | SNIPER4
+      # MELEE1 | MELEE2 | MELEE3 | MELEE4
+      # OVERPOWERED1 | OVERPOWERED2 | OVERPOWERED3 | OVERPOWERED4
+      # SHOOTER1 | SHOOTER2 | SHOOTER3 | SHOOTER4
+      # WOOLMASTER1 | WOOLMASTER2 | WOOLMASTER3 | WOOLMASTER4
+      AchievementRequired: ''
+
+Glass:
+  DisplayItem:
+    Material: 'GLASS'
+    Data: 0
+    DisplayName: 'Glass Supplies'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &764 Glass'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% GLASS 64'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Glass'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: false
+      AchievementRequired: ''
+
+Wood:
+  DisplayItem:
+    Material: 'WOOD'
+    Data: 0
+    DisplayName: 'Wood Supplies'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &764 Wood'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% WOOD 64'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Glass'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: false
+      AchievementRequired: ''
+
+Porkchop:
+  DisplayItem:
+    Material: 'GRILLED_PORK'
+    Data: 0
+    DisplayName: 'Food Supplies'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &716 Cooked Porkchop'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% GRILLED_PORK 16'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Porkchop'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: false
+      AchievementRequired: ''
+
+ChainArmor:
+  DisplayItem:
+    Material: 'CHAINMAIL_CHESTPLATE'
+    Data: 0
+    DisplayName: 'Chain Armor'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Chain Helmet'
+      - '&8>> &71 Chain Chestplate'
+      - '&8>> &71 Chain Leggings'
+      - '&8>> &71 Chain Boots'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Sniper II'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 125 â›€'
+  KitCommands:
+    - 'give %player% CHAINMAIL_HELMET 1'
+    - 'give %player% CHAINMAIL_CHESTPLATE 1'
+    - 'give %player% CHAINMAIL_LEGGINGS 1'
+    - 'give %player% CHAINMAIL_BOOTS 1'
+  Requirements:
+    Price: 125.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.ChainArmor'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'SHOOTER2'
+
+IronArmor:
+  DisplayItem:
+    Material: 'IRON_CHESTPLATE'
+    Data: 0
+    DisplayName: 'Iron Armor'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Iron Helmet'
+      - '&8>> &71 Iron Chestplate'
+      - '&8>> &71 Iron Leggings'
+      - '&8>> &71 Iron Boots'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Sword Master II'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 250 â›€'
+  KitCommands:
+    - 'give %player% IRON_HELMET 1'
+    - 'give %player% IRON_CHESTPLATE 1'
+    - 'give %player% IRON_LEGGINGS 1'
+    - 'give %player% IRON_BOOTS 1'
+  Requirements:
+    Price: 250.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.IronArmor'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'MELEE2'
+
+DiamondArmor:
+  DisplayItem:
+    Material: 'DIAMOND_CHESTPLATE'
+    Data: 0
+    DisplayName: 'Diamond Armor'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Diamond Helmet'
+      - '&8>> &71 Diamond Chestplate'
+      - '&8>> &71 Diamond Leggings'
+      - '&8>> &71 Diamond Boots'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Overpowered III'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 500 â›€'
+  KitCommands:
+    - 'give %player% DIAMOND_HELMET 1'
+    - 'give %player% DIAMOND_CHESTPLATE 1'
+    - 'give %player% DIAMOND_LEGGINGS 1'
+    - 'give %player% DIAMOND_BOOTS 1'
+  Requirements:
+    Price: 500.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.DiamondArmor'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'OVERPOWERED3'
+
+DiamondSword:
+  DisplayItem:
+    Material: 'DIAMOND_SWORD'
+    Data: 0
+    DisplayName: 'Diamond Sword'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Diamond Sword'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Overpowered IV'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 250 â›€'
+  KitCommands:
+    - 'give %player% DIAMOND_SWORD 1'
+  Requirements:
+    Price: 250.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.DiamondSword'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'OVERPOWERED4'
+
+Cobweb:
+  DisplayItem:
+    Material: 'WEB'
+    Data: 0
+    DisplayName: 'Cobweb Supply'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &716 Cobweb'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Wool Master II'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% WEB 16'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Cobweb'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'WOOLMASTER2'
+
+Ironbars:
+  DisplayItem:
+    Material: 'IRON_FENCE'
+    Data: 0
+    DisplayName: 'Iron Bars Supply'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &764 Iron Bars'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Wool Master I'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% IRON_FENCE 64'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Ironbars'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'WOOLMASTER1'
+
+Enderpearl:
+  DisplayItem:
+    Material: 'ENDER_PEARL'
+    Data: 0
+    DisplayName: 'Enderpearl Supply'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Enderpearl'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Sniper IV'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 50 â›€'
+  KitCommands:
+    - 'give %player% ENDER_PEARL 1'
+  Requirements:
+    Price: 50.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Enderpearl'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'SNIPER4'
+
+Goldenapples:
+  DisplayItem:
+    Material: 'GOLDEN_APPLE'
+    Data: 0
+    DisplayName: 'Golden Apples Supply'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &72 Golden Apples'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Overpowered III'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 25 â›€'
+  KitCommands:
+    - 'give %player% GOLDEN_APPLE 2'
+  Requirements:
+    Price: 25.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Goldenapples'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'OVERPOWERED3'
+
+Enchantedgoldenapples:
+  DisplayItem:
+    Material: 'GOLDEN_APPLE'
+    Data: 1
+    DisplayName: 'Enchanted Golden Apple Supply'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Enchanted Golden Apple'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 25 â›€'
+  KitCommands:
+    - 'give %player% GOLDEN_APPLE:1 1'
+  Requirements:
+    Price: 25.0
+    Premission:
+      Enabled: true
+      Node: 'CTW.kit.EnchantedGoldenApple'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Emptybucket:
+  DisplayItem:
+    Material: 'BUCKET'
+    Data: 0
+    DisplayName: 'Empty Bucket'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Empty Bucket'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: None'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 5 â›€'
+  KitCommands:
+    - 'give %player% BUCKET 1'
+  Requirements:
+    Price: 5.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Emptybucket'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Waterbucket:
+  DisplayItem:
+    Material: 'WATER_BUCKET'
+    Data: 0
+    DisplayName: 'Water Bucket'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Water Bucket'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: None'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Overpowered I'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% WATER_BUCKET 1'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Waterbucket'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'OVERPOWERED1'
+
+Lavabucket:
+  DisplayItem:
+    Material: 'LAVA_BUCKET'
+    Data: 0
+    DisplayName: 'Lava Bucket'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Lava Bucket'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: None'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Overpowered I'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% LAVA_BUCKET 1'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Lavabucket'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'OVERPOWERED1'
+
+Snowballs:
+  DisplayItem:
+    Material: 'SNOW_BALL'
+    Data: 0
+    DisplayName: 'Snowballs Supply'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &716 Snowballs'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: None'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Shooter I'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 5 â›€'
+  KitCommands:
+    - 'give %player% SNOW_BALL 16'
+  Requirements:
+    Price: 5.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Snowballs'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'SHOOTER1'
+
+Flintsteel:
+  DisplayItem:
+    Material: 'FLINT_AND_STEEL'
+    Data: 0
+    DisplayName: 'Flint and Steel'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Flint and Steel'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: None'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Shooter I'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 5 â›€'
+  KitCommands:
+    - 'give %player% FLINT_AND_STEEL 1'
+  Requirements:
+    Price: 5.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Flintsteel'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Flintsteel:
+  DisplayItem:
+    Material: 'FLINT_AND_STEEL'
+    Data: 0
+    DisplayName: 'Flint and Steel'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Flint and Steel'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: None'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Shooter I'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 5 â›€'
+  KitCommands:
+    - 'give %player% FLINT_AND_STEEL 1'
+  Requirements:
+    Price: 5.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Flintsteel'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Tnt:
+  DisplayItem:
+    Material: 'TNT'
+    Data: 0
+    DisplayName: 'TnT Supplies'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &74 TnT'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: None'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Overpowered II'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% TNT 4'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Tnt'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'OVERPOWERED2'
+
+Cake:
+  DisplayItem:
+    Material: 'CAKE'
+    Data: 0
+    DisplayName: 'Cake'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Cake'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: None'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Wool Master I'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 5 â›€'
+  KitCommands:
+    - 'give %player% CAKE 1'
+  Requirements:
+    Price: 5.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Cake'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'WOOLMASTER1'
+
+Enchanter:
+  DisplayItem:
+    Material: 'ENCHANTMENT_TABLE'
+    Data: 0
+    DisplayName: 'Enchanter Kit'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Enchantment Table'
+      - '&8>> &716 XP Bottles'
+      - '&8>> &732 Lapis Lazuli'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 25 â›€'
+  KitCommands:
+    - 'give %player% ENCHANTMENT_TABLE 1'
+    - 'give %player% EXP_BOTTLE 16'
+    - 'give %player% INK_SACK:4 32'
+  Requirements:
+    Price: 25.0
+    Premission:
+      Enabled: true
+      Node: 'CTW.kit.Enchanter'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Sponge:
+  DisplayItem:
+    Material: 'SPONGE'
+    Data: 0
+    DisplayName: 'Sponge Supply'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &74 Sponge Blocks'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: Wool Master I'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% SPONGE 4'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Sponge'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: true
+      AchievementRequired: 'WOOLMASTER1'
+
+Regenerate:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8193
+    DisplayName: 'Regenerate Potions'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &72 Regeneration Potions'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 5 â›€'
+  KitCommands:
+    - 'give %player% POTION:8193 2'
+  Requirements:
+    Price: 5.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Regenerate'
+      NoPermissionMessage: ''
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+RegenerateII:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8225
+    DisplayName: 'Regenerate II Potions'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &72 Regeneration II Potions'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 5 â›€'
+  KitCommands:
+    - 'give %player% POTION:8225 2'
+  Requirements:
+    Price: 5.0
+    Premission:
+      Enabled: true
+      Node: 'CTW.kit.RegenerateII'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Swiftness:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8194
+    DisplayName: 'Swiftness Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Swiftness Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% POTION:8194 1'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Swiftness'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+SwiftnessII:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8226
+    DisplayName: 'Swiftness II Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Swiftness II Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 5 â›€'
+  KitCommands:
+    - 'give %player% POTION:8226 1'
+  Requirements:
+    Price: 5.0
+    Premission:
+      Enabled: true
+      Node: 'CTW.kit.SwiftnessII'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+FireRessist:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8195
+    DisplayName: 'Fire Resistance Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Fire Resistance Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% POTION:8195 1'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.FireRessist'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Healing:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8197
+    DisplayName: 'Healing Potions'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &72 Healing Potions'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% POTION:8197 2'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Healing'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+HealingII:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8229
+    DisplayName: 'Healing II Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Healing II Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 5 â›€'
+  KitCommands:
+    - 'give %player% POTION:8229 1'
+  Requirements:
+    Price: 5.0
+    Premission:
+      Enabled: true
+      Node: 'CTW.kit.HealingII'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+NightVision:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8198
+    DisplayName: 'Night Vision Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Night Vision Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 5 â›€'
+  KitCommands:
+    - 'give %player% POTION:8198 1'
+  Requirements:
+    Price: 5.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.NightVision'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Strength:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8201
+    DisplayName: 'Strength Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Strength Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 15 â›€'
+  KitCommands:
+    - 'give %player% POTION:8201 1'
+  Requirements:
+    Price: 15.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Strength'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+StrengthII:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8233
+    DisplayName: 'Strength II Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Strength II Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 15 â›€'
+  KitCommands:
+    - 'give %player% POTION:8233 1'
+  Requirements:
+    Price: 15.0
+    Premission:
+      Enabled: true
+      Node: 'CTW.kit.StrengthII'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Leaping:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8203
+    DisplayName: 'Jump Boost Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Jump Boost Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% POTION:8203 1'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Leaping'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+LeapingII:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8235
+    DisplayName: 'Jump Boost II Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Jump Boost II Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% POTION:8235 1'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: true
+      Node: 'CTW.kit.JumpII'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Breathing:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8205
+    DisplayName: 'Water Breathing Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Water Breathing Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 5 â›€'
+  KitCommands:
+    - 'give %player% POTION:8205 1'
+  Requirements:
+    Price: 5.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Breathing'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Invisibility:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 8206
+    DisplayName: 'Invisibility Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Invisibility Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 15 â›€'
+  KitCommands:
+    - 'give %player% POTION:8206 1'
+  Requirements:
+    Price: 15.0
+    Premission:
+      Enabled: true
+      Node: 'CTW.kit.Invisibility'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Poison:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 16388
+    DisplayName: 'Poison Splash Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Poison Splash Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% POTION:16388 1'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Poison'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+PoisonII:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 16420
+    DisplayName: 'Poison II Splash Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Poison II Splash Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% POTION:16420 1'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: true
+      Node: 'CTW.kit.PoisonII'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Weakness:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 16392
+    DisplayName: 'Weakness Splash Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Weakness Splash Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% POTION:16392 1'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Weakness'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Slowness:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 16394
+    DisplayName: 'Weakness Splash Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Weakness Splash Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 10 â›€'
+  KitCommands:
+    - 'give %player% POTION:16394 1'
+  Requirements:
+    Price: 10.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Slowness'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+Harming:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 16396
+    DisplayName: 'Harming Splash Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Harming Splash Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 15 â›€'
+  KitCommands:
+    - 'give %player% POTION:16396 1'
+  Requirements:
+    Price: 15.0
+    Premission:
+      Enabled: false
+      Node: 'CTW.kit.Harming'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'
+
+HarmingII:
+  DisplayItem:
+    Material: 'POTION'
+    Data: 16428
+    DisplayName: 'Harming II Splash Potion'
+    BaseLore:
+      - ' '
+      - '&8Kit content:'
+      - '&8>> &71 Harming II Splash Potion'
+    NoPermissionLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cRank: VIP'
+    NoAchievementLore:
+      - ' '
+      - '&4Requirements: '
+      - '&cAchievement: None'
+    FinalLore:
+      - ' '
+      - '&aPrice:&e 15 â›€'
+  KitCommands:
+    - 'give %player% POTION:16428 1'
+  Requirements:
+    Price: 15.0
+    Premission:
+      Enabled: true
+      Node: 'CTW.kit.HarmingII'
+      NoPermissionMessage: '&cGet VIP Rank to unlock this kit!'
+    Achievement:
+      Enabled: false
+      AchievementRequired: 'none'

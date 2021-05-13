@@ -1,12 +1,13 @@
 package net.craftersland.ctw.server.utils;
 
-import io.puharesource.mc.titlemanager.api.*;
+import io.puharesource.mc.titlemanager.api.ActionbarTitleObject;
+import io.puharesource.mc.titlemanager.api.TabTitleObject;
+import io.puharesource.mc.titlemanager.api.TitleObject;
 import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.TeamHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;

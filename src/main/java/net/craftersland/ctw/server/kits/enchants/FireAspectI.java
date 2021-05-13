@@ -18,7 +18,7 @@ public class FireAspectI {
     private final MeleeAchievementHandler.MeleeAchievements requiredAchievement;
 
     public FireAspectI(final CTW ctw) {
-        this.price = 40.0;
+        this.price = 250.0;
         this.requiredAchievement = MeleeAchievementHandler.MeleeAchievements.MELEE4;
         this.ctw = ctw;
     }

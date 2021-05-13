@@ -5,6 +5,7 @@ import de.slikey.effectlib.effect.CylinderEffect;
 import de.slikey.effectlib.effect.TextEffect;
 import de.slikey.effectlib.effect.TraceEffect;
 import de.slikey.effectlib.util.DynamicLocation;
+import de.slikey.effectlib.util.ParticleEffect;
 import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.TeamHandler;
 import org.bukkit.Bukkit;
@@ -13,6 +14,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 public class EffectUtils {
-    private final CTW ctw;
-    private final Map<Player, TraceEffect> vipEffects;
+    private CTW ctw;
+    private Map<Player, TraceEffect> vipEffects;
 
     public EffectUtils(final CTW ctw) {
         this.ctw = ctw;
@@ -77,7 +80,8 @@ public class EffectUtils {
     }
 
     public void startVipParticles(final Player p) {
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, new Runnable() {
+
+        Bukkit.getScheduler().runTaskLaterAsynchronously((Plugin) this.ctw, (Runnable) new Runnable() {
             @Override
             public void run() {
                 final DynamicLocation loc = new DynamicLocation((Entity) p);
@@ -86,11 +90,13 @@ public class EffectUtils {
                 effect.setDynamicOrigin(loc);
                 effect.setDynamicTarget(loc);
                 effect.particle = ParticleEffect.REDSTONE;
+
                 if (EffectUtils.this.ctw.getTeamHandler().isBlueTeam(p)) {
                     effect.color = Color.fromRGB(85, 85, 255);
                 } else if (EffectUtils.this.ctw.getTeamHandler().isRedTeam(p)) {
                     effect.color = Color.fromRGB(255, 85, 85);
                 }
+                effect.period = 2;
                 effect.start();
                 EffectUtils.this.vipEffects.put(p, effect);
             }

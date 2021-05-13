@@ -18,7 +18,7 @@ public class PowerII {
     private final ShooterAchievementHandler.ShooterAchievements requiredAchievement;
 
     public PowerII(final CTW ctw) {
-        this.price = 60.0;
+        this.price = 200.0;
         this.requiredAchievement = ShooterAchievementHandler.ShooterAchievements.SHOOTER3;
         this.ctw = ctw;
     }

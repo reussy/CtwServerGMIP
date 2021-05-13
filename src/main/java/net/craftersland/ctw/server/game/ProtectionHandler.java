@@ -1,11 +1,8 @@
 package net.craftersland.ctw.server.game;
 
-import com.sk89q.worldedit.regions.selector.CuboidRegionSelector;
+import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
 import net.craftersland.ctw.server.CTW;
 import org.bukkit.Location;
-
-// TODO WE
-
 
 public class ProtectionHandler {
     private CTW ctw;
@@ -15,7 +12,7 @@ public class ProtectionHandler {
     }
 
     public boolean isAreaProtected(final Location l) {
-        for (final CuboidRegionSelector cs : this.ctw.getMapConfigHandler().protectedAreas) {
+        for (final CuboidSelection cs : this.ctw.getMapConfigHandler().protectedAreas) {
             if (cs.contains(l)) {
                 return true;
             }

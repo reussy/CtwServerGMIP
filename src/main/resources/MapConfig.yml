@@ -1,0 +1,26 @@
+MaxPlayersPerTeam: 25
+Time: day
+SpectatorSpawn: 0.0#64.0#0.0#90#1
+RedTeam:
+  Spawn: 0.0#64.0#0.0#-90#1
+  RedWool: 295#49#96
+  PinkWool: 295#49#108
+BlueTeam:
+  Spawn: 0.0#64.0#0.0#90#1
+  BlueWool: 471#49#108
+  CyanWool: 471#49#96
+ProtectedHight:
+  maxHight: 255
+  minHight: 0
+ArenaArea: 178#29#179#587#80#25
+ProtectedAreas:
+  - 309#0#111#291#250#93
+RedNoAccess:
+  - 180#0#115#206#250#141
+BlueNoAccess:
+  - 560#0#143#586#250#117
+VictoryParticles:
+  Red: 0.0#64.0#0.0#-90#1
+  Blue: 0.0#64.0#0.0#-90#1
+StartupKit: {}
+

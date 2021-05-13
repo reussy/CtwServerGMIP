@@ -7,6 +7,22 @@ load: POSTWORLD
 softdepend: [Vault, EffectLib, AAC, TitleManager, WorldEdit, PlayerPoints]
 description: Plugin CTW
 
+commands:
+  join:
+    description: si
+  g:
+    description: si
+  leave:
+    description: si
+  stats:
+    description: si
+  kit:
+    description: si
+  setup:
+    description: si
+
+
+
 permissions:
   CTW.admin:
     description: Admin commands access

@@ -16,7 +16,7 @@ public class FeatherFallingII {
     private final Double price;
 
     public FeatherFallingII(final CTW ctw) {
-        this.price = 50.0;
+        this.price = 200.0;
         this.ctw = ctw;
     }
 

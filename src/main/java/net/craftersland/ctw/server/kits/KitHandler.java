@@ -16,10 +16,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class KitHandler {
-    private final CTW ctw;
+    private CTW ctw;
     private Inventory mainMenu;
-    private final Map<Player, Inventory> kitMenu;
-    private final Map<Player, Inventory> enchantMenu;
+    private Map<Player, Inventory> kitMenu;
+    private Map<Player, Inventory> enchantMenu;
 
     public KitHandler(final CTW ctw) {
         this.mainMenu = null;
@@ -30,7 +30,7 @@ public class KitHandler {
 
     private void createMainMenu(final Player p) {
         if (this.mainMenu == null) {
-            final Inventory inv = Bukkit.createInventory(p, 9, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.MainMenu").replaceAll("&", "§"));
+            final Inventory inv = Bukkit.createInventory((InventoryHolder) p, 9, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.MainMenu").replaceAll("&", "§"));
             this.mainMenu = inv;
         }
     }
@@ -107,20 +107,20 @@ public class KitHandler {
     }
 
     public void sendTrashMenu(final Player p) {
-        final Inventory inv = Bukkit.createInventory(p, 27, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.TrashMenu").replaceAll("&", "§"));
+        final Inventory inv = Bukkit.createInventory((InventoryHolder) p, 27, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.TrashMenu").replaceAll("&", "§"));
         p.openInventory(inv);
         this.ctw.getSoundHandler().sendChestOpenSound(p.getLocation(), p);
     }
 
     private Inventory createKitsMenu(final Player p) {
-        final Double bal = CTW.economy.getBalance(p);
-        final Inventory inv = Bukkit.createInventory(p, 45, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.KitsMenu").replaceAll("&", "§") + ChatColor.GRAY + " - " + ChatColor.YELLOW + bal.intValue() + " \u26c0");
+        final Double bal = CTW.economy.getBalance((OfflinePlayer) p);
+        final Inventory inv = Bukkit.createInventory((InventoryHolder) p, 45, String.valueOf(this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.KitsMenu").replaceAll("&", "§")) + ChatColor.GRAY + " - " + ChatColor.YELLOW + bal.intValue() + " \u26c0");
         return inv;
     }
 
     private Inventory createEnchantsMenu(final Player p) {
-        final Double bal = CTW.economy.getBalance(p);
-        final Inventory inv = Bukkit.createInventory(p, 27, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.EnchantsMenu").replaceAll("&", "§") + ChatColor.GRAY + " - " + ChatColor.YELLOW + bal.intValue() + " \u26c0");
+        final Double bal = CTW.economy.getBalance((OfflinePlayer) p);
+        final Inventory inv = Bukkit.createInventory((InventoryHolder) p, 27, String.valueOf(this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.EnchantsMenu").replaceAll("&", "§")) + ChatColor.GRAY + " - " + ChatColor.YELLOW + bal.intValue() + " \u26c0");
         return inv;
     }
 
@@ -144,26 +144,20 @@ public class KitHandler {
     private void populateEnchantMenu(final Inventory inv, final Player p) {
         inv.setItem(0, this.ctw.getEnchantSharpnessI().setKitItem(p));
         inv.setItem(1, this.ctw.getEnchantSharpnessII().setKitItem(p));
-        inv.setItem(2, this.ctw.getEnchantSharpnessIII().setKitItem(p));
-        inv.setItem(3, this.ctw.getEnchantSharpnessIV().setKitItem(p));
-        inv.setItem(5, this.ctw.getEnchantPowerI().setKitItem(p));
-        inv.setItem(6, this.ctw.getEnchantPowerII().setKitItem(p));
-        inv.setItem(7, this.ctw.getEnchantPowerIII().setKitItem(p));
-        inv.setItem(8, this.ctw.getEnchantPowerIV().setKitItem(p));
+
+        inv.setItem(7, this.ctw.getEnchantPowerI().setKitItem(p));
+        inv.setItem(8, this.ctw.getEnchantPowerII().setKitItem(p));
+
         inv.setItem(9, this.ctw.getEnchantKnockbackI().setKitItem(p));
-        inv.setItem(10, this.ctw.getEnchantKnockbackII().setKitItem(p));
-        inv.setItem(11, this.ctw.getEnchantFireAspectI().setKitItem(p));
-        inv.setItem(12, this.ctw.getEnchantFireAspectII().setKitItem(p));
-        inv.setItem(14, this.ctw.getEnchantPunchI().setKitItem(p));
-        inv.setItem(15, this.ctw.getEnchantPunchII().setKitItem(p));
-        inv.setItem(16, this.ctw.getEnchantFlameI().setKitItem(p));
+
+        inv.setItem(10, this.ctw.getEnchantFireAspectI().setKitItem(p));
+
+        inv.setItem(16, this.ctw.getEnchantPunchI().setKitItem(p));
+
         inv.setItem(17, this.ctw.getEnchantInfinityI().setKitItem(p));
         inv.setItem(18, this.ctw.getEnchantProtectionI().setKitItem(p));
         inv.setItem(19, this.ctw.getEnchantProtectionII().setKitItem(p));
-        inv.setItem(20, this.ctw.getEnchantProtectionIII().setKitItem(p));
-        inv.setItem(21, this.ctw.getEnchantProtectionIV().setKitItem(p));
-        inv.setItem(23, this.ctw.getEnchantThornsI().setKitItem(p));
-        inv.setItem(24, this.ctw.getEnchantThornsII().setKitItem(p));
+
         inv.setItem(25, this.ctw.getEnchantFeatherFallingI().setKitItem(p));
         inv.setItem(26, this.ctw.getEnchantFeatherFallingII().setKitItem(p));
     }

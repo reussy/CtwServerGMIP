@@ -25,15 +25,15 @@ public class SoundHandler {
     }
 
     public void sendConfirmSound(final Location l, final Player p) {
-        p.playSound(l, Sound.SUCCESSFUL_HIT, 3.0f, 3.0f);
+        p.playSound(l, Sound.GLASS, 3.0f, 3.0f);
     }
 
     public void sendBaseDrumSound(final Location l, final Player p) {
-        p.playSound(l, Sound.NOTE_BASS_DRUM, 1.0f, 5.0f);
+        p.playSound(l, Sound.NOTE_BASS, 1.0f, 5.0f);
     }
 
     public void sendCreeperPrimedSound(final Location l, final Player p) {
-        p.playSound(l, Sound.CREEPER_HISS, 5.0f, 1.0f);
+        p.playSound(l, Sound.CREEPER_DEATH, 5.0f, 1.0f);
     }
 
     public void sendChestOpenSound(final Location l, final Player p) {
@@ -78,7 +78,7 @@ public class SoundHandler {
 
     public void sendKillingSpreeSound(final Location l, final Player p) {
         if (this.pl.getConfigHandler().getBoolean("Settings.EnableKillStreakSounds")) {
-            p.playSound(l, Sound.HORSE_SKELETON_DEATH, 1.0f, 1.0f);
+            p.playSound(l, Sound.HORSE_ZOMBIE_DEATH, 1.0f, 1.0f);
         }
     }
 

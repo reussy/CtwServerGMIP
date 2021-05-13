@@ -18,7 +18,7 @@ public class FeatherFallingI {
     private final WoolAchievementHandler.WoolAchievements requiredAchievement;
 
     public FeatherFallingI(final CTW ctw) {
-        this.price = 40.0;
+        this.price = 100.0;
         this.requiredAchievement = WoolAchievementHandler.WoolAchievements.WOOLMASTER2;
         this.ctw = ctw;
     }
