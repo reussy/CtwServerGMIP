@@ -211,7 +211,7 @@ public class Setup implements CommandExecutor {
         final Block block = p.getTargetBlock((Set<Material>) null, 6);
         block.setType(Material.COMMAND);
         final CommandBlock cb = (CommandBlock) block.getLocation().getBlock().getState();
-        cb.setCommand("/setblock ~ ~ ~ minecraft:mob_spawner 0 replace {EntityId:Item,SpawnData:{Item:{id:35,Count:1,Damage:" + woolValue + "}},SpawnRange:0,SpawnCount:1,MinSpawnDelay:250,MaxSpawnDelay:250,RequiredPlayerRange:3,MaxNearbyEntities:2}");
+        cb.setCommand("/setblock ~ ~ ~ minecraft:mob_spawner 0 replace {EntityId:Item,SpawnData:{Item:{id:35,Count:1,Damage:" + woolValue + "}},SpawnRange:0,SpawnCount:1,MinSpawnDelay:200,MaxSpawnDelay:200,RequiredPlayerRange:6,MaxNearbyEntities:2}");
         cb.update();
         final Block blockBelow = new Location(block.getLocation().getWorld(), block.getLocation().getX(), block.getLocation().getY() - 1.0, block.getLocation().getZ()).getBlock();
         blockBelow.setType(Material.REDSTONE_BLOCK);

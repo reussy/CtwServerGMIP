@@ -14,6 +14,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
@@ -158,8 +159,15 @@ public class Death implements Listener {
                 killer.getInventory().getHelmet().getType() != Material.DIAMOND_HELMET || killer.getInventory().getBoots().getType() != Material.DIAMOND_BOOTS || killer.getInventory().getLeggings().getType() != Material.DIAMOND_LEGGINGS || killer.getInventory().getChestplate().getType() != Material.DIAMOND_CHESTPLATE ||
                 killer.getInventory().getHelmet().getType() != Material.GOLD_HELMET || killer.getInventory().getBoots().getType() != Material.GOLD_BOOTS || killer.getInventory().getLeggings().getType() != Material.GOLD_LEGGINGS || killer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) {
 
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    System.out.println(11);
+                    killer.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 60, 0));
+                }
+            }.runTaskLater(ctw, 0);
 
-            killer.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 3, 1));
+
         }
     }
 
