@@ -121,6 +121,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     public boolean isValutEnabled;
     public boolean isAacEnabled;
     public String thisServerName;
+    public String map;
 
     public CTW() {
         this.isEnabled = false;

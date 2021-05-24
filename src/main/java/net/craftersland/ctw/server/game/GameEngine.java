@@ -41,6 +41,7 @@ public class GameEngine {
                 GameEngine.this.ctw.getRestartHandler().checkMemoryUsage();
             }
         }, 20L, 20L);
+        ctw.map = this.ctw.getMapHandler().currentMap;
     }
 
     private void checkForWoolsPlaced() {
@@ -120,6 +121,8 @@ public class GameEngine {
                 this.gameStage = GameStages.RUNNING;
                 this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.CountdownOver.title").replaceAll("&", "§"), this.ctw.getLanguageHandler().getMessage("TitleMessages.CountdownOver.subtitle").replaceAll("&", "§"));
                 this.ctw.getSoundHandler().broadcastLevelUpSound();
+                ctw.map = this.ctw.getMapHandler().currentMap;
+
             } else {
                 --this.countdown;
             }
