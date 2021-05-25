@@ -23,7 +23,9 @@ public class WorldHandler {
     public void loadWorld(final String worldName) {
         try {
             CTW.log.info("Loading world: " + worldName);
-            Bukkit.createWorld(WorldCreator.name(worldName));
+            WorldCreator worldCreator = new WorldCreator(worldName);
+            worldCreator.type(WorldType.FLAT);
+            worldCreator.createWorld();
             final World w = Bukkit.getWorld(worldName);
             this.applyWorldSettings(w);
             this.removeEntitys(w);
