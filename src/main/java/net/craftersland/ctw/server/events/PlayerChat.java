@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
@@ -21,12 +20,9 @@ public class PlayerChat implements Listener {
     @EventHandler
     public void onPlayerChat(final AsyncPlayerChatEvent event) {
         if (!event.isAsynchronous()) {
-            Bukkit.getScheduler().runTaskAsynchronously(this.ctw, new Runnable() {
-                @Override
-                public void run() {
-                    event.setCancelled(true);
-                    PlayerChat.this.sendChatMessage(event);
-                }
+            Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
+                event.setCancelled(true);
+                PlayerChat.this.sendChatMessage(event);
             });
         } else {
             event.setCancelled(true);

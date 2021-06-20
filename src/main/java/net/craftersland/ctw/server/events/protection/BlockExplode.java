@@ -22,7 +22,7 @@ public class BlockExplode implements Listener {
         if (!this.ctw.getConfigHandler().getBoolean("Settings.allowBlockExplode")) {
             event.blockList().clear();
         } else {
-            final List<Block> blocks = new ArrayList<Block>(event.blockList());
+            final List<Block> blocks = new ArrayList<>(event.blockList());
             for (final Block b : blocks) {
                 if (this.ctw.getProtectionHandler().isAreaProtected(b.getLocation())) {
                     event.blockList().remove(b);

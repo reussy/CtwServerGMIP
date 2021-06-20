@@ -24,6 +24,9 @@ public class WorldHandler {
         try {
             CTW.log.info("Loading world: " + worldName);
             WorldCreator worldCreator = new WorldCreator(worldName);
+
+
+            //Bukkit.createWorld(WorldCreator.name(worldName));
             worldCreator.type(WorldType.FLAT);
             worldCreator.generatorSettings("2;0;1;");
             worldCreator.createWorld();

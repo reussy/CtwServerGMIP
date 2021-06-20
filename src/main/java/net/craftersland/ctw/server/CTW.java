@@ -2,8 +2,8 @@ package net.craftersland.ctw.server;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-import com.sk89q.worldedit.bukkit.*;
-import de.slikey.effectlib.*;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import de.slikey.effectlib.EffectManager;
 import net.craftersland.ctw.server.achievements.*;
 import net.craftersland.ctw.server.commands.*;
 import net.craftersland.ctw.server.database.DataHandler;
@@ -24,13 +24,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class CTW extends JavaPlugin implements PluginMessageListener {
@@ -122,6 +123,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     public boolean isAacEnabled;
     public String thisServerName;
     public String map;
+    public HashMap<UUID, PlayerProjectile> playerProjectile = new HashMap<>();
 
     public CTW() {
         this.isEnabled = false;

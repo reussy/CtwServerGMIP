@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,6 +16,16 @@ public class InventoryClick implements Listener {
 
     public InventoryClick(final CTW ctw) {
         this.ctw = ctw;
+    }
+
+    @EventHandler
+    public void onFoodChange(FoodLevelChangeEvent e) {
+        if (e.getEntity() instanceof Player) {
+            Player player = (Player) e.getEntity();
+
+            e.setCancelled(true);
+
+        }
     }
 
     @EventHandler
@@ -149,11 +160,6 @@ public class InventoryClick implements Listener {
     }
 
     private void closeInv(final Player p) {
-        Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                p.closeInventory();
-            }
-        });
+        Bukkit.getScheduler().runTask(this.ctw, p::closeInventory);
     }
 }

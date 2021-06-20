@@ -11,12 +11,12 @@ public class PlayerBowDistanceKillHandler {
     private final Map<Player, Integer> distanceRecord;
 
     public PlayerBowDistanceKillHandler(final CTW ctw) {
-        this.distanceRecord = new HashMap<Player, Integer>();
+        this.distanceRecord = new HashMap<>();
         this.ctw = ctw;
     }
 
     public void saveAllData() {
-        final Map<Player, Integer> data = new HashMap<Player, Integer>(this.distanceRecord);
+        final Map<Player, Integer> data = new HashMap<>(this.distanceRecord);
         if (!data.isEmpty()) {
             for (final Player p : data.keySet()) {
                 if (p != null && p.isOnline()) {
