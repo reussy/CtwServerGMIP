@@ -42,7 +42,7 @@ public class RestartHandler {
             CTW.log.info("Memory usage - Check 1: " + RestartHandler.usagePercent1 + "% - Check 2: " + RestartHandler.usagePercent2 + "%");
             if (RestartHandler.usagePercent1 >= 95.0 && RestartHandler.usagePercent2 >= 95.0 && this.pl.getConfigHandler().getBoolean("Settings.ServerLowMemoryRestart")) {
                 this.serverStop();
-            } else if (serverUptime / 1000L > 7200L && Bukkit.getOnlinePlayers().size() == 0) {
+            } else if (serverUptime / 1000L > 10200L && Bukkit.getOnlinePlayers().size() == 0) {
                 this.serverStop();
             }
         }

@@ -97,10 +97,6 @@
     </repositories>
 
     <dependencies>
-
-
-
-
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -145,6 +141,15 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/AAC.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>com.wg</groupId>
+            <artifactId>sample</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/WorldGuard.jar</systemPath>
+        </dependency>
+
 
         <dependency>
             <groupId>com.TittleManager</groupId>

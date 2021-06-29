@@ -83,6 +83,31 @@ public class WoolHandler {
         return this.woolsTaken.get(Wools.RED);
     }
 
+    public List<Player> listPlayersred() {
+
+        return redTakenList;
+    }
+
+    public Player listPlayerRed() {
+
+        return redTakenList.get(redTakenList.size() -1);
+    }
+
+    public List<Player> listPlayerspink() {
+
+        return pinkTakenList;
+    }
+
+    public List<Player> listPlayerscyan() {
+
+        return cyanTakenList;
+    }
+
+    public List<Player> listPlayersblue() {
+
+        return blueTakenList;
+    }
+
     public boolean isPinkTaken() {
         return this.woolsTaken.get(Wools.PINK);
     }

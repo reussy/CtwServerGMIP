@@ -2,10 +2,8 @@ package net.craftersland.ctw.server.events;
 
 import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.PlayerProjectile;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -61,6 +59,19 @@ public class Death implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onDeath(final PlayerDeathEvent e) {
+        final Player player = e.getEntity();
+        final Player killer = e.getEntity().getKiller();
+
+        if (killer == null) {
+            return;
+        }
+        killer.playSound(killer.getLocation(), Sound.LEVEL_UP, 3.0f, 3.0f);
+    }
+
+
 
     @EventHandler
     public void onPlayerDeath(final PlayerDeathEvent event) {
@@ -141,9 +152,14 @@ public class Death implements Listener {
                 }
             }
 
-
             Death.this.ctw.getTakenWools().checkForLostWool(p, event.getDrops());
+            new BukkitRunnable() {
+                public void run() {
+                    p.spigot().respawn();
+                }
+            }.runTaskLater(this.ctw, 1L);
         });
+
     }
 
     private void addPoints(Player p, Player killer, String rawMsg4) {
@@ -162,19 +178,64 @@ public class Death implements Listener {
     }
 
     private void addRegen(Player killer) {
-        if (killer.getInventory().getHelmet().getType() != Material.IRON_HELMET || killer.getInventory().getBoots().getType() != Material.IRON_BOOTS || killer.getInventory().getLeggings().getType() != Material.IRON_LEGGINGS || killer.getInventory().getChestplate().getType() != Material.IRON_CHESTPLATE ||
-                killer.getInventory().getHelmet().getType() != Material.DIAMOND_HELMET || killer.getInventory().getBoots().getType() != Material.DIAMOND_BOOTS || killer.getInventory().getLeggings().getType() != Material.DIAMOND_LEGGINGS || killer.getInventory().getChestplate().getType() != Material.DIAMOND_CHESTPLATE ||
-                killer.getInventory().getHelmet().getType() != Material.GOLD_HELMET || killer.getInventory().getBoots().getType() != Material.GOLD_BOOTS || killer.getInventory().getLeggings().getType() != Material.GOLD_LEGGINGS || killer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) {
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    killer.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 0));
-                }
-            }.runTaskLater(ctw, 0);
+        if (killer.getInventory().getHelmet().getType() != Material.IRON_HELMET) {
 
+            return;
+
+        }  else if (killer.getInventory().getBoots().getType() != Material.IRON_BOOTS) {
+
+            return;
+
+        } else if (killer.getInventory().getLeggings().getType() != Material.IRON_LEGGINGS) {
+
+            return;
+
+        } else if (killer.getInventory().getChestplate().getType() != Material.IRON_CHESTPLATE) {
+
+            return;
+
+        } else if (killer.getInventory().getHelmet().getType() != Material.DIAMOND_HELMET) {
+
+            return;
+
+        } else if (killer.getInventory().getBoots().getType() != Material.DIAMOND_BOOTS) {
+
+            return;
+
+        } else if (killer.getInventory().getLeggings().getType() != Material.DIAMOND_LEGGINGS) {
+
+            return;
+
+        } else if (killer.getInventory().getChestplate().getType() != Material.DIAMOND_CHESTPLATE) {
+
+            return;
+
+        } else if (killer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) {
+
+            return;
+
+        } else if (killer.getInventory().getBoots().getType() != Material.GOLD_BOOTS) {
+
+            return;
+
+        } else if (killer.getInventory().getLeggings().getType() != Material.GOLD_LEGGINGS) {
+
+            return;
+
+        } else if (killer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) {
+
+            return;
 
         }
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                killer.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 0));
+            }
+        }.runTaskLater(ctw, 0);
+
     }
 
     private String getWeaponLogo(final Player p) {
@@ -224,26 +285,24 @@ public class Death implements Listener {
     @EventHandler
     public void onProjectile(EntityDamageByEntityEvent e) {
 
+        Entity arro = e.getDamager();
 
-            Entity arro = e.getDamager();
+        if (arro.getType() == EntityType.FISHING_HOOK) {
 
-            if(arro.getType() == EntityType.FISHING_HOOK){
-
-                Projectile arrow = (Projectile) arro;
-
-
-                AddDistance(e, arrow);
+            Projectile arrow = (Projectile) arro;
 
 
-            }
-
-            if (arro.getType() == EntityType.ARROW) {
-
-                Arrow arrow = (Arrow) arro;
+            AddDistance(e, arrow);
 
 
-                AddDistance(e, arrow);
-            }
+        }
+
+        if (arro.getType() == EntityType.ARROW) {
+
+            Arrow arrow = (Arrow) arro;
+
+            AddDistance(e, arrow);
+        }
 
     }
 
@@ -253,6 +312,18 @@ public class Death implements Listener {
             Player damaged = (Player) arrow.getShooter();
             Player damager = (Player) e.getEntity();
 
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+
+                    if (!damager.isDead()) {
+
+                        damaged.sendMessage(ChatColor.GRAY + "La vida de " + damager.getName() + " es " + ChatColor.GREEN + (int) damager.getHealth() + ChatColor.RED + "❤");
+
+                    }
+                }
+            }.runTaskLater(ctw, 3);
 
             int distance = (int) damaged.getLocation().distance(damager.getLocation());
 

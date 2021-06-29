@@ -110,10 +110,12 @@ public class TakenWools {
                 final byte data1 = 14;
                 final byte data2 = 6;
                 if (this.woolLost(items, data1) && this.woolLost(items, data2)) {
+
                     this.ctw.getWoolHandler().removeRedTakenByPlayer(p);
                     this.ctw.getWoolHandler().removePinkTakenByPlayer(p);
                     this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.AllWoolsLost").replaceAll("%PlayerName%", this.ctw.getMessageUtils().getTeamColorBolded(p)));
                     this.ctw.getEffectUtils().sendWoolLostEffect(p);
+
                 }
             } else if (this.ctw.getWoolHandler().hadRedTakenByPlayer(p)) {
                 final byte data3 = 14;

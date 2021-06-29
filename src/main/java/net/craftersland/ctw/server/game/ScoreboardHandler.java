@@ -4,6 +4,7 @@ import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 
 import java.text.SimpleDateFormat;
@@ -24,6 +25,7 @@ public class ScoreboardHandler {
     private String woolNotPlaced;
     private String woolPickedUp;
     private String woolPlaced;
+    private int alertStatus;
     private long startTime;
 
     public ScoreboardHandler(final CTW ctw) {
@@ -39,37 +41,38 @@ public class ScoreboardHandler {
         this.updateTeamCountTask();
         this.updatePlayerCountTask();
         this.timerTask();
+        this.alerts();
     }
 
-    static /* synthetic */ void access$1(final ScoreboardHandler scoreboardHandler, final String woolNotPlaced) {
+    static void access$1(final ScoreboardHandler scoreboardHandler, final String woolNotPlaced) {
         scoreboardHandler.woolNotPlaced = woolNotPlaced;
     }
 
-    static /* synthetic */ void access$3(final ScoreboardHandler scoreboardHandler, final String redWool) {
+    static void access$3(final ScoreboardHandler scoreboardHandler, final String redWool) {
         scoreboardHandler.redWool = redWool;
     }
 
-    static /* synthetic */ void access$4(final ScoreboardHandler scoreboardHandler, final String pinkWool) {
+    static void access$4(final ScoreboardHandler scoreboardHandler, final String pinkWool) {
         scoreboardHandler.pinkWool = pinkWool;
     }
 
-    static /* synthetic */ void access$5(final ScoreboardHandler scoreboardHandler, final String blueWool) {
+    static void access$5(final ScoreboardHandler scoreboardHandler, final String blueWool) {
         scoreboardHandler.blueWool = blueWool;
     }
 
-    static /* synthetic */ void access$6(final ScoreboardHandler scoreboardHandler, final String cyanWool) {
+    static void access$6(final ScoreboardHandler scoreboardHandler, final String cyanWool) {
         scoreboardHandler.cyanWool = cyanWool;
     }
 
-    static /* synthetic */ void access$7(final ScoreboardHandler scoreboardHandler, final String players) {
+    static void access$7(final ScoreboardHandler scoreboardHandler, final String players) {
         scoreboardHandler.players = players;
     }
 
-    static /* synthetic */ void access$8(final ScoreboardHandler scoreboardHandler, final String timer) {
+    static void access$8(final ScoreboardHandler scoreboardHandler, final String timer) {
         scoreboardHandler.timer = timer;
     }
 
-    static /* synthetic */ void access$9(final ScoreboardHandler scoreboardHandler, final String timer) {
+    static void access$9(final ScoreboardHandler scoreboardHandler, final String timer) {
         scoreboardHandler.totalplayers = String.valueOf(timer);
     }
 
@@ -96,36 +99,35 @@ public class ScoreboardHandler {
                 ScoreboardHandler.access$6(ScoreboardHandler.this, ChatColor.DARK_AQUA + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan"));
                 ScoreboardHandler.access$7(ScoreboardHandler.this, "  " + ChatColor.BLUE + "0" + ChatColor.GRAY + " vs " + ChatColor.RED + "0");
                 ScoreboardHandler.access$8(ScoreboardHandler.this, ChatColor.GRAY + "-= " + ChatColor.WHITE + "--:--" + ChatColor.GRAY + " =-");
-                ScoreboardHandler.access$9(ScoreboardHandler.this, (String.valueOf(ChatColor.GOLD) + ChatColor.BOLD + "CTW [" + ChatColor.WHITE + totalplayers + ChatColor.GOLD + ChatColor.BOLD + "]"));
-
+                ScoreboardHandler.access$9(ScoreboardHandler.this, String.valueOf(ChatColor.GOLD) + ChatColor.BOLD + "CTW [" + ChatColor.WHITE + ScoreboardHandler.this.totalplayers + ChatColor.GOLD + ChatColor.BOLD + "]");
                 final Objective obj = ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR);
                 obj.setDisplayName(String.valueOf(ChatColor.GOLD) + ChatColor.BOLD + "CTW [" + ChatColor.WHITE + Bukkit.getServer().getOnlinePlayers().size() + ChatColor.GOLD + ChatColor.BOLD + "]");
                 final Score s01 = obj.getScore(ChatColor.translateAlternateColorCodes('&', "&l "));
                 s01.setScore(12);
-                final Score s0 = obj.getScore(ScoreboardHandler.this.timer);
-                s0.setScore(11);
-                final Score s2 = obj.getScore(ScoreboardHandler.this.players);
-                s2.setScore(10);
-                final Score s3 = obj.getScore(" ");
-                s3.setScore(9);
-                final Score s4 = obj.getScore(new StringBuilder().append(ChatColor.BLUE).append(ChatColor.BOLD).append(ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.BlueTeam")).toString());
-                s4.setScore(8);
-                final Score s5 = obj.getScore(ScoreboardHandler.this.cyanWool);
-                s5.setScore(7);
-                final Score s6 = obj.getScore(ScoreboardHandler.this.blueWool);
-                s6.setScore(6);
-                final Score s7 = obj.getScore(ChatColor.translateAlternateColorCodes('&', "&r"));
-                s7.setScore(5);
-                final Score s8 = obj.getScore(new StringBuilder().append(ChatColor.RED).append(ChatColor.BOLD).append(ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.RedTeam")).toString());
-                s8.setScore(4);
-                final Score s9 = obj.getScore(ScoreboardHandler.this.pinkWool);
-                s9.setScore(3);
-                final Score s10 = obj.getScore(ScoreboardHandler.this.redWool);
-                s10.setScore(2);
-                final Score s04 = obj.getScore("  ");
-                s04.setScore(1);
-                final Score s11 = obj.getScore("§emc.gamesmadeinpola.com");
-                s11.setScore(0);
+                final Score s2 = obj.getScore(ScoreboardHandler.this.timer);
+                s2.setScore(11);
+                final Score s3 = obj.getScore(ScoreboardHandler.this.players);
+                s3.setScore(10);
+                final Score s4 = obj.getScore(" ");
+                s4.setScore(9);
+                final Score s5 = obj.getScore(new StringBuilder().append(ChatColor.BLUE).append(ChatColor.BOLD).append(ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.BlueTeam")).toString());
+                s5.setScore(8);
+                final Score s6 = obj.getScore(ScoreboardHandler.this.cyanWool);
+                s6.setScore(7);
+                final Score s7 = obj.getScore(ScoreboardHandler.this.blueWool);
+                s7.setScore(6);
+                final Score s8 = obj.getScore(ChatColor.translateAlternateColorCodes('&', "&r"));
+                s8.setScore(5);
+                final Score s9 = obj.getScore(new StringBuilder().append(ChatColor.RED).append(ChatColor.BOLD).append(ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.RedTeam")).toString());
+                s9.setScore(4);
+                final Score s10 = obj.getScore(ScoreboardHandler.this.pinkWool);
+                s10.setScore(3);
+                final Score s11 = obj.getScore(ScoreboardHandler.this.redWool);
+                s11.setScore(2);
+                final Score s12 = obj.getScore("  ");
+                s12.setScore(1);
+                final Score s13 = obj.getScore("§emc.gamesmadeinpola.com");
+                s13.setScore(0);
             }
         });
     }
@@ -197,21 +199,16 @@ public class ScoreboardHandler {
         Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, new Runnable() {
             @Override
             public void run() {
-                final String players2 = (String.valueOf(ChatColor.GOLD) + ChatColor.BOLD + "CTW [" + ChatColor.WHITE + Bukkit.getServer().getOnlinePlayers().size() + ChatColor.GOLD + ChatColor.BOLD + "]");
-
+                final String players2 = String.valueOf(ChatColor.GOLD) + ChatColor.BOLD + "CTW [" + ChatColor.WHITE + Bukkit.getServer().getOnlinePlayers().size() + ChatColor.GOLD + ChatColor.BOLD + "]";
                 ScoreboardHandler.access$9(ScoreboardHandler.this, players2);
-
                 final Objective obj = ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR);
                 obj.setDisplayName(String.valueOf(ChatColor.GOLD) + ChatColor.BOLD + "CTW [" + ChatColor.WHITE + Bukkit.getServer().getOnlinePlayers().size() + ChatColor.GOLD + ChatColor.BOLD + "]");
-
-
             }
         }, 15L, 20L);
     }
 
     public void resetWools() {
         this.woolNotPlaced = this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolNotPlaced");
-
         final Objective obj = this.scoreboard.getObjective(DisplaySlot.SIDEBAR);
         obj.setDisplayName(String.valueOf(ChatColor.GOLD) + ChatColor.BOLD + "CTW [" + ChatColor.WHITE + Bukkit.getServer().getOnlinePlayers().size() + ChatColor.GOLD + ChatColor.BOLD + "]");
         this.scoreboard.resetScores(this.redWool);
@@ -228,32 +225,162 @@ public class ScoreboardHandler {
         this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(this.cyanWool).setScore(7);
     }
 
+    public void alerts() {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, new Runnable() {
+            int ticks = 0;
+
+            @Override
+            public void run() {
+                if (this.ticks == 0) {
+                    ScoreboardHandler.this.alertStatus = 0;
+                }
+                if (this.ticks == 1) {
+                    ScoreboardHandler.this.alertStatus = 1;
+                }
+                ++this.ticks;
+                if (this.ticks == 2) {
+                    this.ticks = 0;
+                }
+            }
+        }, 0L, 20L);
+    }
+
     public void redWoolTaken() {
-        this.woolPickedUp = this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
-        this.scoreboard.resetScores(this.redWool);
-        this.redWool = ChatColor.RED + this.woolPickedUp + ChatColor.GRAY + " " + this.ctw.getLanguageHandler().getMessage("Words.Red");
-        this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(this.redWool).setScore(2);
+        this.alertStatus = 0;
+        new BukkitRunnable() {
+            public void run() {
+                if (!ScoreboardHandler.this.ctw.getWoolHandler().isRedPlaced()) {
+                    ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
+                    ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.redWool);
+                    if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayersred().size() == 0) {
+                        ScoreboardHandler.this.redWool = ChatColor.RED + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Red");
+                    } else {
+                        if (!ScoreboardHandler.this.ctw.getWoolHandler().isPinkPlaced()) {
+                            ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
+                            ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.pinkWool);
+                            if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayerspink().size() == 0) {
+                                ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink");
+                            } else {
+                                if (ScoreboardHandler.this.alertStatus == 0) {
+                                    ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink") + " \u26a0";
+                                }
+                                if (ScoreboardHandler.this.alertStatus == 1) {
+                                    ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink") + ChatColor.RED + " \u26a0";
+                                }
+                            }
+                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.pinkWool).setScore(3);
+                        }
+                        if (ScoreboardHandler.this.alertStatus == 0) {
+                            ScoreboardHandler.this.redWool = ChatColor.RED + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Red") + "  \u26a0";
+                        }
+                        if (ScoreboardHandler.this.alertStatus == 1) {
+                            ScoreboardHandler.this.redWool = ChatColor.RED + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Red") + ChatColor.RED + "  \u26a0";
+                        }
+                    }
+                    ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.redWool).setScore(2);
+                } else {
+                    this.cancel();
+                }
+            }
+        }.runTaskTimerAsynchronously(this.ctw, 0L, 20L);
     }
 
     public void pinkWoolTaken() {
-        this.woolPickedUp = this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
-        this.scoreboard.resetScores(this.pinkWool);
-        this.pinkWool = ChatColor.LIGHT_PURPLE + this.woolPickedUp + ChatColor.GRAY + " " + this.ctw.getLanguageHandler().getMessage("Words.Pink");
-        this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(this.pinkWool).setScore(3);
+        this.alertStatus = 0;
+        new BukkitRunnable() {
+            public void run() {
+                if (!ScoreboardHandler.this.ctw.getWoolHandler().isPinkPlaced()) {
+                    ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
+                    ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.pinkWool);
+                    if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayerspink().size() == 0) {
+                        ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink");
+                    } else {
+                        if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayersred().size() != 0) {
+                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.pinkWool).setScore(3);
+                            return;
+                        }
+                        if (ScoreboardHandler.this.alertStatus == 0) {
+                            ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink") + " \u26a0";
+                        }
+                        if (ScoreboardHandler.this.alertStatus == 1) {
+                            ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink") + ChatColor.RED + " \u26a0";
+                        }
+                    }
+                    ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.pinkWool).setScore(3);
+                } else {
+                    this.cancel();
+                }
+            }
+        }.runTaskTimerAsynchronously(this.ctw, 0L, 20L);
     }
 
     public void blueWoolTaken() {
-        this.woolPickedUp = this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
-        this.scoreboard.resetScores(this.blueWool);
-        this.blueWool = ChatColor.BLUE + this.woolPickedUp + ChatColor.GRAY + " " + this.ctw.getLanguageHandler().getMessage("Words.Blue");
-        this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(this.blueWool).setScore(6);
+        this.alertStatus = 0;
+        new BukkitRunnable() {
+            public void run() {
+                if (!ScoreboardHandler.this.ctw.getWoolHandler().isBluePlaced()) {
+                    ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
+                    ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.blueWool);
+                    if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayersblue().size() == 0) {
+                        ScoreboardHandler.this.blueWool = ChatColor.BLUE + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Blue");
+                    } else {
+                        if (!ScoreboardHandler.this.ctw.getWoolHandler().isCyanPlaced()) {
+                            ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
+                            ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.cyanWool);
+                            if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayerscyan().size() == 0) {
+                                ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan");
+                            } else {
+                                if (ScoreboardHandler.this.alertStatus == 0) {
+                                    ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + " \u26a0";
+                                }
+                                if (ScoreboardHandler.this.alertStatus == 1) {
+                                    ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + ChatColor.RED + " \u26a0";
+                                }
+                            }
+                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.cyanWool).setScore(7);
+                        }
+                        if (ScoreboardHandler.this.alertStatus == 0) {
+                            ScoreboardHandler.this.blueWool = ChatColor.BLUE + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Blue") + " \u26a0";
+                        }
+                        if (ScoreboardHandler.this.alertStatus == 1) {
+                            ScoreboardHandler.this.blueWool = ChatColor.BLUE + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Blue") + ChatColor.RED + " \u26a0";
+                        }
+                    }
+                    ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.blueWool).setScore(6);
+                } else {
+                    this.cancel();
+                }
+            }
+        }.runTaskTimerAsynchronously(this.ctw, 0L, 20L);
     }
 
     public void cyanWoolTaken() {
-        this.woolPickedUp = this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
-        this.scoreboard.resetScores(this.cyanWool);
-        this.cyanWool = ChatColor.DARK_AQUA + this.woolPickedUp + ChatColor.GRAY + " " + this.ctw.getLanguageHandler().getMessage("Words.Cyan");
-        this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(this.cyanWool).setScore(7);
+        this.alertStatus = 0;
+        new BukkitRunnable() {
+            public void run() {
+                if (!ScoreboardHandler.this.ctw.getWoolHandler().isCyanPlaced()) {
+                    ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
+                    ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.cyanWool);
+                    if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayerscyan().size() == 0) {
+                        ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan");
+                    } else {
+                        if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayersblue().size() != 0) {
+                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.cyanWool).setScore(7);
+                            return;
+                        }
+                        if (ScoreboardHandler.this.alertStatus == 0) {
+                            ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + "  \u26a0";
+                        }
+                        if (ScoreboardHandler.this.alertStatus == 1) {
+                            ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + ChatColor.RED + "  \u26a0";
+                        }
+                    }
+                    ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.cyanWool).setScore(7);
+                } else {
+                    this.cancel();
+                }
+            }
+        }.runTaskTimerAsynchronously(this.ctw, 0L, 20L);
     }
 
     public void redWoolPlaced() {

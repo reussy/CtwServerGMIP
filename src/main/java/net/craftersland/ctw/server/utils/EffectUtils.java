@@ -96,7 +96,8 @@ public class EffectUtils {
                 } else if (EffectUtils.this.ctw.getTeamHandler().isRedTeam(p)) {
                     effect.color = Color.fromRGB(255, 85, 85);
                 }
-                effect.period = 2;
+                effect.period = 3;
+                effect.iterations = 200;
                 effect.start();
                 EffectUtils.this.vipEffects.put(p, effect);
             }
@@ -138,7 +139,7 @@ public class EffectUtils {
         } else if (this.ctw.getTeamHandler().isRedTeam(p)) {
             effect.color = Color.fromRGB(255, 85, 85);
         }
-        effect.iterations = 200;
+        effect.iterations = 100;
         effect.start();
     }
 }
