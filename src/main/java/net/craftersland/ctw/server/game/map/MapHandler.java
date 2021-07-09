@@ -7,6 +7,9 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class MapHandler {
     private final CTW ctw;
@@ -15,14 +18,16 @@ public class MapHandler {
     private String mapToUnload;
     public String currentMap;
     public World currentMapWorld;
+    private List<Integer> playedMapsInt = new ArrayList<>();
 
     public MapHandler(final CTW ctw) {
-        this.mapIndex = 0;
+        this.mapIndex = new Random().nextInt(ctw.getConfigHandler().maps.size() - 1);
         this.playedMaps = 1;
         this.ctw = ctw;
         this.currentMap = ctw.getConfigHandler().maps.get(this.mapIndex);
         this.createMapsFolder();
         this.loadFirstMap();
+        this.playedMapsInt.add(mapIndex);
     }
 
     private void createMapsFolder() {
@@ -73,9 +78,18 @@ public class MapHandler {
 
     private void nextMapIndex() {
         if (this.mapIndex >= this.ctw.getConfigHandler().maps.size() - 1) {
-            this.mapIndex = 0;
+
+            int nextMap = new Random().nextInt(this.ctw.getConfigHandler().maps.size() - 1);
+            while(this.playedMapsInt.contains(nextMap)){
+
+                nextMap = new Random().nextInt(this.ctw.getConfigHandler().maps.size() - 1);
+
+            }
+
+            this.mapIndex = nextMap;
+            this.playedMapsInt.add(nextMap);
         } else {
-            ++this.mapIndex;
+            this.mapIndex = this.ctw.getConfigHandler().maps.size();
         }
         ++this.playedMaps;
     }

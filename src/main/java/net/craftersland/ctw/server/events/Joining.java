@@ -1,11 +1,13 @@
 package net.craftersland.ctw.server.events;
 
 import net.craftersland.ctw.server.CTW;
+import net.craftersland.ctw.server.commands.Join;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.inventory.Inventory;
 
 public class Joining implements Listener {
     private final CTW ctw;
@@ -24,6 +26,7 @@ public class Joining implements Listener {
                 Joining.this.ctw.getPlayerHandler().sendJoinMessage(p);
                 Joining.this.ctw.getMessageUtils().sendTabTitleFooter(p);
                 Joining.this.ctw.getPlayerScoreHandler().loadInitialScore(p);
+                Joining.this.ctw.getPlayerScoreHandler().setEffect(p);
                 Joining.this.ctw.getPlayerKillsHandler().loadKills(p);
                 Joining.this.ctw.getPlayerWoolsPlacedHandler().loadData(p);
                 Joining.this.ctw.getPlayerBowDistanceKillHandler().loadData(p);
@@ -33,7 +36,19 @@ public class Joining implements Listener {
                 Joining.this.ctw.getOverpoweredAchievementHandler().loadInitialAchievements(p);
                 Joining.this.ctw.getDistanceAchievementHandler().loadInitialAchievements(p);
                 Joining.this.ctw.getKillStreakHandler().resetData(p);
+
             }
         }, 1L);
+
+
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, () -> {
+            final Player p = event.getPlayer();
+            if (event.getResult().toString().equals("ALLOWED")) {
+                final Inventory inv = Joining.this.ctw.getJoinMenu().JoinMenuGUI(p);
+                p.openInventory(inv);
+                p.sendMessage(Joining.this.ctw.getPlayerScoreHandler().getEffect(p));
+
+            }
+        }, 30);
     }
 }

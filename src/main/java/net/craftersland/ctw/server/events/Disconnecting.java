@@ -28,6 +28,7 @@ public class Disconnecting implements Listener {
             Disconnecting.this.ctw.getWoolHandler().removePinkTakenByPlayer(p);
             Disconnecting.this.ctw.getWoolHandler().removeRedTakenByPlayer(p);
             Disconnecting.this.ctw.getPlayerScoreHandler().saveScoreToDatabase(p);
+            Disconnecting.this.ctw.getPlayerScoreHandler().removeEffect(p);
             Disconnecting.this.ctw.getPlayerKillsHandler().saveKillsToDatabasse(p);
             Disconnecting.this.ctw.getPlayerWoolsPlacedHandler().saveDataToDatabasse(p);
             Disconnecting.this.ctw.getPlayerBowDistanceKillHandler().saveDataToDatabasse(p);

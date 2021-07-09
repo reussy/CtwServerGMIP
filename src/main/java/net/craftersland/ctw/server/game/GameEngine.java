@@ -41,7 +41,11 @@ public class GameEngine {
                 GameEngine.this.ctw.getRestartHandler().checkMemoryUsage();
             }
         }, 20L, 20L);
-        ctw.map = this.ctw.getMapHandler().currentMap;
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, () -> {
+
+            ctw.map = this.ctw.getMapHandler().currentMap;
+        }, 20L, 1000);
     }
 
     private void checkForWoolsPlaced() {

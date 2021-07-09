@@ -11,9 +11,11 @@ import java.util.Map;
 public class PlayerScoreHandler {
     private final CTW ctw;
     private final Map<Player, Integer> score;
+    private final Map<Player, String> effect;
 
     public PlayerScoreHandler(final CTW ctw) {
-        this.score = new HashMap<Player, Integer>();
+        this.score = new HashMap<>();
+        this.effect = new HashMap<>();
         this.ctw = ctw;
     }
 
@@ -45,10 +47,17 @@ public class PlayerScoreHandler {
         this.score.remove(p);
     }
 
+    public String getEffect(Player p){
+        return this.effect.get(p);
+    }
+
+    public void removeEffect(Player p){
+        this.effect.remove(p);
+    }
+
     public Integer getScore(final Player p) {
         try {
-            final int sc = this.score.get(p);
-            return sc;
+            return this.score.get(p);
         } catch (Exception e) {
             if (p != null) {
                 Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
@@ -73,6 +82,13 @@ public class PlayerScoreHandler {
             this.score.put(p, sc);
         } else {
             this.score.put(p, 0);
+        }
+    }
+
+    public void setEffect(final Player p) {
+        if (this.ctw.getDataHandler().hasAccount(p)) {
+            final String sc = this.ctw.getDataHandler().getEffect(p);
+            this.effect.put(p, sc);
         }
     }
 

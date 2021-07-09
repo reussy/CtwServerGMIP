@@ -2,12 +2,10 @@ package net.craftersland.ctw.server.events;
 
 import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.PlayerProjectile;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -24,12 +22,11 @@ public class Death implements Listener {
         this.ctw = ctw;
     }
 
-
     @EventHandler
     public void onMoveEvent(final PlayerMoveEvent event) {
         final Player player = event.getPlayer();
         final Location loc = player.getLocation();
-        final int y = loc.getBlockY();
+        final int y = (int) loc.getY();
         String map = ctw.map;
 
         if (map.equals("Puerto")) {
@@ -51,7 +48,7 @@ public class Death implements Listener {
 
         } else {
 
-            if (y < 0 && player.getGameMode() != GameMode.CREATIVE) {
+            if (y < this.ctw.getMapConfigHandler().pinkWool.getY() - 40 && player.getGameMode() != GameMode.CREATIVE) {
 
                 if (!player.isDead()) {
                     player.setHealth(0.0);
@@ -62,7 +59,6 @@ public class Death implements Listener {
 
     @EventHandler
     public void onDeath(final PlayerDeathEvent e) {
-        final Player player = e.getEntity();
         final Player killer = e.getEntity().getKiller();
 
         if (killer == null) {
@@ -70,7 +66,6 @@ public class Death implements Listener {
         }
         killer.playSound(killer.getLocation(), Sound.LEVEL_UP, 3.0f, 3.0f);
     }
-
 
 
     @EventHandler
@@ -138,7 +133,6 @@ public class Death implements Listener {
                         Death.this.ctw.getPlayerKillsHandler().addMeleeKill(killer);
                         Death.this.ctw.getMeleeAchievementHandler().checkForAchievements(killer);
                         Death.this.ctw.getOverpoweredAchievementHandler().checkForAchievements(p);
-
                         addRegen(killer);
                     } else if (weaponType.matches("bow")) {
                         Death.this.ctw.getPlayerKillsHandler().addBowKill(killer);
@@ -179,63 +173,47 @@ public class Death implements Listener {
 
     private void addRegen(Player killer) {
 
-        if (killer.getInventory().getHelmet().getType() != Material.IRON_HELMET) {
-
+        if (killer.getInventory().getHelmet().getType() == Material.IRON_HELMET) {
             return;
-
-        }  else if (killer.getInventory().getBoots().getType() != Material.IRON_BOOTS) {
-
+        } else if (killer.getInventory().getBoots().getType() == Material.IRON_BOOTS) {
             return;
-
-        } else if (killer.getInventory().getLeggings().getType() != Material.IRON_LEGGINGS) {
-
+        } else if (killer.getInventory().getLeggings().getType() == Material.IRON_LEGGINGS) {
             return;
-
-        } else if (killer.getInventory().getChestplate().getType() != Material.IRON_CHESTPLATE) {
-
+        } else if (killer.getInventory().getChestplate().getType() == Material.IRON_CHESTPLATE) {
             return;
-
-        } else if (killer.getInventory().getHelmet().getType() != Material.DIAMOND_HELMET) {
-
+        } else if (killer.getInventory().getHelmet().getType() == Material.DIAMOND_HELMET) {
             return;
-
-        } else if (killer.getInventory().getBoots().getType() != Material.DIAMOND_BOOTS) {
-
+        } else if (killer.getInventory().getBoots().getType() == Material.DIAMOND_BOOTS) {
             return;
-
-        } else if (killer.getInventory().getLeggings().getType() != Material.DIAMOND_LEGGINGS) {
-
+        } else if (killer.getInventory().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
             return;
-
-        } else if (killer.getInventory().getChestplate().getType() != Material.DIAMOND_CHESTPLATE) {
-
+        } else if (killer.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
             return;
-
-        } else if (killer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) {
-
+        } else if (killer.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
             return;
-
-        } else if (killer.getInventory().getBoots().getType() != Material.GOLD_BOOTS) {
-
+        } else if (killer.getInventory().getBoots().getType() == Material.GOLD_BOOTS) {
             return;
-
-        } else if (killer.getInventory().getLeggings().getType() != Material.GOLD_LEGGINGS) {
-
+        } else if (killer.getInventory().getLeggings().getType() == Material.GOLD_LEGGINGS) {
             return;
-
-        } else if (killer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) {
-
+        } else if (killer.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
             return;
-
         }
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                killer.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 0));
+                if (Death.this.ctw.getKillStreakHandler().getStreak(killer) <= 4) {
+                    killer.removePotionEffect(PotionEffectType.REGENERATION);
+                    killer.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 1));
+                } else {
+                    killer.removePotionEffect(PotionEffectType.ABSORPTION);
+                    killer.removePotionEffect(PotionEffectType.REGENERATION);
+
+                    killer.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 60, 1));
+                    killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 200, 0));
+                }
             }
         }.runTaskLater(ctw, 0);
-
     }
 
     private String getWeaponLogo(final Player p) {
@@ -278,66 +256,6 @@ public class Death implements Listener {
                 if (p != null && p.isOnline()) {
                     p.sendMessage(msg);
                 }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onProjectile(EntityDamageByEntityEvent e) {
-
-        Entity arro = e.getDamager();
-
-        if (arro.getType() == EntityType.FISHING_HOOK) {
-
-            Projectile arrow = (Projectile) arro;
-
-
-            AddDistance(e, arrow);
-
-
-        }
-
-        if (arro.getType() == EntityType.ARROW) {
-
-            Arrow arrow = (Arrow) arro;
-
-            AddDistance(e, arrow);
-        }
-
-    }
-
-    private void AddDistance(EntityDamageByEntityEvent e, Projectile arrow) {
-        if (arrow.getShooter() instanceof Player && e.getEntity() instanceof Player) {
-
-            Player damaged = (Player) arrow.getShooter();
-            Player damager = (Player) e.getEntity();
-
-
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-
-                    if (!damager.isDead()) {
-
-                        damaged.sendMessage(ChatColor.GRAY + "La vida de " + damager.getName() + " es " + ChatColor.GREEN + (int) damager.getHealth() + ChatColor.RED + "❤");
-
-                    }
-                }
-            }.runTaskLater(ctw, 3);
-
-            int distance = (int) damaged.getLocation().distance(damager.getLocation());
-
-            if (!ctw.playerProjectile.containsKey(damaged.getUniqueId())) {
-
-                PlayerProjectile pj = new PlayerProjectile(distance, damager.getUniqueId());
-                ctw.playerProjectile.put(damaged.getUniqueId(), pj);
-                pj.setProjectile(damager.getUniqueId(), distance);
-
-            } else {
-
-                PlayerProjectile pj = ctw.playerProjectile.get(damaged.getUniqueId());
-                pj.setProjectile(damager.getUniqueId(), distance);
-
             }
         }
     }

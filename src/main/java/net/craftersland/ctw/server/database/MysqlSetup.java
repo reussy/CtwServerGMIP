@@ -2,7 +2,6 @@ package net.craftersland.ctw.server.database;
 
 import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 
 import java.sql.*;
 import java.util.Properties;
@@ -44,13 +43,47 @@ public class MysqlSetup {
     public void setupTable() {
         try {
             final Statement query = this.conn.createStatement();
-            final String data = "CREATE TABLE IF NOT EXISTS `" + this.ctw.getConfigHandler().getString("Database.TableName") + "` (id INT UNSIGNED NOT NULL AUTO_INCREMENT, player_uuid char(36) UNIQUE NOT NULL, player_name varchar(16) NOT NULL, score int(10) NOT NULL, melee_kills int(10) NOT NULL, bow_kills int(10) NOT NULL, bow_distance_kill int(10) NOT NULL, wool_placed int(10) NOT NULL, last_seen char(13) NOT NULL, PRIMARY KEY(id));";
+            final String data = "CREATE TABLE IF NOT EXISTS `" + this.ctw.getConfigHandler().getString("Database.TableName") + "` (id INT UNSIGNED NOT NULL AUTO_INCREMENT, player_uuid char(36) UNIQUE NOT NULL, effects char(50), player_name varchar(16) NOT NULL, score int(10) NOT NULL, melee_kills int(10) NOT NULL, bow_kills int(10) NOT NULL, bow_distance_kill int(10) NOT NULL, wool_placed int(10) NOT NULL, last_seen char(13) NOT NULL, PRIMARY KEY(id));";
             query.executeUpdate(data);
+
+            AlterTable();
         } catch (SQLException e) {
             CTW.log.severe("Error creating tables! Error: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
+    public void AlterTable() {
+        try {
+            if (!effectExist()) {
+                final Statement query = this.conn.createStatement();
+                final String data2 = "ALTER TABLE " + this.ctw.getConfigHandler().getString("Database.TableName") + " ADD effects char(50)";
+
+                query.executeUpdate(data2);
+            }
+        } catch (SQLException e) {
+            CTW.log.severe("Error creating tables! Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public boolean effectExist() {
+
+        try {
+            PreparedStatement ps = this.conn.prepareStatement("SELECT effects FROM " + this.ctw.getConfigHandler().getString("Database.TableName"));
+
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            CTW.log.warning("Error: " + e.getMessage());
+            e.printStackTrace();
+
+        }
+        return false;
+    }
+
 
     public boolean closeConnection() {
         try {

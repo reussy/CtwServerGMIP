@@ -164,6 +164,48 @@ public class DataHandler {
         return null;
     }
 
+    public String getEffect(final Player player) {
+        if (!this.hasAccount(player)) {
+            this.createAccount(player);
+        }
+        PreparedStatement preparedUpdateStatement = null;
+        ResultSet result = null;
+        try {
+            this.conn = this.ctw.getMysqlSetup().getConnection();
+            final String sql = "SELECT `effects` FROM `" + this.ctw.getConfigHandler().getString("Database.TableName") + "` WHERE `player_uuid` = ? LIMIT 1";
+            preparedUpdateStatement = this.conn.prepareStatement(sql);
+            preparedUpdateStatement.setString(1, player.getUniqueId().toString());
+            result = preparedUpdateStatement.executeQuery();
+            if (result.next()) {
+                return result.getString("effects");
+            }
+        } catch (SQLException e) {
+            CTW.log.warning("Error: " + e.getMessage());
+            e.printStackTrace();
+            try {
+                result.close();
+                preparedUpdateStatement.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+            return null;
+        } finally {
+            try {
+                result.close();
+                preparedUpdateStatement.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        try {
+            result.close();
+            preparedUpdateStatement.close();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+        return null;
+    }
+
     public boolean setKills(final Player player, final int meleeKills, final int bowKills) {
         if (!this.hasAccount(player)) {
             this.createAccount(player);

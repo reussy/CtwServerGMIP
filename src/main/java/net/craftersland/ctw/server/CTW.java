@@ -137,6 +137,62 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         this.getMcVersion();
         this.setupEconomy();
         this.checkWorldEditDependency();
+        this.loadClass();
+        this.loadEvent();
+        this.loadCommand();
+        CTW.log.info("CTWserver has been successfully loaded!");
+        this.isEnabled = true;
+    }
+    public void loadCommand(){
+        final Join joinCmd = new Join(this);
+        final GlobalChat gChat = new GlobalChat(this);
+        final Leave leave = new Leave(this);
+        final Stats stats = new Stats(this);
+        final Kits kit = new Kits(this);
+        final Setup setup = new Setup(this);
+        this.getCommand("join").setExecutor(joinCmd);
+        this.getCommand("g").setExecutor(gChat);
+        this.getCommand("leave").setExecutor(leave);
+        this.getCommand("stats").setExecutor(stats);
+        this.getCommand("kit").setExecutor(kit);
+        this.getCommand("setup").setExecutor(setup);
+    }
+
+    public void loadEvent(){
+        final PluginManager pm = this.getServer().getPluginManager();
+        pm.registerEvents(new Connecting(this), this);
+        pm.registerEvents(new ServerPing(this), this);
+        pm.registerEvents(new AntiSkyBridge(this), this);
+        pm.registerEvents(new Joining(this), this);
+        pm.registerEvents(new Disconnecting(this), this);
+        pm.registerEvents(new InventoryClick(this), this);
+        pm.registerEvents(new Respawning(this), this);
+        pm.registerEvents(new PickupItem(this), this);
+        pm.registerEvents(new Death(this), this);
+        pm.registerEvents(new onProjectile(this), this);
+        pm.registerEvents(new PlayerFall(this), this);
+        pm.registerEvents(new PlayerChat(this), this);
+        pm.registerEvents(new BlockBreak(this), this);
+        pm.registerEvents(new BlockDecayGrow(this), this);
+        pm.registerEvents(new BlockExplode(this), this);
+        pm.registerEvents(new BlockFadeForm(this), this);
+        pm.registerEvents(new BlockPlace(this), this);
+        pm.registerEvents(new BukkitUsage(this), this);
+        pm.registerEvents(new EntityDamage(this), this);
+        pm.registerEvents(new EntityInteract(this), this);
+        pm.registerEvents(new FireSpread(this), this);
+        pm.registerEvents(new Moving(this), this);
+        pm.registerEvents(new PistonExtend(this), this);
+        pm.registerEvents(new InventoryClose(this), this);
+        pm.registerEvents(new LiquidFlow(this), this);
+        pm.registerEvents(new InventoryDrag(this), this);
+        pm.registerEvents(new ShootBow(this), this);
+        this.checkAacDependency(pm);
+
+    }
+
+    public void loadClass(){
+
         CTW.cH = new ConfigHandler(this);
         CTW.lH = new LanguageHandler(this);
         CTW.soH = new SoundHandler(this);
@@ -211,47 +267,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         CTW.ikH = new ItemKitHandler(this);
         CTW.dr = new DisableRecipe(this);
         CTW.pmH = new ProtectedMoveHandler(this);
-        final PluginManager pm = this.getServer().getPluginManager();
-        pm.registerEvents(new Connecting(this), this);
-        pm.registerEvents(new ServerPing(this), this);
-        pm.registerEvents(new Joining(this), this);
-        pm.registerEvents(new Disconnecting(this), this);
-        pm.registerEvents(new InventoryClick(this), this);
-        pm.registerEvents(new Respawning(this), this);
-        pm.registerEvents(new PickupItem(this), this);
-        pm.registerEvents(new Death(this), this);
-        pm.registerEvents(new PlayerFall(this), this);
-        pm.registerEvents(new PlayerChat(this), this);
-        pm.registerEvents(new BlockBreak(this), this);
-        pm.registerEvents(new BlockDecayGrow(this), this);
-        pm.registerEvents(new BlockExplode(this), this);
-        pm.registerEvents(new BlockFadeForm(this), this);
-        pm.registerEvents(new BlockPlace(this), this);
-        pm.registerEvents(new BukkitUsage(this), this);
-        pm.registerEvents(new EntityDamage(this), this);
-        pm.registerEvents(new EntityInteract(this), this);
-        pm.registerEvents(new FireSpread(this), this);
-        pm.registerEvents(new Moving(this), this);
-        pm.registerEvents(new PistonExtend(this), this);
-        pm.registerEvents(new InventoryClose(this), this);
-        pm.registerEvents(new LiquidFlow(this), this);
-        pm.registerEvents(new InventoryDrag(this), this);
-        pm.registerEvents(new ShootBow(this), this);
-        final Join joinCmd = new Join(this);
-        final GlobalChat gChat = new GlobalChat(this);
-        final Leave leave = new Leave(this);
-        final Stats stats = new Stats(this);
-        final Kits kit = new Kits(this);
-        final Setup setup = new Setup(this);
-        this.getCommand("join").setExecutor(joinCmd);
-        this.getCommand("g").setExecutor(gChat);
-        this.getCommand("leave").setExecutor(leave);
-        this.getCommand("stats").setExecutor(stats);
-        this.getCommand("kit").setExecutor(kit);
-        this.getCommand("setup").setExecutor(setup);
-        this.checkAacDependency(pm);
-        CTW.log.info("CTWserver has been successfully loaded!");
-        this.isEnabled = true;
+
     }
 
     public void onDisable() {

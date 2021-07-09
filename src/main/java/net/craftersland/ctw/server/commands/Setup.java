@@ -1,8 +1,6 @@
 package net.craftersland.ctw.server.commands;
 
 
-// TODO Dependencia WE
-
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import net.craftersland.ctw.server.CTW;
 import org.apache.commons.io.FileUtils;

@@ -17,7 +17,7 @@ public class PlayerFall implements Listener {
     @EventHandler
     public void onPlayerFall(EntityDamageEvent e){
 
-        if(e.getEntity() instanceof org.bukkit.entity.Player){
+        if(e.getEntity() instanceof Player){
             Player player = (Player) e.getEntity();
 
             if(e.getCause() == EntityDamageEvent.DamageCause.FALL){
@@ -26,15 +26,6 @@ public class PlayerFall implements Listener {
                     e.setCancelled(true);
                 }
             }
-
         }
-
-
-
     }
-
-
-
-
-
 }

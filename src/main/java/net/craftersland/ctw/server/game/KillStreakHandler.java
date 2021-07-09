@@ -30,8 +30,7 @@ public class KillStreakHandler {
     }
 
     public Integer getStreak(final Player p) {
-        final int data = this.streak.get(p);
-        return data;
+        return this.streak.get(p);
     }
 
     public void removeOnDisconnect(final Player p) {

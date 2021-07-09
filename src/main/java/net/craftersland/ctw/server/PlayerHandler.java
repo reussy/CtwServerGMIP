@@ -1,13 +1,15 @@
 package net.craftersland.ctw.server;
 
+import com.yapzhenyie.GadgetsMenu.api.GadgetsMenuAPI;
+import com.yapzhenyie.GadgetsMenu.cosmetics.gadgets.GadgetType;
+import com.yapzhenyie.GadgetsMenu.cosmetics.particles.ParticleType;
+import com.yapzhenyie.GadgetsMenu.player.PlayerManager;
 import net.craftersland.ctw.server.achievements.*;
 import net.craftersland.ctw.server.game.GameEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
@@ -89,6 +91,14 @@ public class PlayerHandler {
                         p.setGameMode(GameMode.SPECTATOR);
                     } else {
                         p.setGameMode(GameMode.SURVIVAL);
+
+                        String effect = PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p);
+
+                        if(effect != null) {
+                            PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
+                            playerManager.equipParticle(ParticleType.valueOf(effect));
+                        }
+
                     }
                 }
             });
@@ -238,8 +248,12 @@ public class PlayerHandler {
         Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
             @Override
             public void run() {
-                p.setGameMode(GameMode.SPECTATOR);
+                p.setGameMode(GameMode.ADVENTURE);
             }
+
+            // String efecto = obtenerbasededatos
+
+
         });
     }
 

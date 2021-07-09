@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class CooldownManager {
 
-    public static final int DEFAULT_COOLDOWN = 30;
+    public static final int DEFAULT_COOLDOWN = 60;
     private final Map<UUID, Integer> red = new HashMap<>();
     private final Map<UUID, Integer> pink = new HashMap<>();
     private final Map<UUID, Integer> cyan = new HashMap<>();
