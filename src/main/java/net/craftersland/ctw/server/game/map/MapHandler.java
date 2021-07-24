@@ -21,7 +21,7 @@ public class MapHandler {
     private List<Integer> playedMapsInt = new ArrayList<>();
 
     public MapHandler(final CTW ctw) {
-        this.mapIndex = new Random().nextInt(ctw.getConfigHandler().maps.size() - 1);
+        this.mapIndex = getRandomInteger(ctw.getConfigHandler().maps.size(), 0);;
         this.playedMaps = 1;
         this.ctw = ctw;
         this.currentMap = ctw.getConfigHandler().maps.get(this.mapIndex);
@@ -77,21 +77,16 @@ public class MapHandler {
     }
 
     private void nextMapIndex() {
-        if (this.mapIndex >= this.ctw.getConfigHandler().maps.size() - 1) {
 
-            int nextMap = new Random().nextInt(this.ctw.getConfigHandler().maps.size() - 1);
-            while(this.playedMapsInt.contains(nextMap)){
+        int randommap = getRandomInteger(this.ctw.getConfigHandler().maps.size(), 0);
 
-                nextMap = new Random().nextInt(this.ctw.getConfigHandler().maps.size() - 1);
+        while(playedMapsInt.contains(randommap)){
 
-            }
+            randommap = getRandomInteger(this.ctw.getConfigHandler().maps.size(), 0);
 
-            this.mapIndex = nextMap;
-            this.playedMapsInt.add(nextMap);
-        } else {
-            this.mapIndex = this.ctw.getConfigHandler().maps.size();
         }
-        ++this.playedMaps;
+        mapIndex = randommap;
+        ++playedMaps;
     }
 
     public void getNextMap() {
@@ -111,6 +106,9 @@ public class MapHandler {
             }
         }, 20L);
     }
+
+    public static int getRandomInteger(int maximum, int minimum){ return ((int) (Math.random()*(maximum - minimum))) + minimum; }
+
 
     public void startNextMap() {
         Bukkit.getScheduler().runTaskAsynchronously(this.ctw, new Runnable() {

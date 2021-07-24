@@ -7,9 +7,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ScoreboardHandler {
@@ -102,7 +104,11 @@ public class ScoreboardHandler {
                 ScoreboardHandler.access$9(ScoreboardHandler.this, String.valueOf(ChatColor.GOLD) + ChatColor.BOLD + "CTW [" + ChatColor.WHITE + ScoreboardHandler.this.totalplayers + ChatColor.GOLD + ChatColor.BOLD + "]");
                 final Objective obj = ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR);
                 obj.setDisplayName(String.valueOf(ChatColor.GOLD) + ChatColor.BOLD + "CTW [" + ChatColor.WHITE + Bukkit.getServer().getOnlinePlayers().size() + ChatColor.GOLD + ChatColor.BOLD + "]");
-                final Score s01 = obj.getScore(ChatColor.translateAlternateColorCodes('&', "&l "));
+                final Score space = obj.getScore(ChatColor.translateAlternateColorCodes('&', "&m"));
+                space.setScore(14);
+                final Score date = obj.getScore(ChatColor.translateAlternateColorCodes('&', "&7" + new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
+                date.setScore(13);
+                final Score s01 = obj.getScore(ChatColor.translateAlternateColorCodes('&', "&l"));
                 s01.setScore(12);
                 final Score s2 = obj.getScore(ScoreboardHandler.this.timer);
                 s2.setScore(11);

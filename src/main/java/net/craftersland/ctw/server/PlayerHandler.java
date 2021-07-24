@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server;
 
 import com.yapzhenyie.GadgetsMenu.api.GadgetsMenuAPI;
-import com.yapzhenyie.GadgetsMenu.cosmetics.gadgets.GadgetType;
 import com.yapzhenyie.GadgetsMenu.cosmetics.particles.ParticleType;
 import com.yapzhenyie.GadgetsMenu.player.PlayerManager;
 import net.craftersland.ctw.server.achievements.*;
@@ -94,7 +93,7 @@ public class PlayerHandler {
 
                         String effect = PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p);
 
-                        if(effect != null) {
+                        if (effect != null) {
                             PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
                             playerManager.equipParticle(ParticleType.valueOf(effect));
                         }

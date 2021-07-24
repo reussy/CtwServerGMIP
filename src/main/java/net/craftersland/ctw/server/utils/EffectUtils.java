@@ -98,6 +98,7 @@ public class EffectUtils {
                 }
                 effect.period = 3;
                 effect.iterations = 200;
+                effect.maxWayPoints = 5;
                 effect.start();
                 EffectUtils.this.vipEffects.put(p, effect);
             }

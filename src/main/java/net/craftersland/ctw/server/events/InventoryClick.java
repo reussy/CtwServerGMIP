@@ -120,7 +120,7 @@ public class InventoryClick implements Listener {
                     if (p.hasPermission("CTW.pickupteam")) {
 
                         int difference = this.ctw.getTeamHandler().countRedTeam() - this.ctw.getTeamHandler().countBlueTeam();
-
+                        
                         if(difference < -2){
 
                             this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
@@ -139,7 +139,6 @@ public class InventoryClick implements Listener {
                     if (p.hasPermission("CTW.pickupteam")) {
 
                         int difference = this.ctw.getTeamHandler().countBlueTeam() - this.ctw.getTeamHandler().countRedTeam();
-
                         if(difference < -2){
 
                             this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);

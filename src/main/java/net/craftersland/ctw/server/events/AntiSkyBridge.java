@@ -15,8 +15,7 @@ public class AntiSkyBridge implements Listener {
     public AntiSkyBridge(final CTW ctw) {
         this.ctw = ctw;
     }
-
-
+    
     @EventHandler
     public void onPlaceBlock(BlockPlaceEvent e) {
 

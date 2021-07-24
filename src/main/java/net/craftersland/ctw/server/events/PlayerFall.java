@@ -22,7 +22,7 @@ public class PlayerFall implements Listener {
 
             if(e.getCause() == EntityDamageEvent.DamageCause.FALL){
 
-                if(player.getFallDistance() <= 10) {
+                if(player.getFallDistance() <= 7) {
                     e.setCancelled(true);
                 }
             }

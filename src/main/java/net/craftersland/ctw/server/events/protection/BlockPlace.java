@@ -28,28 +28,53 @@ public class BlockPlace implements Listener {
                 if (!event.getBlock().getState().getData().toItemStack().isSimilar(new ItemStack(Material.WOOL, 1, (short) 14))) {
                     event.setCancelled(true);
                 } else {
-                    this.redWoolPlaced(p);
+
+                    if (p.isOp()) {
+                        this.redWoolPlaced(p);
+                    } else if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
+                        this.redWoolPlaced(p);
+                    }else{
+                        event.setCancelled(true);
+                    }
                 }
             } else if (event.getBlock().getLocation().equals(this.ctw.getMapConfigHandler().pinkWool)) {
                 final Player p = event.getPlayer();
                 if (!event.getBlock().getState().getData().toItemStack().isSimilar(new ItemStack(Material.WOOL, 1, (short) 6))) {
                     event.setCancelled(true);
                 } else {
-                    this.pinkWoolPlaced(p);
+                    if (p.isOp()) {
+                        this.pinkWoolPlaced(p);
+                    } else if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
+                        this.pinkWoolPlaced(p);
+                    }else{
+                        event.setCancelled(true);
+                    }
                 }
             } else if (event.getBlock().getLocation().equals(this.ctw.getMapConfigHandler().blueWool)) {
                 final Player p = event.getPlayer();
                 if (!event.getBlock().getState().getData().toItemStack().isSimilar(new ItemStack(Material.WOOL, 1, (short) 11))) {
                     event.setCancelled(true);
                 } else {
-                    this.blueWoolPlaced(p);
+                    if (p.isOp()) {
+                        this.blueWoolPlaced(p);
+                    } else if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
+                        this.blueWoolPlaced(p);
+                    }else{
+                        event.setCancelled(true);
+                    }
                 }
             } else if (event.getBlock().getLocation().equals(this.ctw.getMapConfigHandler().cyanWool)) {
                 final Player p = event.getPlayer();
                 if (!event.getBlock().getState().getData().toItemStack().isSimilar(new ItemStack(Material.WOOL, 1, (short) 9))) {
                     event.setCancelled(true);
                 } else {
-                    this.cyanWoolPlaced(p);
+                    if (p.isOp()) {
+                        this.cyanWoolPlaced(p);
+                    } else if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
+                        this.cyanWoolPlaced(p);
+                    }else{
+                        event.setCancelled(true);
+                    }
                 }
             } else if (this.ctw.getProtectionHandler().isAreaProtected(l)) {
                 if (event.getPlayer() != null) {
