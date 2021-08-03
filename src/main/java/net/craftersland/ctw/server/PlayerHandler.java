@@ -132,12 +132,20 @@ public class PlayerHandler {
         Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
             @Override
             public void run() {
-                p.setGameMode(GameMode.SURVIVAL);
+
+                if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) {
+                    p.setGameMode(GameMode.ADVENTURE);
+                } else if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
+                    p.setGameMode(GameMode.SURVIVAL);
+                }
                 p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().redSpawn);
             }
         });
-        this.ctw.getTeamHandler().setRedSuit(p);
-        this.ctw.getStartupKit().giveStartupKit(p);
+
+        if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
+            this.ctw.getTeamHandler().setRedSuit(p);
+            this.ctw.getStartupKit().giveStartupKit(p);
+        }
     }
 
     public void addBlueTeam(final Player p) {
@@ -187,12 +195,21 @@ public class PlayerHandler {
         Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
             @Override
             public void run() {
-                p.setGameMode(GameMode.SURVIVAL);
+
+                if(PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN){
+
+                    p.setGameMode(GameMode.ADVENTURE);
+                }
+               else if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
+                    p.setGameMode(GameMode.SURVIVAL);
+                }
                 p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().blueSpawn);
             }
         });
-        this.ctw.getTeamHandler().setBlueSuit(p);
-        this.ctw.getStartupKit().giveStartupKit(p);
+        if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
+            this.ctw.getTeamHandler().setBlueSuit(p);
+            this.ctw.getStartupKit().giveStartupKit(p);
+        }
     }
 
     public void respawnSpectator(final Player p) {
@@ -242,6 +259,7 @@ public class PlayerHandler {
         }
     }
 
+    // TODO Efecto
     public void playerSetWonSpectator(final Player p) {
         this.resetPlayer(p);
         Bukkit.getScheduler().runTask(this.ctw, new Runnable() {

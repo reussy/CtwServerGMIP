@@ -14,7 +14,7 @@ public class DistanceAchievementHandler {
     private final Map<Player, SniperAchievements> achievements;
 
     public DistanceAchievementHandler(final CTW ctw) {
-        this.achievements = new HashMap<Player, SniperAchievements>();
+        this.achievements = new HashMap<>();
         this.ctw = ctw;
     }
 

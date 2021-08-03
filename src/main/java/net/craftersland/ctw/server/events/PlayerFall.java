@@ -15,17 +15,17 @@ public class PlayerFall implements Listener {
     }
 
     @EventHandler
-    public void onPlayerFall(EntityDamageEvent e){
+    public void onPlayerFall(EntityDamageEvent e) {
 
-        if(e.getEntity() instanceof Player){
+        if (e.getEntity() instanceof Player) {
             Player player = (Player) e.getEntity();
 
-            if(e.getCause() == EntityDamageEvent.DamageCause.FALL){
-
-                if(player.getFallDistance() <= 7) {
+            if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+                if (player.getFallDistance() <= 5) {
                     e.setCancelled(true);
                 }
             }
+
         }
     }
 }

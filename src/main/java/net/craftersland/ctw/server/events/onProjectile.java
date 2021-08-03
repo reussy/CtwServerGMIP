@@ -49,18 +49,16 @@ public class onProjectile implements Listener {
             Player damaged = (Player) arrow.getShooter();
             Player damager = (Player) e.getEntity();
 
-            if(arrow.getType() == EntityType.ARROW) {
+            if (arrow.getType() == EntityType.ARROW) {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-
                         if (!damager.isDead()) {
 
-                            damaged.sendMessage(ChatColor.GRAY + "La vida de " + damager.getName() + " es " + ChatColor.GREEN + (int) damager.getHealth() + ChatColor.RED + "❤");
-
+                            damaged.sendMessage(ChatColor.GRAY + "La vida de " + ChatColor.GREEN + damager.getName() + ChatColor.GRAY + " es " + ChatColor.GREEN + (int) damager.getHealth() + ChatColor.RED + "❤");
                         }
                     }
-                }.runTaskLater(ctw, 3);
+                }.runTaskLater(ctw, 5);
             }
 
             int distance = (int) damaged.getLocation().distance(damager.getLocation());

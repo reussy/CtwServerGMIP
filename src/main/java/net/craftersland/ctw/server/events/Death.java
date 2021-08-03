@@ -1,6 +1,7 @@
 package net.craftersland.ctw.server.events;
 
 import net.craftersland.ctw.server.CTW;
+import net.craftersland.ctw.server.game.GameEngine;
 import net.craftersland.ctw.server.game.PlayerProjectile;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -72,15 +73,14 @@ public class Death implements Listener {
     public void onPlayerDeath(final PlayerDeathEvent event) {
         event.setDeathMessage("");
         Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
+
             final Player p = event.getEntity();
             Death.this.ctw.getKillStreakHandler().resetData(p);
-
 
             if (p.getLastDamageCause() == null) {
 
                 EntityDamageEvent event1 = new EntityDamageEvent(p, EntityDamageEvent.DamageCause.VOID, p.getHealth());
                 p.setLastDamageCause(event1);
-
             }
 
             if (p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
@@ -93,7 +93,6 @@ public class Death implements Listener {
                 Death.this.ctw.getKillStreakHandler().addKill(killer);
 
                 addRegen(killer);
-
 
             } else if (p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
                 final Player killer = p.getKiller();
@@ -157,9 +156,17 @@ public class Death implements Listener {
     }
 
     private void addPoints(Player p, Player killer, String rawMsg4) {
-        final String rawMsg5 = rawMsg4.replace("%KilledPlayer%", Death.this.ctw.getMessageUtils().getTeamColor(p));
-        final String rawMsg6 = rawMsg5.replace("%Killer%", Death.this.ctw.getMessageUtils().getTeamColor(killer));
-        addPoints2(p, killer, rawMsg6);
+
+
+
+            final String rawMsg5 = rawMsg4.replace("%KilledPlayer%", Death.this.ctw.getMessageUtils().getTeamColor(p));
+            final String rawMsg6 = rawMsg5.replace("%Killer%", Death.this.ctw.getMessageUtils().getTeamColor(killer));
+        if(this.ctw.getGameEngine().gameStage != GameEngine.GameStages.COUNTDOWN) {
+
+            if((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
+                addPoints2(p, killer, rawMsg6);
+            }
+        }
     }
 
     private void addPoints2(Player p, Player killer, String rawMsg6) {

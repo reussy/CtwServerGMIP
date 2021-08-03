@@ -2,10 +2,7 @@ package net.craftersland.ctw.server.events.protection;
 
 import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.GameEngine;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,11 +26,12 @@ public class BlockPlace implements Listener {
                     event.setCancelled(true);
                 } else {
 
-                    if (p.isOp()) {
+                    if (p.isOp() || p.hasPermission("*")) {
                         this.redWoolPlaced(p);
                     } else if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
                         this.redWoolPlaced(p);
                     }else{
+                        p.sendMessage(ChatColor.RED + "No puedes colocar la lana porque no hay los jugadores suficientes.");
                         event.setCancelled(true);
                     }
                 }
@@ -42,11 +40,12 @@ public class BlockPlace implements Listener {
                 if (!event.getBlock().getState().getData().toItemStack().isSimilar(new ItemStack(Material.WOOL, 1, (short) 6))) {
                     event.setCancelled(true);
                 } else {
-                    if (p.isOp()) {
+                    if (p.isOp() || p.hasPermission("*")) {
                         this.pinkWoolPlaced(p);
                     } else if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
                         this.pinkWoolPlaced(p);
                     }else{
+                        p.sendMessage(ChatColor.RED + "No puedes colocar la lana porque no hay los jugadores suficientes.");
                         event.setCancelled(true);
                     }
                 }
@@ -55,11 +54,12 @@ public class BlockPlace implements Listener {
                 if (!event.getBlock().getState().getData().toItemStack().isSimilar(new ItemStack(Material.WOOL, 1, (short) 11))) {
                     event.setCancelled(true);
                 } else {
-                    if (p.isOp()) {
+                    if (p.isOp() || p.hasPermission("*")) {
                         this.blueWoolPlaced(p);
                     } else if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
                         this.blueWoolPlaced(p);
                     }else{
+                        p.sendMessage(ChatColor.RED + "No puedes colocar la lana porque no hay los jugadores suficientes.");
                         event.setCancelled(true);
                     }
                 }
@@ -68,11 +68,12 @@ public class BlockPlace implements Listener {
                 if (!event.getBlock().getState().getData().toItemStack().isSimilar(new ItemStack(Material.WOOL, 1, (short) 9))) {
                     event.setCancelled(true);
                 } else {
-                    if (p.isOp()) {
+                    if (p.isOp() || p.hasPermission("*")) {
                         this.cyanWoolPlaced(p);
                     } else if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
                         this.cyanWoolPlaced(p);
                     }else{
+                        p.sendMessage(ChatColor.RED + "No puedes colocar la lana porque no hay los jugadores suficientes.");
                         event.setCancelled(true);
                     }
                 }
