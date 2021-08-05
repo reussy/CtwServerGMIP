@@ -18,7 +18,7 @@ public class PunchI {
     private final ShooterAchievementHandler.ShooterAchievements requiredAchievement;
 
     public PunchI(final CTW ctw) {
-        this.price = 300.0;
+        this.price = 250.0;
         this.requiredAchievement = ShooterAchievementHandler.ShooterAchievements.SHOOTER4;
         this.ctw = ctw;
     }

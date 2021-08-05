@@ -9,6 +9,7 @@ public class Tasks {
     public Tasks(final CTW ctw) {
         this.ctw = ctw;
         this.tenSecTask();
+        //this.GameStage();
 
     }
 
@@ -28,9 +29,9 @@ public class Tasks {
         Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, new Runnable() {
             @Override
             public void run() {
-                System.out.print(Tasks.this.ctw.getGameEngine().gameStage);
+                Bukkit.broadcastMessage(String.valueOf(Tasks.this.ctw.getGameEngine().gameStage));
             }
-        }, 20L, 40);
+        }, 20L, 100);
     }
 
 

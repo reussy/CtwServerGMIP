@@ -284,7 +284,15 @@ public class PlayerHandler {
                 if (!red.isEmpty()) {
                     for (final Player p : red) {
                         if (p != null && p.isOnline()) {
-                            PlayerHandler.this.respawnRedTeam(p);
+
+                            Bukkit.getScheduler().runTask(ctw, () -> {
+
+                                p.setGameMode(GameMode.SURVIVAL);
+                                p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().redSpawn);
+                                ctw.getTeamHandler().setRedSuit(p);
+                                ctw.getStartupKit().giveStartupKit(p);
+                            });
+
                             PlayerHandler.this.ctw.getKillStreakHandler().resetData(p);
                         }
                     }
@@ -292,7 +300,15 @@ public class PlayerHandler {
                 if (!blue.isEmpty()) {
                     for (final Player p : blue) {
                         if (p != null && p.isOnline()) {
-                            PlayerHandler.this.respawnBlueTeam(p);
+
+                            Bukkit.getScheduler().runTask(ctw, () -> {
+
+                                p.setGameMode(GameMode.SURVIVAL);
+                                p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().blueSpawn);
+                                ctw.getTeamHandler().setBlueSuit(p);
+                                ctw.getStartupKit().giveStartupKit(p);
+                            });
+
                             PlayerHandler.this.ctw.getKillStreakHandler().resetData(p);
                         }
                     }

@@ -90,7 +90,7 @@ public class WoolHandler {
 
     public Player listPlayerRed() {
 
-        return redTakenList.get(redTakenList.size() -1);
+        return redTakenList.get(redTakenList.size() - 1);
     }
 
     public List<Player> listPlayerspink() {
@@ -196,9 +196,7 @@ public class WoolHandler {
         this.cyanTakenList.add(p);
     }
 
-    public void removeCyanTakenByPlayer(final Player p) {
-        this.cyanTakenList.remove(p);
-    }
+    public void removeCyanTakenByPlayer(final Player p) {this.cyanTakenList.remove(p); }
 
     public boolean hadCyanTakenByPlayer(final Player p) {
         return this.cyanTakenList.contains(p);

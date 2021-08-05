@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,6 +43,11 @@ public class ScoreboardHandler {
         this.updatePlayerCountTask();
         this.timerTask();
         this.alerts();
+        this.redWoolTaken();
+        this.pinkWoolTaken();
+        this.blueWoolTaken();
+        this.cyanWoolTaken();
+        ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
     }
 
     static void access$1(final ScoreboardHandler scoreboardHandler, final String woolNotPlaced) {
@@ -229,6 +233,12 @@ public class ScoreboardHandler {
         this.scoreboard.resetScores(this.cyanWool);
         this.cyanWool = ChatColor.DARK_AQUA + this.woolNotPlaced + ChatColor.GRAY + " " + this.ctw.getLanguageHandler().getMessage("Words.Cyan");
         this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(this.cyanWool).setScore(7);
+
+        this.redWoolTaken();
+        this.pinkWoolTaken();
+        this.blueWoolTaken();
+        this.cyanWoolTaken();
+        ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
     }
 
     public void alerts() {
@@ -248,145 +258,128 @@ public class ScoreboardHandler {
                     this.ticks = 0;
                 }
             }
-        }, 0L, 20L);
+        }, 0L, 20);
     }
 
     public void redWoolTaken() {
-        this.alertStatus = 0;
         new BukkitRunnable() {
             public void run() {
                 if (!ScoreboardHandler.this.ctw.getWoolHandler().isRedPlaced()) {
-                    ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
-                    ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.redWool);
                     if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayersred().size() == 0) {
+
+                        ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.redWool);
                         ScoreboardHandler.this.redWool = ChatColor.RED + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Red");
+                        ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.redWool).setScore(2);
                     } else {
-                        if (!ScoreboardHandler.this.ctw.getWoolHandler().isPinkPlaced()) {
-                            ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
-                            ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.pinkWool);
-                            if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayerspink().size() == 0) {
-                                ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink");
-                            } else {
-                                if (ScoreboardHandler.this.alertStatus == 0) {
-                                    ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink") + " \u26a0";
-                                }
-                                if (ScoreboardHandler.this.alertStatus == 1) {
-                                    ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink") + ChatColor.RED + " \u26a0";
-                                }
-                            }
-                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.pinkWool).setScore(3);
-                        }
                         if (ScoreboardHandler.this.alertStatus == 0) {
-                            ScoreboardHandler.this.redWool = ChatColor.RED + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Red") + "  \u26a0";
+
+                            ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.redWool);
+                            ScoreboardHandler.this.redWool = ChatColor.RED + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Red") + " \u26a0";
+                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.redWool).setScore(2);
                         }
                         if (ScoreboardHandler.this.alertStatus == 1) {
-                            ScoreboardHandler.this.redWool = ChatColor.RED + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Red") + ChatColor.RED + "  \u26a0";
+
+                            ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.redWool);
+                            ScoreboardHandler.this.redWool = ChatColor.RED + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Red") + ChatColor.RED + " \u26a0";
+                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.redWool).setScore(2);
                         }
                     }
-                    ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.redWool).setScore(2);
                 } else {
                     this.cancel();
                 }
             }
-        }.runTaskTimerAsynchronously(this.ctw, 0L, 20L);
+        }.runTaskTimerAsynchronously(this.ctw, 20L, 20);
     }
 
     public void pinkWoolTaken() {
-        this.alertStatus = 0;
         new BukkitRunnable() {
             public void run() {
                 if (!ScoreboardHandler.this.ctw.getWoolHandler().isPinkPlaced()) {
-                    ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
-                    ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.pinkWool);
                     if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayerspink().size() == 0) {
+
+                        ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.pinkWool);
                         ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink");
+                        ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.pinkWool).setScore(3);
                     } else {
-                        if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayersred().size() != 0) {
-                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.pinkWool).setScore(3);
-                            return;
-                        }
                         if (ScoreboardHandler.this.alertStatus == 0) {
+
+                            ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.pinkWool);
                             ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink") + " \u26a0";
+                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.pinkWool).setScore(3);
                         }
                         if (ScoreboardHandler.this.alertStatus == 1) {
+
+                            ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.pinkWool);
                             ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink") + ChatColor.RED + " \u26a0";
+                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.pinkWool).setScore(3);
                         }
                     }
-                    ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.pinkWool).setScore(3);
                 } else {
                     this.cancel();
                 }
             }
-        }.runTaskTimerAsynchronously(this.ctw, 0L, 20L);
+        }.runTaskTimerAsynchronously(this.ctw, 20L, 20);
     }
 
+
     public void blueWoolTaken() {
-        this.alertStatus = 0;
         new BukkitRunnable() {
             public void run() {
                 if (!ScoreboardHandler.this.ctw.getWoolHandler().isBluePlaced()) {
-                    ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
-                    ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.blueWool);
                     if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayersblue().size() == 0) {
+
+                        ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.blueWool);
                         ScoreboardHandler.this.blueWool = ChatColor.BLUE + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Blue");
+                        ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.blueWool).setScore(6);
                     } else {
-                        if (!ScoreboardHandler.this.ctw.getWoolHandler().isCyanPlaced()) {
-                            ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
-                            ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.cyanWool);
-                            if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayerscyan().size() == 0) {
-                                ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan");
-                            } else {
-                                if (ScoreboardHandler.this.alertStatus == 0) {
-                                    ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + " \u26a0";
-                                }
-                                if (ScoreboardHandler.this.alertStatus == 1) {
-                                    ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + ChatColor.RED + " \u26a0";
-                                }
-                            }
-                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.cyanWool).setScore(7);
-                        }
                         if (ScoreboardHandler.this.alertStatus == 0) {
+
+                            ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.blueWool);
                             ScoreboardHandler.this.blueWool = ChatColor.BLUE + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Blue") + " \u26a0";
+                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.blueWool).setScore(6);
                         }
                         if (ScoreboardHandler.this.alertStatus == 1) {
+
+                            ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.blueWool);
                             ScoreboardHandler.this.blueWool = ChatColor.BLUE + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Blue") + ChatColor.RED + " \u26a0";
+                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.blueWool).setScore(6);
                         }
                     }
-                    ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.blueWool).setScore(6);
                 } else {
                     this.cancel();
                 }
             }
-        }.runTaskTimerAsynchronously(this.ctw, 0L, 20L);
+        }.runTaskTimerAsynchronously(this.ctw, 20L, 20);
     }
 
     public void cyanWoolTaken() {
-        this.alertStatus = 0;
         new BukkitRunnable() {
             public void run() {
                 if (!ScoreboardHandler.this.ctw.getWoolHandler().isCyanPlaced()) {
-                    ScoreboardHandler.this.woolPickedUp = ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
-                    ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.cyanWool);
                     if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayerscyan().size() == 0) {
+
+                        ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.cyanWool);
                         ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan");
+                        ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.cyanWool).setScore(7);
                     } else {
-                        if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayersblue().size() != 0) {
-                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.cyanWool).setScore(7);
-                            return;
-                        }
                         if (ScoreboardHandler.this.alertStatus == 0) {
-                            ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + "  \u26a0";
+
+                            ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.cyanWool);
+                            ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + " \u26a0";
+                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.cyanWool).setScore(7);
                         }
                         if (ScoreboardHandler.this.alertStatus == 1) {
-                            ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + ChatColor.RED + "  \u26a0";
+
+                            ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.cyanWool);
+                            ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolPickedUp + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + ChatColor.RED + " \u26a0";
+                            ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.cyanWool).setScore(7);
                         }
                     }
-                    ScoreboardHandler.this.scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(ScoreboardHandler.this.cyanWool).setScore(7);
                 } else {
                     this.cancel();
                 }
             }
-        }.runTaskTimerAsynchronously(this.ctw, 0L, 20L);
+        }.runTaskTimerAsynchronously(this.ctw, 20L, 20);
     }
 
     public void redWoolPlaced() {

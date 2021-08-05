@@ -40,7 +40,7 @@ public class Death implements Listener {
             }
         } else if (map.equals("Nether")) {
 
-            if (y < 10 && player.getGameMode() != GameMode.CREATIVE) {
+            if (y <= 30 && player.getGameMode() != GameMode.CREATIVE) {
 
                 if (!player.isDead()) {
                     player.setHealth(0.0);
@@ -140,8 +140,15 @@ public class Death implements Listener {
                         Death.this.ctw.getDistanceAchievementHandler().checkForAchievements(killer);
                     }
                 } else if (!Death.this.ctw.getTeamHandler().isSpectator(p)) {
-                    Death.this.ctw.getPlayerScoreHandler().takeScore(p, Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.death"));
-                    Death.this.ctw.getMessageUtils().sendScoreMessage(p, "-" + Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.death"), null);
+
+
+                    if (this.ctw.getGameEngine().gameStage != GameEngine.GameStages.COUNTDOWN) {
+                        if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
+
+                            Death.this.ctw.getPlayerScoreHandler().takeScore(p, Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.death"));
+                            Death.this.ctw.getMessageUtils().sendScoreMessage(p, "-" + Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.death"), null);
+                        }
+                    }
                 }
             }
 
@@ -157,25 +164,25 @@ public class Death implements Listener {
 
     private void addPoints(Player p, Player killer, String rawMsg4) {
 
+        final String rawMsg5 = rawMsg4.replace("%KilledPlayer%", Death.this.ctw.getMessageUtils().getTeamColor(p));
+        final String rawMsg6 = rawMsg5.replace("%Killer%", Death.this.ctw.getMessageUtils().getTeamColor(killer));
+        addPoints2(p, killer, rawMsg6);
 
-
-            final String rawMsg5 = rawMsg4.replace("%KilledPlayer%", Death.this.ctw.getMessageUtils().getTeamColor(p));
-            final String rawMsg6 = rawMsg5.replace("%Killer%", Death.this.ctw.getMessageUtils().getTeamColor(killer));
-        if(this.ctw.getGameEngine().gameStage != GameEngine.GameStages.COUNTDOWN) {
-
-            if((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
-                addPoints2(p, killer, rawMsg6);
-            }
-        }
     }
 
     private void addPoints2(Player p, Player killer, String rawMsg6) {
+
         Death.this.sendDeathMessage(rawMsg6.replaceAll("&", "§"));
-        Death.this.ctw.getPlayerScoreHandler().takeScore(p, Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.death"));
-        Death.this.ctw.getMessageUtils().sendScoreMessage(p, "-" + Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.death"), null);
-        Death.this.ctw.getPlayerScoreHandler().addScore(killer, Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.kill"));
-        Death.this.ctw.getEconomyHandler().addCoins(killer, (double) Death.this.ctw.getConfigHandler().getInteger("Rewards.Coins.kill"));
-        Death.this.ctw.getMessageUtils().sendScoreMessage(killer, "+" + Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.kill"), Death.this.ctw.getConfigHandler().getInteger("Rewards.Coins.kill"));
+        if (this.ctw.getGameEngine().gameStage != GameEngine.GameStages.COUNTDOWN) {
+            if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
+
+                Death.this.ctw.getPlayerScoreHandler().takeScore(p, Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.death"));
+                Death.this.ctw.getMessageUtils().sendScoreMessage(p, "-" + Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.death"), null);
+                Death.this.ctw.getPlayerScoreHandler().addScore(killer, Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.kill"));
+                Death.this.ctw.getEconomyHandler().addCoins(killer, (double) Death.this.ctw.getConfigHandler().getInteger("Rewards.Coins.kill"));
+                Death.this.ctw.getMessageUtils().sendScoreMessage(killer, "+" + Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.kill"), Death.this.ctw.getConfigHandler().getInteger("Rewards.Coins.kill"));
+            }
+        }
     }
 
     private void addRegen(Player killer) {
