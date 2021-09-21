@@ -54,8 +54,9 @@ public class onProjectile implements Listener {
                     @Override
                     public void run() {
                         if (!damager.isDead()) {
-
-                            damaged.sendMessage(ChatColor.GRAY + "La vida de " + ChatColor.GREEN + damager.getName() + ChatColor.GRAY + " es " + ChatColor.GREEN + (int) damager.getHealth() + ChatColor.RED + "❤");
+                            if (!(damager.getHealth() == damager.getMaxHealth())) {
+                                damaged.sendMessage(ChatColor.GRAY + "La vida de " + ChatColor.GREEN + damager.getName() + ChatColor.GRAY + " es " + ChatColor.GREEN + (int) damager.getHealth() + ChatColor.RED + "❤");
+                            }
                         }
                     }
                 }.runTaskLater(ctw, 5);

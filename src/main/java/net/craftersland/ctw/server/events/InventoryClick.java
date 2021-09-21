@@ -2,7 +2,6 @@ package net.craftersland.ctw.server.events;
 
 import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -119,18 +118,9 @@ public class InventoryClick implements Listener {
                 } else if (event.getSlot() == 2) {
                     if (p.hasPermission("CTW.pickupteam")) {
 
-                        int difference = this.ctw.getTeamHandler().countRedTeam() - this.ctw.getTeamHandler().countBlueTeam();
-                        
-                        if(difference < -2){
+                        this.closeInv(p);
+                        this.ctw.getPlayerHandler().addRedTeam(p);
 
-                            this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
-                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4La diferencia de jugadores es demasiado grande!"));
-
-                        }else {
-
-                            this.closeInv(p);
-                            this.ctw.getPlayerHandler().addRedTeam(p);
-                        }
                     } else {
                         this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
                         p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.SelectTeamNoPermission").replaceAll("&", "§"));
@@ -138,16 +128,9 @@ public class InventoryClick implements Listener {
                 } else if (event.getSlot() == 6) {
                     if (p.hasPermission("CTW.pickupteam")) {
 
-                        int difference = this.ctw.getTeamHandler().countBlueTeam() - this.ctw.getTeamHandler().countRedTeam();
-                        if(difference < -2){
+                        this.closeInv(p);
+                        this.ctw.getPlayerHandler().addBlueTeam(p);
 
-                            this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
-                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4La diferencia de jugadores es demasiado grande!"));
-
-                        }else{
-                            this.closeInv(p);
-                            this.ctw.getPlayerHandler().addBlueTeam(p);
-                        }
                     } else {
                         this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
                         p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.SelectTeamNoPermission").replaceAll("&", "§"));

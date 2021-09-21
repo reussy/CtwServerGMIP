@@ -27,7 +27,7 @@ public class GameEngine {
         Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, new Runnable() {
             @Override
             public void run() {
-                GameEngine.this.ctw.getScoreboardHandler().updateHealthTask();
+                //GameEngine.this.ctw.getScoreboardHandler().updateHealthTask();
                 if (GameEngine.this.gameStage != GameStages.LOADING && GameEngine.this.gameStage != GameStages.IDLE) {
                     if (GameEngine.this.gameStage == GameStages.COUNTDOWN) {
                         GameEngine.this.countdownStage();
@@ -64,6 +64,8 @@ public class GameEngine {
         try {
             if (this.countdown == 30) {
                 this.ctw.getMapHandler().getNextMap();
+                ctw.getPlayerKillsHandler().orderKills();
+
                 if (this.ctw.getConfigHandler().getInteger("Settings.ServerRestartAfterGamesPlayed") != 0 && this.ctw.getMapHandler().getPlayedMaps() > this.ctw.getConfigHandler().getInteger("Settings.ServerRestartAfterGamesPlayed")) {
                     this.ctw.getRestartHandler().serverStop();
                 }
@@ -119,6 +121,7 @@ public class GameEngine {
                 this.ctw.getMessageUtils().broadcastTitleMessage(rawTitle2, rawsubtitle2);
                 this.ctw.getSoundHandler().broadcastArrowHitPlayerSound();
                 this.ctw.getMapHandler().startNextMap();
+                ctw.getPlayerKillsHandler().resetKills();
                 --this.countdown;
             } else if (this.countdown == 0) {
                 this.countdown = 35;
@@ -140,6 +143,13 @@ public class GameEngine {
             this.ctw.getTeamVictoryHandler().addRedVictoryPoint();
             final List<Player> red = this.ctw.getTeamHandler().redTeamCopy();
             final List<Player> blue = this.ctw.getTeamHandler().blueTeamCopy();
+
+            red.forEach(player -> {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(ctw, () -> {
+                    Bukkit.dispatchCommand(ctw.getServer().getConsoleSender(), "mysterydust add " + player.getName() + " " + 12);
+                });
+            });
+
             this.setWonSpectators(red, blue);
             this.spawnRedFireworks(red);
             final List<String> rawMsg = new ArrayList<String>(this.ctw.getLanguageHandler().getMessageList("ChatMessages.RedVictory"));
@@ -167,6 +177,13 @@ public class GameEngine {
             this.ctw.getTeamVictoryHandler().addBlueVictoryPoint();
             final List<Player> red = this.ctw.getTeamHandler().redTeamCopy();
             final List<Player> blue = this.ctw.getTeamHandler().blueTeamCopy();
+
+            blue.forEach(player -> {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(ctw, () -> {
+                    Bukkit.dispatchCommand(ctw.getServer().getConsoleSender(), "mysterydust add " + player.getName() + " " + 12);
+                });
+            });
+
             this.setWonSpectators(red, blue);
             this.spawnBlueFireworks(blue);
             final List<String> rawMsg = new ArrayList<String>(this.ctw.getLanguageHandler().getMessageList("ChatMessages.BlueVictory"));

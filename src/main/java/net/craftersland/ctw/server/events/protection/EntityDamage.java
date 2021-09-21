@@ -1,13 +1,18 @@
 package net.craftersland.ctw.server.events.protection;
 
 import net.craftersland.ctw.server.CTW;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerItemBreakEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class EntityDamage implements Listener {
     private final CTW ctw;
@@ -23,6 +28,7 @@ public class EntityDamage implements Listener {
             if (event.getEntity() instanceof Player) {
                 final Player p = (Player) event.getEntity();
                 final Player damager = (Player) event.getDamager();
+
                 this.ctw.getLastDamageHandler().setData(p, damager, "melee");
             }
         } else if (event.getDamager() instanceof Arrow) {
@@ -38,6 +44,20 @@ public class EntityDamage implements Listener {
         }
     }
 
+
+    @EventHandler
+    public void onItem(PlayerItemDamageEvent event) {
+
+        ItemStack weapon = event.getItem();
+
+        if (weapon.getType() == Material.DIAMOND_SWORD || weapon.getType() == Material.GOLD_SWORD || weapon.getType() == Material.STONE_SWORD || weapon.getType() == Material.IRON_SWORD || weapon.getType() == Material.WOOD_SWORD) {
+            weapon.getItemMeta().spigot().setUnbreakable(true);
+            event.getPlayer().updateInventory();
+        }
+    }
+
+
+
     private void checkEntity(final EntityDamageByEntityEvent event) {
         if (event.getEntity().getType() == EntityType.ITEM_FRAME) {
             final Location l = event.getEntity().getLocation();
@@ -46,7 +66,7 @@ public class EntityDamage implements Listener {
             }
         } else if (event.getEntityType() == EntityType.PLAYER) {
             final Player p = (Player) event.getEntity();
-            this.ctw.getEffectUtils().playDamageEffect(p);
+            //this.ctw.getEffectUtils().playDamageEffect(p);
             this.ctw.getTeamDamageHandler().autoAddDmg(p, event.getFinalDamage());
         }
     }

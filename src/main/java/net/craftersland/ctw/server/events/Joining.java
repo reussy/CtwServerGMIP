@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server.events;
 
 import net.craftersland.ctw.server.CTW;
-import net.craftersland.ctw.server.commands.Join;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +21,8 @@ public class Joining implements Listener {
             final Player p = event.getPlayer();
             if (event.getResult().toString().equals("ALLOWED")) {
                 Joining.this.ctw.getPlayerHandler().addSpectator(p);
-                Joining.this.ctw.getScoreboardHandler().setScoreboardToPlayer(p);
+                //Joining.this.ctw.getScoreboardHandler().setScoreboardToPlayer(p);
+                Joining.this.ctw.getNewScoreboardHandler().addPlayer(p);
                 Joining.this.ctw.getPlayerHandler().sendJoinMessage(p);
                 Joining.this.ctw.getMessageUtils().sendTabTitleFooter(p);
                 Joining.this.ctw.getPlayerScoreHandler().loadInitialScore(p);

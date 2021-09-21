@@ -23,6 +23,7 @@ public class StartupKit {
     }
 
     public void giveStartupKit(final Player p) {
+        p.setHealth(p.getMaxHealth());
         p.getInventory().setContents(this.ctw.getMapConfigHandler().startupKit);
     }
 

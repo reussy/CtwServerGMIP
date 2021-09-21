@@ -19,7 +19,7 @@ public class TakenWools {
         final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
         if (team == TeamHandler.Teams.RED) {
             if (!this.ctw.getWoolHandler().isRedTaken()) {
-                //this.ctw.getScoreboardHandler().redWoolTaken();
+                this.ctw.getNewScoreboardHandler().redWoolTaken();
                 this.ctw.getWoolHandler().addRedTakenByPlayer(p);
                 this.ctw.getWoolHandler().setRedTaken();
                 this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.RedWoolCaptured.title"), this.ctw.getLanguageHandler().getMessage("TitleMessages.RedWoolCaptured.subtitle"));
@@ -41,7 +41,7 @@ public class TakenWools {
         final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
         if (team == TeamHandler.Teams.RED) {
             if (!this.ctw.getWoolHandler().isPinkTaken()) {
-                //this.ctw.getScoreboardHandler().pinkWoolTaken();
+                this.ctw.getNewScoreboardHandler().pinkWoolTaken();
                 this.ctw.getWoolHandler().addPinkTakenByPlayer(p);
                 this.ctw.getWoolHandler().setPinkTaken();
                 this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.PinkWoolCaptured.title"), this.ctw.getLanguageHandler().getMessage("TitleMessages.PinkWoolCaptured.subtitle"));
@@ -63,7 +63,7 @@ public class TakenWools {
         final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
         if (team == TeamHandler.Teams.BLUE) {
             if (!this.ctw.getWoolHandler().isBlueTaken()) {
-                //this.ctw.getScoreboardHandler().blueWoolTaken();
+                this.ctw.getNewScoreboardHandler().blueWoolTaken();
                 this.ctw.getWoolHandler().addBlueTakenByPlayer(p);
                 this.ctw.getWoolHandler().setBlueTaken();
                 this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueWoolCaptured.title"), this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueWoolCaptured.subtitle"));
@@ -85,7 +85,7 @@ public class TakenWools {
         final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
         if (team == TeamHandler.Teams.BLUE) {
             if (!this.ctw.getWoolHandler().isCyanTaken()) {
-                //this.ctw.getScoreboardHandler().cyanWoolTaken();
+                this.ctw.getNewScoreboardHandler().cyanWoolTaken();
                 this.ctw.getWoolHandler().addCyanTakenByPlayer(p);
                 this.ctw.getWoolHandler().setCyanTaken();
                 this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.CyanWoolCaptured.title"), this.ctw.getLanguageHandler().getMessage("TitleMessages.CyanWoolCaptured.subtitle"));

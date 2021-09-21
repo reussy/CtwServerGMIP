@@ -81,7 +81,7 @@ public class PlayerHandler {
         if (this.ctw.getTeamHandler().countRedTeam() < this.ctw.getMapConfigHandler().maxPlayers || p.hasPermission("CTW.joinfullteams")) {
             this.resetPlayer(p);
             this.ctw.getTeamHandler().addRedTeam(p);
-            this.ctw.getScoreboardHandler().addToRedTeam(p);
+            //this.ctw.getScoreboardHandler().addToRedTeam(p);
             Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
                 @Override
                 public void run() {
@@ -136,7 +136,9 @@ public class PlayerHandler {
                 if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) {
                     p.setGameMode(GameMode.ADVENTURE);
                 } else if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
+
                     p.setGameMode(GameMode.SURVIVAL);
+                    p.setHealth(p.getMaxHealth());
                 }
                 p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().redSpawn);
             }
@@ -152,7 +154,7 @@ public class PlayerHandler {
         if (this.ctw.getTeamHandler().countBlueTeam() < this.ctw.getMapConfigHandler().maxPlayers || p.hasPermission("CTW.joinfullteams")) {
             this.resetPlayer(p);
             this.ctw.getTeamHandler().addBlueTeam(p);
-            this.ctw.getScoreboardHandler().addToBlueTeam(p);
+            //this.ctw.getScoreboardHandler().addToBlueTeam(p);
             Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
                 @Override
                 public void run() {
@@ -182,7 +184,9 @@ public class PlayerHandler {
                 this.ctw.getStartupKit().giveStartupKit(p);
             }
             if (p.hasPermission("CTW.particles")) {
-                this.ctw.getEffectUtils().startVipParticles(p);
+                if(!p.hasPermission("JrMOD")) {
+                    this.ctw.getEffectUtils().startVipParticles(p);
+                }
             }
         } else {
             this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
@@ -201,7 +205,9 @@ public class PlayerHandler {
                     p.setGameMode(GameMode.ADVENTURE);
                 }
                else if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
+
                     p.setGameMode(GameMode.SURVIVAL);
+                    p.setHealth(p.getMaxHealth());
                 }
                 p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().blueSpawn);
             }
@@ -288,6 +294,7 @@ public class PlayerHandler {
                             Bukkit.getScheduler().runTask(ctw, () -> {
 
                                 p.setGameMode(GameMode.SURVIVAL);
+                                p.setHealth(p.getMaxHealth());
                                 p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().redSpawn);
                                 ctw.getTeamHandler().setRedSuit(p);
                                 ctw.getStartupKit().giveStartupKit(p);

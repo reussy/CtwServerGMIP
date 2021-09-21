@@ -19,7 +19,10 @@ public class KillStreakHandler {
         this.streak.put(p, 0);
     }
 
-    public void addKill(final Player p) {
+
+
+
+    public void addStreakKill(final Player p) {
         if (this.streak.containsKey(p)) {
             final int data = this.streak.get(p);
             this.streak.put(p, data + 1);

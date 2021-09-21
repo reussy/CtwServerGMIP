@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 
 public class CTW extends JavaPlugin implements PluginMessageListener {
     public static Logger log;
+    public static SendCenteredMessage sendMessage;
     public static Economy economy;
     private static ConfigHandler cH;
     private static SoundHandler soH;
@@ -44,6 +45,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     private static GameEngine ge;
     private static TeamHandler tH;
     private static ScoreboardHandler sH;
+    private static NewScoreboard nsH;
     private static PlayerHandler pH;
     private static JoinMenu jm;
     private static StartupKit sk;
@@ -143,7 +145,8 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         CTW.log.info("CTWserver has been successfully loaded!");
         this.isEnabled = true;
     }
-    public void loadCommand(){
+
+    public void loadCommand() {
         final Join joinCmd = new Join(this);
         final GlobalChat gChat = new GlobalChat(this);
         final Leave leave = new Leave(this);
@@ -158,7 +161,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         this.getCommand("setup").setExecutor(setup);
     }
 
-    public void loadEvent(){
+    public void loadEvent() {
         final PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvents(new Connecting(this), this);
         pm.registerEvents(new ServerPing(this), this);
@@ -191,7 +194,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
 
     }
 
-    public void loadClass(){
+    public void loadClass() {
 
         CTW.cH = new ConfigHandler(this);
         CTW.lH = new LanguageHandler(this);
@@ -203,7 +206,8 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         CTW.mH = new MapHandler(this);
         CTW.ge = new GameEngine(this);
         CTW.tH = new TeamHandler(this);
-        CTW.sH = new ScoreboardHandler(this);
+        //CTW.sH = new ScoreboardHandler(this);
+        CTW.nsH = new NewScoreboard(this);
         CTW.pH = new PlayerHandler(this);
         CTW.jm = new JoinMenu(this);
         CTW.sk = new StartupKit(this);
@@ -218,6 +222,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         CTW.tvH = new TeamVictoryHandler(this);
         CTW.tl = new TabList(this);
         CTW.lsH = new LobbyServersHandler(this);
+        CTW.sendMessage = new SendCenteredMessage();
         CTW.tsk = new Tasks(this);
         CTW.ll = new LobbyLink(this);
         CTW.psH = new PlayerScoreHandler(this);
@@ -300,6 +305,10 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         return CTW.mcH;
     }
 
+    public SendCenteredMessage getSendMessage() {
+        return CTW.sendMessage;
+    }
+
     public GameEngine getGameEngine() {
         return CTW.ge;
     }
@@ -310,6 +319,10 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
 
     public ScoreboardHandler getScoreboardHandler() {
         return CTW.sH;
+    }
+
+    public NewScoreboard getNewScoreboardHandler() {
+        return CTW.nsH;
     }
 
     public PlayerHandler getPlayerHandler() {

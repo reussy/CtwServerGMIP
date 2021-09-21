@@ -7,6 +7,9 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class MapHandler {
     private final CTW ctw;
@@ -15,14 +18,16 @@ public class MapHandler {
     private String mapToUnload;
     public String currentMap;
     public World currentMapWorld;
+    private List<Integer> playedMapsInt = new ArrayList<>();
 
     public MapHandler(final CTW ctw) {
-        this.mapIndex = 0;
+        this.mapIndex = getRandomInteger(ctw.getConfigHandler().maps.size(), 0);;
         this.playedMaps = 1;
         this.ctw = ctw;
         this.currentMap = ctw.getConfigHandler().maps.get(this.mapIndex);
         this.createMapsFolder();
         this.loadFirstMap();
+        this.playedMapsInt.add(mapIndex);
     }
 
     private void createMapsFolder() {
@@ -48,7 +53,7 @@ public class MapHandler {
                 MapHandler.this.ctw.getMapConfigHandler().loadConfig(MapHandler.this.currentMap);
                 MapHandler.this.ctw.getWoolHandler().removeWools();
                 MapHandler.this.setMapTime();
-                //MapHandler.this.ctw.getScoreboardHandler().startTimer();
+                MapHandler.this.ctw.getScoreboardHandler().startTimer();
                 MapHandler.this.ctw.getGameEngine().gameStage = GameEngine.GameStages.RUNNING;
             }
         }, 20L);
@@ -72,12 +77,19 @@ public class MapHandler {
     }
 
     private void nextMapIndex() {
-        if (this.mapIndex >= this.ctw.getConfigHandler().maps.size() - 1) {
-            this.mapIndex = 0;
-        } else {
-            ++this.mapIndex;
+
+        int randommap = getRandomInteger(this.ctw.getConfigHandler().maps.size(), 0);
+
+        Bukkit.broadcastMessage("Mapa random: " + randommap);
+        Bukkit.broadcastMessage("Size: " + this.ctw.getConfigHandler().maps.size());
+
+        while(playedMapsInt.contains(randommap)){
+            randommap = getRandomInteger(this.ctw.getConfigHandler().maps.size(), 0);
+            Bukkit.broadcastMessage("Mapa random: " + randommap);
         }
-        ++this.playedMaps;
+
+        mapIndex = randommap;
+        ++playedMaps;
     }
 
     public void getNextMap() {
@@ -98,6 +110,9 @@ public class MapHandler {
         }, 20L);
     }
 
+    public static int getRandomInteger(int maximum, int minimum){ return ((int) (Math.random()*(maximum - minimum))) + minimum; }
+
+
     public void startNextMap() {
         Bukkit.getScheduler().runTaskAsynchronously(this.ctw, new Runnable() {
             @Override
@@ -107,8 +122,8 @@ public class MapHandler {
                 MapHandler.this.ctw.getMapConfigHandler().loadConfig(MapHandler.this.currentMap);
                 MapHandler.this.setMapTime();
                 MapHandler.this.ctw.getWoolHandler().resetWoolsStats();
-                MapHandler.this.ctw.getNewScoreboardHandler().initializeVariables();
-                //MapHandler.this.ctw.getScoreboardHandler().startTimer();
+                MapHandler.this.ctw.getScoreboardHandler().resetWools();
+                MapHandler.this.ctw.getScoreboardHandler().startTimer();
                 MapHandler.this.ctw.getPlayerHandler().respawnAllPlayers();
                 MapHandler.this.ctw.getWoolHandler().removeWools();
                 MapHandler.this.ctw.getTeamScoreHandler().resetScores();

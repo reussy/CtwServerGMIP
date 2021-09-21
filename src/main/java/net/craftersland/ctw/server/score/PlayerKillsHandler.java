@@ -3,21 +3,22 @@ package net.craftersland.ctw.server.score;
 import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PlayerKillsHandler {
     private final CTW ctw;
     private final Map<Player, Integer> totalKills;
     private final Map<Player, Integer> bowKills;
     private final Map<Player, Integer> meleeKills;
+    private final HashMap<String, Integer> kills;
 
     public PlayerKillsHandler(final CTW ctw) {
         this.totalKills = new HashMap<Player, Integer>();
         this.bowKills = new HashMap<Player, Integer>();
         this.meleeKills = new HashMap<Player, Integer>();
+        this.kills = new HashMap<String, Integer>();
         this.ctw = ctw;
     }
 
@@ -29,6 +30,51 @@ public class PlayerKillsHandler {
                     this.ctw.getDataHandler().setKills(p, this.meleeKills.get(p), this.bowKills.get(p));
                 }
             }
+        }
+    }
+
+    public HashMap<String, Integer> getKills() {
+        return kills;
+    }
+
+    public void orderKills() {
+
+        List<Map.Entry<String, Integer>> top3 = kills.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(3).collect(Collectors.toList());
+
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if (player != null) {
+
+                ctw.getSendMessage().sendCenteredMessage(player, "&f&lTop Kills");
+                player.sendMessage(" ");
+                if (!top3.isEmpty()) {
+
+                    for(int i = 0; i < top3.size(); i++){
+
+                        ctw.getSendMessage().sendCenteredMessage(player, "     &e&lTop " + i++ + " &7- " + top3.get(i).getKey() + " - " + top3.get(i).getValue());
+                    }
+                } else {
+                    ctw.getSendMessage().sendCenteredMessage(player, "&cNo han habido jugadores suficientes...");
+                }
+            }
+        });
+    }
+
+    public void resetKills(){
+
+        kills.clear();
+
+    }
+
+    public void addKill(String name) {
+
+        if (!kills.containsKey(name)) {
+
+            kills.put(name, 1);
+
+        } else {
+
+            kills.put(name, kills.get(name) + 1);
+
         }
     }
 

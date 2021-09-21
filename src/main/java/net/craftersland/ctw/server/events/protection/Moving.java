@@ -5,6 +5,7 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.craftersland.ctw.server.CTW;
+import net.craftersland.ctw.server.game.GameEngine;
 import net.craftersland.ctw.server.game.TeamHandler;
 import net.craftersland.ctw.server.utils.CooldownManager;
 import org.bukkit.Bukkit;
@@ -33,26 +34,7 @@ public class Moving implements Listener {
             final Player p = event.getPlayer();
             final Location l = event.getTo();
             final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
-
             if (team == TeamHandler.Teams.RED) {
-
-                RegionManager regionManager = WGBukkit.getRegionManager(p.getWorld());
-                ApplicableRegionSet set = regionManager.getApplicableRegions(p.getLocation());
-
-                for (ProtectedRegion region : set) {
-
-                    if (region.getId().equals("pink")) {
-
-                        giveItems(p, 6, "pink");
-                    }
-
-                    if (region.getId().equals("red")) {
-
-                        giveItems(p, 14, "red");
-                    }
-                }
-
-
                 if (this.ctw.getProtectionHandler().isNoRedAccess(l)) {
                     if (!this.ctw.getProtectedMoveHandler().isPlayerOnList(p)) {
                         this.ctw.getProtectedMoveHandler().addPlayerToList(p);
@@ -63,25 +45,6 @@ public class Moving implements Listener {
                     p.teleport(event.getFrom());
                 }
             } else if (team == TeamHandler.Teams.BLUE && this.ctw.getProtectionHandler().isNoBlueAccess(l)) {
-
-
-                RegionManager regionManager = WGBukkit.getRegionManager(p.getWorld());
-                ApplicableRegionSet set = regionManager.getApplicableRegions(p.getLocation());
-
-                for (ProtectedRegion region : set) {
-
-                    if (region.getId().equals("cyan")) {
-
-                        giveItems(p, 9, "cyan");
-                    }
-
-                    if (region.getId().equals("blue")) {
-
-                        giveItems(p, 12, "blue");
-                    }
-                }
-
-
                 if (!this.ctw.getProtectedMoveHandler().isPlayerOnList(p)) {
                     this.ctw.getProtectedMoveHandler().addPlayerToList(p);
                     this.removePlayerFromListDelayed(p);
@@ -91,7 +54,53 @@ public class Moving implements Listener {
                 p.teleport(event.getFrom());
             }
         }
+    }
 
+
+    @EventHandler
+    public void onPlayerMoveWool(final PlayerMoveEvent event) {
+        if (!event.isCancelled() && event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
+
+            if(ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
+                final Player p = event.getPlayer();
+                final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
+
+                if (team == TeamHandler.Teams.RED) {
+
+                    RegionManager regionManager = WGBukkit.getRegionManager(p.getWorld());
+                    ApplicableRegionSet set = regionManager.getApplicableRegions(p.getLocation());
+
+                    for (ProtectedRegion region : set) {
+
+                        if (region.getId().equals("pink")) {
+
+                            giveItems(p, 6, "pink");
+                        }
+
+                        if (region.getId().equals("red")) {
+
+                            giveItems(p, 14, "red");
+                        }
+                    }
+
+                } else if (team == TeamHandler.Teams.BLUE) {
+
+                    RegionManager regionManager = WGBukkit.getRegionManager(p.getWorld());
+                    ApplicableRegionSet set = regionManager.getApplicableRegions(p.getLocation());
+
+                    for (ProtectedRegion region : set) {
+
+                        if (region.getId().equals("cyan")) {
+                            giveItems(p, 9, "cyan");
+                        }
+
+                        if (region.getId().equals("blue")) {
+                            giveItems(p, 11, "blue");
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public boolean invFull(Player p) {

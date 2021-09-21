@@ -9,7 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,6 +23,31 @@ public class Death implements Listener {
 
     public Death(final CTW ctw) {
         this.ctw = ctw;
+    }
+
+
+    @EventHandler
+    public void onSplash(PotionSplashEvent e) {
+        if (e.getEntity().getShooter() instanceof Player) {
+            Player player = ((Player) e.getEntity().getShooter()).getPlayer();
+
+            e.getAffectedEntities().forEach(livingEntity -> {
+
+                if (livingEntity instanceof Player) {
+                    if (this.ctw.getTeamHandler().getTeam(player) == this.ctw.getTeamHandler().getTeam(((Player) livingEntity).getPlayer())) {
+
+                        e.getPotion().getEffects().forEach(potionEffect -> {
+
+                            if (potionEffect.getType().equals(PotionEffectType.POISON) || potionEffect.getType().equals(PotionEffectType.BLINDNESS) || potionEffect.getType().equals(PotionEffectType.SLOW) ||
+                                    potionEffect.getType().equals(PotionEffectType.WEAKNESS) || potionEffect.getType().equals(PotionEffectType.CONFUSION) || potionEffect.getType().equals(PotionEffectType.WITHER) ||
+                                    potionEffect.getType().equals(PotionEffectType.HARM)) {
+                                e.setIntensity(livingEntity, 0);
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 
     @EventHandler
@@ -72,6 +99,10 @@ public class Death implements Listener {
     @EventHandler
     public void onPlayerDeath(final PlayerDeathEvent event) {
         event.setDeathMessage("");
+
+        Death.this.ctw.getTakenWools().checkForLostWool(event.getEntity(), event.getDrops());
+        event.getDrops().clear();
+
         Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
 
             final Player p = event.getEntity();
@@ -87,15 +118,17 @@ public class Death implements Listener {
                 final Player killer = p.getKiller();
                 final String rawMsg1 = Death.this.ctw.getLanguageHandler().getMessage("ChatMessages.MeleeDeathBroadcast").replace("%WeaponLogo%", Death.this.getWeaponLogo(killer));
                 addPoints(p, killer, rawMsg1);
+                ctw.getPlayerKillsHandler().addKill(killer.getName());
                 Death.this.ctw.getPlayerKillsHandler().addMeleeKill(killer);
                 Death.this.ctw.getMeleeAchievementHandler().checkForAchievements(killer);
                 Death.this.ctw.getOverpoweredAchievementHandler().checkForAchievements(p);
-                Death.this.ctw.getKillStreakHandler().addKill(killer);
+                Death.this.ctw.getKillStreakHandler().addStreakKill(killer);
 
                 addRegen(killer);
 
             } else if (p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
                 final Player killer = p.getKiller();
+                addRegen(killer);
                 int distance;
 
                 try {
@@ -119,20 +152,23 @@ public class Death implements Listener {
                 Death.this.ctw.getShooterAchievementHandler().checkForAchievements(killer);
                 Death.this.ctw.getOverpoweredAchievementHandler().checkForAchievements(killer);
                 Death.this.ctw.getDistanceAchievementHandler().checkForAchievements(killer);
-                Death.this.ctw.getKillStreakHandler().addKill(killer);
+                Death.this.ctw.getKillStreakHandler().addStreakKill(killer);
+                ctw.getPlayerKillsHandler().addKill(killer.getName());
             } else if (p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.VOID || p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.LAVA || p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.FALL) {
                 final Player killer = Death.this.ctw.getLastDamageHandler().getKiller(p);
                 if (killer != null) {
+                    addRegen(killer);
                     final String icon = Death.this.ctw.getLanguageHandler().getMessage("Icons.Other");
                     final String rawMsg4 = Death.this.ctw.getLanguageHandler().getMessage("ChatMessages.VoidDeathBroadcast").replace("%WeaponLogo%", icon);
                     addPoints(p, killer, rawMsg4);
-                    Death.this.ctw.getKillStreakHandler().addKill(killer);
+                    Death.this.ctw.getKillStreakHandler().addStreakKill(killer);
+                    ctw.getPlayerKillsHandler().addKill(killer.getName());
                     final String weaponType = Death.this.ctw.getLastDamageHandler().getWeaponType(p);
                     if (weaponType.matches("melee")) {
                         Death.this.ctw.getPlayerKillsHandler().addMeleeKill(killer);
                         Death.this.ctw.getMeleeAchievementHandler().checkForAchievements(killer);
                         Death.this.ctw.getOverpoweredAchievementHandler().checkForAchievements(p);
-                        addRegen(killer);
+
                     } else if (weaponType.matches("bow")) {
                         Death.this.ctw.getPlayerKillsHandler().addBowKill(killer);
                         Death.this.ctw.getShooterAchievementHandler().checkForAchievements(killer);
@@ -152,7 +188,6 @@ public class Death implements Listener {
                 }
             }
 
-            Death.this.ctw.getTakenWools().checkForLostWool(p, event.getDrops());
             new BukkitRunnable() {
                 public void run() {
                     p.spigot().respawn();
@@ -187,6 +222,9 @@ public class Death implements Listener {
 
     private void addRegen(Player killer) {
 
+        killer.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
+        killer.getInventory().addItem(new ItemStack(Material.ARROW, 8));
+
         if (killer.getInventory().getHelmet().getType() == Material.IRON_HELMET) {
             return;
         } else if (killer.getInventory().getBoots().getType() == Material.IRON_BOOTS) {
@@ -216,7 +254,8 @@ public class Death implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (Death.this.ctw.getKillStreakHandler().getStreak(killer) <= 4) {
+
+                if (Death.this.ctw.getKillStreakHandler().getStreak(killer) <= 3) {
                     killer.removePotionEffect(PotionEffectType.REGENERATION);
                     killer.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 1));
                 } else {
