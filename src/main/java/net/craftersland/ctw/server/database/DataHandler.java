@@ -193,6 +193,7 @@ public class DataHandler {
             try {
                 result.close();
                 preparedUpdateStatement.close();
+
             } catch (Exception e2) {
                 e2.printStackTrace();
             }

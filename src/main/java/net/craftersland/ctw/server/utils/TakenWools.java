@@ -2,6 +2,8 @@ package net.craftersland.ctw.server.utils;
 
 import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.TeamHandler;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -114,6 +116,7 @@ public class TakenWools {
                     this.ctw.getWoolHandler().removeRedTakenByPlayer(p);
                     this.ctw.getWoolHandler().removePinkTakenByPlayer(p);
                     this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.AllWoolsLost").replaceAll("%PlayerName%", this.ctw.getMessageUtils().getTeamColorBolded(p)));
+                    Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &c" + p.getName() + " &7perdió ambas lanas")));
                     this.ctw.getEffectUtils().sendWoolLostEffect(p);
 
                 }
@@ -123,6 +126,7 @@ public class TakenWools {
                     this.ctw.getWoolHandler().removeRedTakenByPlayer(p);
                     this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.RedWoolLost").replaceAll("%PlayerName%", this.ctw.getMessageUtils().getTeamColorBolded(p)));
                     this.ctw.getEffectUtils().sendWoolLostEffect(p);
+                    Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &c" + p.getName() + " &7perdió la lana &croja")));
                 }
             } else if (this.ctw.getWoolHandler().hadPinkTakenByPlayer(p)) {
                 final byte data3 = 6;
@@ -130,6 +134,7 @@ public class TakenWools {
                     this.ctw.getWoolHandler().removePinkTakenByPlayer(p);
                     this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.PinkWoolLost").replaceAll("%PlayerName%", this.ctw.getMessageUtils().getTeamColorBolded(p)));
                     this.ctw.getEffectUtils().sendWoolLostEffect(p);
+                    Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &c" + p.getName() + " &7perdió la lana &drosa")));
                 }
             }
         } else if (team == TeamHandler.Teams.BLUE) {
@@ -140,6 +145,7 @@ public class TakenWools {
                     this.ctw.getWoolHandler().removeBlueTakenByPlayer(p);
                     this.ctw.getWoolHandler().removeCyanTakenByPlayer(p);
                     this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.AllWoolsLost").replaceAll("%PlayerName%", this.ctw.getMessageUtils().getTeamColorBolded(p)));
+                    Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &9" + p.getName() + " &7perdió ambas lanas")));
                     this.ctw.getEffectUtils().sendWoolLostEffect(p);
                 }
             } else if (this.ctw.getWoolHandler().hadBlueTakenByPlayer(p)) {
@@ -147,6 +153,7 @@ public class TakenWools {
                 if (this.woolLost(items, data3)) {
                     this.ctw.getWoolHandler().removeBlueTakenByPlayer(p);
                     this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.BlueWoolLost").replaceAll("%PlayerName%", this.ctw.getMessageUtils().getTeamColorBolded(p)));
+                    Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &9" + p.getName() + " &7perdió la lana &9azul")));
                     this.ctw.getEffectUtils().sendWoolLostEffect(p);
                 }
             } else if (this.ctw.getWoolHandler().hadCyanTakenByPlayer(p)) {
@@ -155,6 +162,7 @@ public class TakenWools {
                     this.ctw.getWoolHandler().removeCyanTakenByPlayer(p);
                     this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.CyanWoolLost").replaceAll("%PlayerName%", this.ctw.getMessageUtils().getTeamColorBolded(p)));
                     this.ctw.getEffectUtils().sendWoolLostEffect(p);
+                    Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &9" + p.getName() + " &7perdió la lana &3cyan")));
                 }
             }
         }

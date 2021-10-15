@@ -27,7 +27,6 @@ public class GameEngine {
         Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, new Runnable() {
             @Override
             public void run() {
-                //GameEngine.this.ctw.getScoreboardHandler().updateHealthTask();
                 if (GameEngine.this.gameStage != GameStages.LOADING && GameEngine.this.gameStage != GameStages.IDLE) {
                     if (GameEngine.this.gameStage == GameStages.COUNTDOWN) {
                         GameEngine.this.countdownStage();
@@ -152,6 +151,7 @@ public class GameEngine {
 
             this.setWonSpectators(red, blue);
             this.spawnRedFireworks(red);
+            ctw.getSoundHandler().broadcastDragon();
             final List<String> rawMsg = new ArrayList<String>(this.ctw.getLanguageHandler().getMessageList("ChatMessages.RedVictory"));
             if (!rawMsg.isEmpty()) {
                 for (final String s : rawMsg) {
@@ -186,6 +186,7 @@ public class GameEngine {
 
             this.setWonSpectators(red, blue);
             this.spawnBlueFireworks(blue);
+            ctw.getSoundHandler().broadcastDragon();
             final List<String> rawMsg = new ArrayList<String>(this.ctw.getLanguageHandler().getMessageList("ChatMessages.BlueVictory"));
             if (!rawMsg.isEmpty()) {
                 for (final String s : rawMsg) {

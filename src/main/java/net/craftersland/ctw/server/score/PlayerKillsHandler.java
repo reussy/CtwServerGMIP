@@ -4,7 +4,10 @@ import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PlayerKillsHandler {
@@ -44,22 +47,27 @@ public class PlayerKillsHandler {
         Bukkit.getOnlinePlayers().forEach(player -> {
             if (player != null) {
 
-                ctw.getSendMessage().sendCenteredMessage(player, "&f&lTop Kills");
                 player.sendMessage(" ");
-                if (!top3.isEmpty()) {
+                player.sendMessage(" ");
+                player.sendMessage("&8+--------------------------------------+");
+                player.sendMessage(" ");
 
-                    for(int i = 0; i < top3.size(); i++){
+                if (top3.size() >= 2) {
 
-                        ctw.getSendMessage().sendCenteredMessage(player, "     &e&lTop " + i++ + " &7- " + top3.get(i).getKey() + " - " + top3.get(i).getValue());
-                    }
+                    player.sendMessage("&b       1ro Asesino &8- &7" + top3.get(0).getKey() + " &8- &e " + top3.get(0).getValue());
+                    player.sendMessage("&a         2do Asesino &8- &7" + top3.get(1).getKey() + " &8- &e " + top3.get(1).getValue());
+                    player.sendMessage("&d           3er Asesino &8- &7" + top3.get(2).getKey() + " &8- &e " + top3.get(2).getValue());
+
                 } else {
                     ctw.getSendMessage().sendCenteredMessage(player, "&cNo han habido jugadores suficientes...");
                 }
+                player.sendMessage(" ");
+                ctw.getSendMessage().sendCenteredMessage(player, "&8+--------------------------------------+");
             }
         });
     }
 
-    public void resetKills(){
+    public void resetKills() {
 
         kills.clear();
 

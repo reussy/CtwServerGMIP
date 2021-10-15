@@ -1,24 +1,24 @@
 package net.craftersland.ctw.server.game;
 
 import dev.jcsoftware.jscoreboards.JGlobalScoreboard;
+import dev.jcsoftware.jscoreboards.JScoreboardTeam;
 import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-import java.util.Map.Entry;
 
 public class NewScoreboard {
 
+    private final CTW ctw;
     private JGlobalScoreboard scoreboard;
     private String timer;
     private int startTime;
-    private final CTW ctw;
     private String players;
     private String teamblue;
     private String teamred;
@@ -31,19 +31,22 @@ public class NewScoreboard {
     private String woolPickedUp;
     private String woolNotPlaced;
     private String woolPlaced;
+    private JScoreboardTeam teamBlue;
+    private JScoreboardTeam teamRed;
+    private Scoreboard scoreboardBukkit;
 
 
     public NewScoreboard(final CTW ctw) {
 
         this.ctw = ctw;
         this.initializeVariables();
-        alerts();
+        this.alerts();
         this.timerTask();
         this.teamCountTask();
         this.setScoreboard();
+        this.createTeams();
 
     }
-
 
     public void alerts() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, new Runnable() {
@@ -65,7 +68,6 @@ public class NewScoreboard {
         }, 0L, 20);
     }
 
-
     public void initializeVariables() {
 
         this.startTime = 0;
@@ -85,7 +87,6 @@ public class NewScoreboard {
 
     }
 
-
     public void setScoreboard() {
         this.scoreboard = new JGlobalScoreboard(
 
@@ -96,11 +97,10 @@ public class NewScoreboard {
         );
     }
 
-
     public void teamCountTask() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, () -> {
             players = "  " + ChatColor.BLUE + NewScoreboard.this.ctw.getTeamHandler().countBlueTeam() + ChatColor.GRAY + " vs " + ChatColor.RED + NewScoreboard.this.ctw.getTeamHandler().countRedTeam();
-        }, 18L, 20L);
+        }, 18L, 20);
 
     }
 
@@ -110,11 +110,9 @@ public class NewScoreboard {
             String newTime;
 
             int time = this.startTime;
-
             int hour = time / 3600;
             int min = ((time - hour * 3600) / 60);
             int sec = time - (hour * 3600 + min * 60);
-
 
             if (hour == 0) {
 
@@ -140,19 +138,31 @@ public class NewScoreboard {
                     }
                 }
 
-
             } else {
 
                 if (min < 10) {
 
-                    newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + "0" + min + ":" + sec;
+                    if (sec < 10) {
+
+                        newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + "0" + hour + ":" + "0" + min + ":" + "0" + sec;
+                    } else {
+
+                        newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + "0" + hour + ":" + "0" + min + ":" + sec;
+
+                    }
+
                 } else {
-                    newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + hour + ":" + min + ":" + sec;
+
+                    if (sec < 10) {
+
+                        newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + "0" + hour + ":" + min + ":" + "0" + sec;
+                    } else {
+
+                        newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + "0" + hour + ":" + min + ":" + sec;
+
+                    }
 
                 }
-
-
-                newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + "0" + min + ":" + sec;
             }
 
             NewScoreboard.this.timer = newTime;
@@ -259,7 +269,6 @@ public class NewScoreboard {
                     } else {
                         if (alertStatus == 0) {
 
-
                             pinkWool = ChatColor.LIGHT_PURPLE + woolPickedUp + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Pink") + " \u26a0";
 
                         }
@@ -277,19 +286,31 @@ public class NewScoreboard {
         }.runTaskTimerAsynchronously(this.ctw, 0, 20);
     }
 
-
     public void addPlayer(Player player) {
-
         this.scoreboard.addPlayer(player);
+        this.scoreboard.updateScoreboard();
+    }
+
+    public void removePlayer(Player player) {
+        this.scoreboard.removePlayer(player);
+        teamRed.removePlayer(player);
+        teamBlue.removePlayer(player);
         this.scoreboard.updateScoreboard();
 
     }
 
-    public void removePlayer(Player player) {
+    private void createTeams() {
+        teamRed = scoreboard.createTeam("red", (String.valueOf(ChatColor.RED)), ChatColor.RED);
+        teamBlue = scoreboard.createTeam("blue", (String.valueOf(ChatColor.BLUE)), ChatColor.BLUE);
+    }
 
-        this.scoreboard.removePlayer(player);
-        this.scoreboard.updateScoreboard();
+    public void addToRedTeam(final Player p) {
+        teamRed.addPlayer(p);
 
+    }
+
+    public void addToBlueTeam(final Player p) {
+        teamBlue.addPlayer(p);
     }
 
 }

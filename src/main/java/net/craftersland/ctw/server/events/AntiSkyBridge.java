@@ -20,7 +20,13 @@ public class AntiSkyBridge implements Listener {
     public void onPlaceBlock(BlockPlaceEvent e) {
 
         Block block = e.getBlock();
-        if (block.getLocation().getY() >= this.ctw.getMapConfigHandler().pinkWool.getY() + 30) {
+        if (block.getLocation().getY() >= this.ctw.getMapConfigHandler().pinkWool.getY() + 25) {
+
+            if(block.getType() == Material.LAVA_BUCKET ||block.getType() == Material.WATER_BUCKET){
+
+                return;
+            }
+
             new BukkitRunnable() {
                 public void run() {
                     block.setType(Material.AIR);

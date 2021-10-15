@@ -7,10 +7,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,6 +30,12 @@ public class EntityDamage implements Listener {
                 final Player damager = (Player) event.getDamager();
 
                 this.ctw.getLastDamageHandler().setData(p, damager, "melee");
+
+                if (ctw.getTeamHandler().getTeam(p) == ctw.getTeamHandler().getTeam(damager)) {
+
+                    event.setCancelled(true);
+
+                }
             }
         } else if (event.getDamager() instanceof Arrow) {
             this.checkEntity(event);
@@ -44,6 +50,29 @@ public class EntityDamage implements Listener {
         }
     }
 
+    @EventHandler
+    public void onEntityTeam(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+
+            final Player p = (Player) event.getEntity();
+            final Player damager = (Player) event.getDamager();
+
+            if (ctw.getTeamHandler().getTeam(p) == ctw.getTeamHandler().getTeam(damager)) {
+
+                event.setCancelled(true);
+
+            }
+        } else if (event.getDamager() instanceof Projectile) {
+
+            final Player p = (Player) ((Projectile) event.getDamager()).getShooter();
+            final Player damager = (Player) event.getEntity();
+
+            if (ctw.getTeamHandler().getTeam(p) == ctw.getTeamHandler().getTeam(damager)) {
+
+                event.setCancelled(true);
+            }
+        }
+    }
 
     @EventHandler
     public void onItem(PlayerItemDamageEvent event) {
@@ -55,8 +84,6 @@ public class EntityDamage implements Listener {
             event.getPlayer().updateInventory();
         }
     }
-
-
 
     private void checkEntity(final EntityDamageByEntityEvent event) {
         if (event.getEntity().getType() == EntityType.ITEM_FRAME) {
@@ -71,3 +98,4 @@ public class EntityDamage implements Listener {
         }
     }
 }
+

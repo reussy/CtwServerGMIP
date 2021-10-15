@@ -118,7 +118,6 @@ public class Death implements Listener {
                 final Player killer = p.getKiller();
                 final String rawMsg1 = Death.this.ctw.getLanguageHandler().getMessage("ChatMessages.MeleeDeathBroadcast").replace("%WeaponLogo%", Death.this.getWeaponLogo(killer));
                 addPoints(p, killer, rawMsg1);
-                ctw.getPlayerKillsHandler().addKill(killer.getName());
                 Death.this.ctw.getPlayerKillsHandler().addMeleeKill(killer);
                 Death.this.ctw.getMeleeAchievementHandler().checkForAchievements(killer);
                 Death.this.ctw.getOverpoweredAchievementHandler().checkForAchievements(p);
@@ -153,7 +152,6 @@ public class Death implements Listener {
                 Death.this.ctw.getOverpoweredAchievementHandler().checkForAchievements(killer);
                 Death.this.ctw.getDistanceAchievementHandler().checkForAchievements(killer);
                 Death.this.ctw.getKillStreakHandler().addStreakKill(killer);
-                ctw.getPlayerKillsHandler().addKill(killer.getName());
             } else if (p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.VOID || p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.LAVA || p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.FALL) {
                 final Player killer = Death.this.ctw.getLastDamageHandler().getKiller(p);
                 if (killer != null) {
@@ -162,7 +160,6 @@ public class Death implements Listener {
                     final String rawMsg4 = Death.this.ctw.getLanguageHandler().getMessage("ChatMessages.VoidDeathBroadcast").replace("%WeaponLogo%", icon);
                     addPoints(p, killer, rawMsg4);
                     Death.this.ctw.getKillStreakHandler().addStreakKill(killer);
-                    ctw.getPlayerKillsHandler().addKill(killer.getName());
                     final String weaponType = Death.this.ctw.getLastDamageHandler().getWeaponType(p);
                     if (weaponType.matches("melee")) {
                         Death.this.ctw.getPlayerKillsHandler().addMeleeKill(killer);
@@ -209,6 +206,9 @@ public class Death implements Listener {
 
         Death.this.sendDeathMessage(rawMsg6.replaceAll("&", "§"));
         if (this.ctw.getGameEngine().gameStage != GameEngine.GameStages.COUNTDOWN) {
+
+            ctw.getPlayerKillsHandler().addKill(killer.getName());
+
             if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
 
                 Death.this.ctw.getPlayerScoreHandler().takeScore(p, Death.this.ctw.getConfigHandler().getInteger("Rewards.Score.death"));
@@ -221,9 +221,14 @@ public class Death implements Listener {
     }
 
     private void addRegen(Player killer) {
+        if (this.ctw.getGameEngine().gameStage != GameEngine.GameStages.COUNTDOWN) {
+            killer.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
+            killer.getInventory().addItem(new ItemStack(Material.ARROW, 12));
+        }
 
-        killer.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
-        killer.getInventory().addItem(new ItemStack(Material.ARROW, 8));
+        if (killer.getInventory().getHelmet() == null || killer.getInventory().getChestplate() == null || killer.getInventory().getLeggings() == null || killer.getInventory().getBoots() == null) {
+            return;
+        }
 
         if (killer.getInventory().getHelmet().getType() == Material.IRON_HELMET) {
             return;
@@ -266,7 +271,7 @@ public class Death implements Listener {
                     killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 200, 0));
                 }
             }
-        }.runTaskLater(ctw, 0);
+        }.runTaskLater(ctw, 3);
     }
 
     private String getWeaponLogo(final Player p) {

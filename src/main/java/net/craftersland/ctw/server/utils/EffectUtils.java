@@ -32,12 +32,14 @@ public class EffectUtils {
     }
 
     public void sendWoolLostEffect(final Player p) {
-        final Location l = new Location(p.getWorld(), p.getLocation().getX(), p.getLocation().getY() + 0.5, p.getLocation().getZ(), 0.0f, -90.0f);
+        final Location l = new Location(p.getWorld(), p.getLocation().getX(), p.getLocation().getY() + 0.5, p.getLocation().getZ(), 1.0f, -90.0f);
         final CylinderEffect effect = new CylinderEffect(this.ctw.getEffectManager());
         effect.setDynamicOrigin(new DynamicLocation(l));
         effect.particle = ParticleEffect.REDSTONE;
         effect.duration = 40;
         effect.start();
+        ctw.getSoundHandler().broadcastDragonWings();
+
     }
 
     public void woolPlacedEffect(final Location l) {

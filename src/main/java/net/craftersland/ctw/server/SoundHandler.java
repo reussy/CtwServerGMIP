@@ -88,6 +88,13 @@ public class SoundHandler {
         }
     }
 
+    public void broadcastDragon() {
+        this.broadcastSound(Sound.ENDERDRAGON_GROWL);
+    }
+    public void broadcastDragonWings() {
+        this.broadcastSound(Sound.ENDERDRAGON_WINGS);
+    }
+
     public void broadcastLevelUpSound() {
         this.broadcastSound(Sound.LEVEL_UP);
     }
@@ -111,7 +118,7 @@ public class SoundHandler {
                 final List<Player> op = new ArrayList<Player>(Bukkit.getOnlinePlayers());
                 for (final Player p : op) {
                     if (p.isOnline()) {
-                        p.playSound(p.getLocation(), s, 1.0f, 1.0f);
+                        p.playSound(p.getLocation(), s, 3.0f, 1.0f);
                     }
                 }
             }

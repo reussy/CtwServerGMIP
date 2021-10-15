@@ -23,7 +23,7 @@ public class Disconnecting implements Listener {
 
             Disconnecting.this.ctw.getTeamHandler().removeOnDisconnect(p);
             Disconnecting.this.ctw.getNewScoreboardHandler().removePlayer(p);
-            //Disconnecting.this.ctw.getScoreboardHandler().removeFromTeams(p);
+            //Disconnecting.this.ctw.getNewScoreboardHandler().removeFromTeams(p);
             Disconnecting.this.ctw.getWoolHandler().removeBlueTakenByPlayer(p);
             Disconnecting.this.ctw.getWoolHandler().removeCyanTakenByPlayer(p);
             Disconnecting.this.ctw.getWoolHandler().removePinkTakenByPlayer(p);

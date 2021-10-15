@@ -28,14 +28,11 @@ public class BlockPlace implements Listener {
 
                     if (p.isOp() || p.hasPermission("*")) {
                         this.redWoolPlaced(p);
-
                         Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &c" + p.getName() + " &7ha colocado la lana &cRoja")));
 
                     } else if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
                         this.redWoolPlaced(p);
-
                         Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &c" + p.getName() + " &7ha colocado la lana &cRoja")));
-
                         Bukkit.getScheduler().scheduleSyncDelayedTask(ctw, () -> Bukkit.dispatchCommand(ctw.getServer().getConsoleSender(), "mysterydust add " + p.getName() + " " + 4));
                     }else{
                         p.sendMessage(ChatColor.RED + "No puedes colocar la lana porque no hay los jugadores suficientes.");
@@ -122,7 +119,6 @@ public class BlockPlace implements Listener {
                 if (p.getWorld().getBlockAt(BlockPlace.this.ctw.getMapConfigHandler().redWool).getType() == Material.WOOL) {
                     BlockPlace.this.ctw.getWoolHandler().setRedPlaced(p);
                     BlockPlace.this.ctw.getFireworks().spawnRedFirework(BlockPlace.this.ctw.getMapConfigHandler().redSpawn);
-                    BlockPlace.this.ctw.getScoreboardHandler().redWoolPlaced();
                     BlockPlace.this.ctw.getPlayerWoolsPlacedHandler().addWoolPlaced(p);
                     if (BlockPlace.this.ctw.getWoolHandler().isPinkPlaced()) {
                         if (p == BlockPlace.this.ctw.getWoolHandler().getWhoPlacedPinkWool()) {
@@ -158,7 +154,6 @@ public class BlockPlace implements Listener {
                 if (p.getWorld().getBlockAt(BlockPlace.this.ctw.getMapConfigHandler().pinkWool).getType() == Material.WOOL) {
                     BlockPlace.this.ctw.getWoolHandler().setPinkPlaced(p);
                     BlockPlace.this.ctw.getFireworks().spawnRedFirework(BlockPlace.this.ctw.getMapConfigHandler().redSpawn);
-                    BlockPlace.this.ctw.getScoreboardHandler().pinkWoolPlaced();
                     BlockPlace.this.ctw.getPlayerWoolsPlacedHandler().addWoolPlaced(p);
                     if (BlockPlace.this.ctw.getWoolHandler().isRedPlaced()) {
                         if (p == BlockPlace.this.ctw.getWoolHandler().getWhoPlacedRedWool()) {
@@ -194,7 +189,6 @@ public class BlockPlace implements Listener {
                 if (p.getWorld().getBlockAt(BlockPlace.this.ctw.getMapConfigHandler().blueWool).getType() == Material.WOOL) {
                     BlockPlace.this.ctw.getWoolHandler().setBluePlaced(p);
                     BlockPlace.this.ctw.getFireworks().spawnBlueFirework(BlockPlace.this.ctw.getMapConfigHandler().blueSpawn);
-                    BlockPlace.this.ctw.getScoreboardHandler().blueWoolPlaced();
                     BlockPlace.this.ctw.getPlayerWoolsPlacedHandler().addWoolPlaced(p);
                     if (BlockPlace.this.ctw.getWoolHandler().isCyanPlaced()) {
                         if (p == BlockPlace.this.ctw.getWoolHandler().getWhoPlacedCyanWool()) {
@@ -230,7 +224,6 @@ public class BlockPlace implements Listener {
                 if (p.getWorld().getBlockAt(BlockPlace.this.ctw.getMapConfigHandler().cyanWool).getType() == Material.WOOL) {
                     BlockPlace.this.ctw.getWoolHandler().setCyanPlaced(p);
                     BlockPlace.this.ctw.getFireworks().spawnBlueFirework(BlockPlace.this.ctw.getMapConfigHandler().blueSpawn);
-                    BlockPlace.this.ctw.getScoreboardHandler().cyanWoolPlaced();
                     BlockPlace.this.ctw.getPlayerWoolsPlacedHandler().addWoolPlaced(p);
                     if (BlockPlace.this.ctw.getWoolHandler().isBluePlaced()) {
                         if (p == BlockPlace.this.ctw.getWoolHandler().getWhoPlacedBlueWool()) {

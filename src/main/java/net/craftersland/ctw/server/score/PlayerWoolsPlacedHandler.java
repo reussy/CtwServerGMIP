@@ -35,7 +35,7 @@ public class PlayerWoolsPlacedHandler {
 
     public void loadData(final Player p) {
         if (this.ctw.getDataHandler().hasAccount(p)) {
-            final int count = this.ctw.getDataHandler().getWoolsPlaced(p);
+           final int count = this.ctw.getDataHandler().getWoolsPlaced(p);
             this.woolsPlaced.put(p, count);
         } else {
             this.woolsPlaced.put(p, 0);
@@ -43,12 +43,11 @@ public class PlayerWoolsPlacedHandler {
     }
 
     public void addWoolPlaced(final Player p) {
-        final int count = this.woolsPlaced.get(p);
+        int count = this.woolsPlaced.get(p);
         this.woolsPlaced.put(p, count + 1);
     }
 
     public Integer getWoolsPlaced(final Player p) {
-        final int count = this.woolsPlaced.get(p);
-        return count;
+        return this.woolsPlaced.get(p);
     }
 }
