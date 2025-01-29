@@ -46,7 +46,6 @@ public class Joining implements Listener {
             if (event.getResult().toString().equals("ALLOWED")) {
                 final Inventory inv = Joining.this.ctw.getJoinMenu().JoinMenuGUI(p);
                 p.openInventory(inv);
-                p.sendMessage(Joining.this.ctw.getPlayerScoreHandler().getEffect(p));
 
             }
         }, 30);

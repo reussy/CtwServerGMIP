@@ -91,12 +91,6 @@ public class PlayerHandler {
                     } else {
                         p.setGameMode(GameMode.SURVIVAL);
 
-                        String effect = PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p);
-
-                        if (effect != null) {
-                            PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
-                            playerManager.equipParticle(ParticleType.valueOf(effect));
-                        }
 
                     }
                 }
@@ -129,19 +123,24 @@ public class PlayerHandler {
 
     public void respawnRedTeam(final Player p) {
         this.resetPlayer(p);
-        Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
-            @Override
-            public void run() {
+        Bukkit.getScheduler().runTask(this.ctw, () -> {
 
-                if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) {
-                    p.setGameMode(GameMode.ADVENTURE);
-                } else if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
+            if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) {
+                p.setGameMode(GameMode.ADVENTURE);
 
-                    p.setGameMode(GameMode.SURVIVAL);
-                    p.setHealth(p.getMaxHealth());
+            } else if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
+
+                if(PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p) != null){
+
+                    PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
+                    playerManager.unequipParticle();
+
                 }
-                p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().redSpawn);
+
+                p.setGameMode(GameMode.SURVIVAL);
+                p.setHealth(p.getMaxHealth());
             }
+            p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().redSpawn);
         });
 
         if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
@@ -184,7 +183,7 @@ public class PlayerHandler {
                 this.ctw.getStartupKit().giveStartupKit(p);
             }
             if (p.hasPermission("CTW.particles")) {
-                if(!p.hasPermission("JrMOD")) {
+                if (!p.hasPermission("JrMOD")) {
                     this.ctw.getEffectUtils().startVipParticles(p);
                 }
             }
@@ -200,14 +199,20 @@ public class PlayerHandler {
             @Override
             public void run() {
 
-                if(PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN){
+                if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) {
 
                     p.setGameMode(GameMode.ADVENTURE);
-                }
-               else if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
+                } else if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
 
                     p.setGameMode(GameMode.SURVIVAL);
                     p.setHealth(p.getMaxHealth());
+
+                    if(PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p) != null){
+
+                        PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
+                        playerManager.unequipParticle();
+
+                    }
                 }
                 p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().blueSpawn);
             }
@@ -271,12 +276,16 @@ public class PlayerHandler {
         Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
             @Override
             public void run() {
+
+                String effect = PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p);
+
+                if (effect != null) {
+                    PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
+                    playerManager.equipParticle(ParticleType.valueOf(effect));
+                }
+
                 p.setGameMode(GameMode.ADVENTURE);
             }
-
-            // String efecto = obtenerbasededatos
-
-
         });
     }
 

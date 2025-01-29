@@ -2,6 +2,7 @@ package net.craftersland.ctw.server.score;
 
 import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.Comparator;
@@ -49,20 +50,21 @@ public class PlayerKillsHandler {
 
                 player.sendMessage(" ");
                 player.sendMessage(" ");
-                player.sendMessage("&8+--------------------------------------+");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&8+--------------------------------------+"));
                 player.sendMessage(" ");
 
-                if (top3.size() >= 2) {
+                try {
 
-                    player.sendMessage("&b       1ro Asesino &8- &7" + top3.get(0).getKey() + " &8- &e " + top3.get(0).getValue());
-                    player.sendMessage("&a         2do Asesino &8- &7" + top3.get(1).getKey() + " &8- &e " + top3.get(1).getValue());
-                    player.sendMessage("&d           3er Asesino &8- &7" + top3.get(2).getKey() + " &8- &e " + top3.get(2).getValue());
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b       1ro Asesino &8- &7" + top3.get(0).getKey() + " &8- &e " + top3.get(0).getValue()));
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a         2do Asesino &8- &7" + top3.get(1).getKey() + " &8- &e " + top3.get(1).getValue()));
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&d           3er Asesino &8- &7" + top3.get(2).getKey() + " &8- &e " + top3.get(2).getValue()));
 
-                } else {
+                }catch (IndexOutOfBoundsException e) {
                     ctw.getSendMessage().sendCenteredMessage(player, "&cNo han habido jugadores suficientes...");
                 }
+
                 player.sendMessage(" ");
-                ctw.getSendMessage().sendCenteredMessage(player, "&8+--------------------------------------+");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&8+--------------------------------------+"));
             }
         });
     }

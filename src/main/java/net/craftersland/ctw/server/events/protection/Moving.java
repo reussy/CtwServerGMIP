@@ -128,13 +128,13 @@ public class Moving implements Listener {
             ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
             sword.addEnchantment(Enchantment.DURABILITY, 1);
 
-            p.getWorld().dropItemNaturally(p.getLocation().add(0, 3, 0), new ItemStack(Material.WOOL, 1, (short) id));
+            p.getWorld().dropItemNaturally(p.getLocation().add(0, 1, 0), new ItemStack(Material.WOOL, 1, (short) id));
             p.getInventory().setBoots(boots);
             p.getInventory().setChestplate(chestplate);
 
             if (invFull(p)) {
 
-                p.getWorld().dropItemNaturally(p.getLocation().add(0, 3, 0), new ItemStack(Material.GOLDEN_APPLE, 2));
+                p.getWorld().dropItemNaturally(p.getLocation().add(0, 1, 0), new ItemStack(Material.GOLDEN_APPLE, 2));
             } else {
 
                 p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 2));

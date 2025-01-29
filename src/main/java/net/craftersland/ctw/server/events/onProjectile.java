@@ -56,7 +56,7 @@ public class onProjectile implements Listener {
                         @Override
                         public void run() {
                             if (!damager.isDead()) {
-                                if (!(damager.getHealth() == damager.getMaxHealth()) || !(((int) damager.getHealth()) == 0)) {
+                                if (!(damager.getHealth() == damager.getMaxHealth()) && !(((int) damager.getHealth()) == 0)) {
                                     damaged.sendMessage(ChatColor.GRAY + "La vida de " + ChatColor.GREEN + damager.getName() + ChatColor.GRAY + " es " + ChatColor.GREEN + (int) damager.getHealth() + ChatColor.RED + "❤");
                                 }
                             }

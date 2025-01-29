@@ -47,9 +47,7 @@ public class BlockPlace implements Listener {
                     if (p.isOp() || p.hasPermission("*")) {
                         this.pinkWoolPlaced(p);
 
-                        Bukkit.getOnlinePlayers().forEach(player -> {
-                            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &c" + p.getName() + " &7ha colocado la lana &dRosa"));
-                        });
+                        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &c" + p.getName() + " &7ha colocado la lana &dRosa")));
                     } else if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
                         this.pinkWoolPlaced(p);
 
@@ -71,7 +69,6 @@ public class BlockPlace implements Listener {
                         Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &9" + p.getName() + " &7ha colocado la lana &9Azul")));
                     } else if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
                         this.blueWoolPlaced(p);
-
                         Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &9" + p.getName() + " &7ha colocado la lana &9Azul")));
 
                         Bukkit.getScheduler().scheduleSyncDelayedTask(ctw, () -> Bukkit.dispatchCommand(ctw.getServer().getConsoleSender(), "mysterydust add " + p.getName() + " " + 4));

@@ -24,6 +24,7 @@ public class AntiSkyBridge implements Listener {
 
             if(block.getType() == Material.LAVA_BUCKET ||block.getType() == Material.WATER_BUCKET){
 
+                e.setCancelled(true);
                 return;
             }
 
