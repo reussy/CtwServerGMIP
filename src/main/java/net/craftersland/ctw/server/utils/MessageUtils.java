@@ -1,8 +1,5 @@
 package net.craftersland.ctw.server.utils;
 
-import io.puharesource.mc.titlemanager.api.ActionbarTitleObject;
-import io.puharesource.mc.titlemanager.api.TabTitleObject;
-import io.puharesource.mc.titlemanager.api.TitleObject;
 import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.TeamHandler;
 import org.bukkit.Bukkit;
@@ -20,39 +17,25 @@ public class MessageUtils {
     }
 
     public void broadcastTitleMessage(final String title, final String subtitle) {
-        Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                new TitleObject(title, subtitle).broadcast();
-            }
-        });
+        Bukkit.getScheduler().runTask(this.ctw, () -> Bukkit.getOnlinePlayers().forEach(p -> {
+            CTW.tm.sendTitle(p, title);
+            CTW.tm.sendSubtitle(p, subtitle);
+        }));
     }
 
     public void sendTitleMessage(final String title, final String subtitle, final Player p) {
-        Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                new TitleObject(title, subtitle).send(p);
-            }
+        Bukkit.getScheduler().runTask(this.ctw, () -> {
+            CTW.tm.sendTitle(p, title);
+            CTW.tm.sendSubtitle(p, subtitle);
         });
     }
 
     public void broadcastActionBarMessage(final String msg) {
-        Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                new ActionbarTitleObject(msg).broadcast();
-            }
-        });
+        Bukkit.getScheduler().runTask(this.ctw, () -> Bukkit.getOnlinePlayers().forEach(p -> CTW.tm.sendActionbar(p, msg)));
     }
 
     public void sendActionBarMessage(final String msg, final Player p) {
-        Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                new ActionbarTitleObject(msg).send(p);
-            }
-        });
+        Bukkit.getScheduler().runTask(this.ctw, () -> CTW.tm.sendActionbar(p, msg));
     }
 
     public String getTeamColor(final Player p) {
@@ -81,7 +64,7 @@ public class MessageUtils {
         Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
             @Override
             public void run() {
-                new TabTitleObject(MessageUtils.this.ctw.getTabList().getTabTitle(), MessageUtils.this.ctw.getTabList().getTabFooter()).broadcast();
+                Bukkit.getOnlinePlayers().forEach(p -> CTW.tm.setHeaderAndFooter(p, MessageUtils.this.ctw.getTabList().getTabTitle(), MessageUtils.this.ctw.getTabList().getTabFooter()));
             }
         });
     }
@@ -90,7 +73,7 @@ public class MessageUtils {
         Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
             @Override
             public void run() {
-                new TabTitleObject(MessageUtils.this.ctw.getTabList().getTabTitle(), MessageUtils.this.ctw.getTabList().getTabFooter()).send(p);
+                CTW.tm.setHeaderAndFooter(p, MessageUtils.this.ctw.getTabList().getTabTitle(), MessageUtils.this.ctw.getTabList().getTabFooter());
             }
         });
     }

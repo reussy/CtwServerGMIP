@@ -158,7 +158,7 @@
             <artifactId>sample</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/TitleManager-2.0.6.jar</systemPath>
+            <systemPath>${project.basedir}/lib/TitleManager-2.3.6-api.jar</systemPath>
         </dependency>
 
         <dependency>

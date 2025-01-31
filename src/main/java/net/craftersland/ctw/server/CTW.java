@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import de.slikey.effectlib.EffectManager;
+import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
 import net.craftersland.ctw.server.achievements.*;
 import net.craftersland.ctw.server.commands.*;
 import net.craftersland.ctw.server.database.DataHandler;
@@ -51,6 +52,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     private static StartupKit sk;
     private static WoolHandler woolH;
     private static TakenWools tw;
+    public static TitleManagerAPI tm;
     private static MessageUtils mu;
     private static EffectUtils eu;
     private static EffectManager em;
@@ -142,6 +144,9 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         this.loadClass();
         this.loadEvent();
         this.loadCommand();
+
+        tm = (TitleManagerAPI) Bukkit.getServer().getPluginManager().getPlugin("TitleManager");
+
         CTW.log.info("CTWserver has been successfully loaded!");
         this.isEnabled = true;
     }
@@ -277,11 +282,8 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
 
     public void onDisable() {
         this.isDisabling = true;
-        final boolean isEnabled = true;
-        this.isEnabled = isEnabled;
-        if (isEnabled) {
-            CTW.em.dispose();
-        }
+        this.isEnabled = true;
+        CTW.em.dispose();
         CTW.wH.unloadWorldsOnShutDown();
         this.getCleanup().cleanup();
         Bukkit.getScheduler().cancelTasks(this);
