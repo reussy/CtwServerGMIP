@@ -70,6 +70,11 @@ public class Moving implements Listener {
                     RegionManager regionManager = WGBukkit.getRegionManager(p.getWorld());
                     ApplicableRegionSet set = regionManager.getApplicableRegions(p.getLocation());
 
+                    if (set.size() == 0) {
+                        ctw.getLogger().warning("Region not found for player " + p.getName() + " at location " + p.getLocation().toString());
+                        return;
+                    }
+
                     for (ProtectedRegion region : set) {
 
                         if (region.getId().equals("pink")) {
@@ -87,6 +92,11 @@ public class Moving implements Listener {
 
                     RegionManager regionManager = WGBukkit.getRegionManager(p.getWorld());
                     ApplicableRegionSet set = regionManager.getApplicableRegions(p.getLocation());
+
+                    if (set.size() == 0) {
+                        ctw.getLogger().warning("Region not found for player " + p.getName() + " at location " + p.getLocation().toString());
+                        return;
+                    }
 
                     for (ProtectedRegion region : set) {
 
