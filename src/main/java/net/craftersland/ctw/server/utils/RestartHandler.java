@@ -4,7 +4,6 @@ import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
 
 public class RestartHandler {
-    private final CTW pl;
     private static double usagePercent1;
     private static double usagePercent2;
     private static int checkIndex;
@@ -16,6 +15,8 @@ public class RestartHandler {
         RestartHandler.usagePercent2 = 0.0;
         RestartHandler.checkIndex = 1;
     }
+
+    private final CTW pl;
 
     public RestartHandler(final CTW plugin) {
         this.pl = plugin;

@@ -37,6 +37,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     public static Logger log;
     public static SendCenteredMessage sendMessage;
     public static Economy economy;
+    public static TitleManagerAPI tm;
     private static ConfigHandler cH;
     private static SoundHandler soH;
     private static KitConfigHandler kcH;
@@ -52,7 +53,6 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     private static StartupKit sk;
     private static WoolHandler woolH;
     private static TakenWools tw;
-    public static TitleManagerAPI tm;
     private static MessageUtils mu;
     private static EffectUtils eu;
     private static EffectManager em;

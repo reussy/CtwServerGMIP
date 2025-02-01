@@ -3,7 +3,6 @@ package net.craftersland.ctw.server.score;
 import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,11 +46,11 @@ public class PlayerScoreHandler {
         this.score.remove(p);
     }
 
-    public String getEffect(Player p){
+    public String getEffect(Player p) {
         return this.effect.get(p);
     }
 
-    public void removeEffect(Player p){
+    public void removeEffect(Player p) {
         this.effect.remove(p);
     }
 

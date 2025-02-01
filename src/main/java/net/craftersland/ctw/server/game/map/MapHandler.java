@@ -4,17 +4,16 @@ import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.GameEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 
 public class MapHandler {
     private final CTW ctw;
+    public String currentMap;
+    public World currentMapWorld;
     private int mapIndex;
     private int playedMaps;
     private String mapToUnload;
-    public String currentMap;
-    public World currentMapWorld;
 
     public MapHandler(final CTW ctw) {
         this.mapIndex = 0;

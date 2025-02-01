@@ -3,7 +3,6 @@ package net.craftersland.ctw.server.game;
 import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashSet;
 import java.util.Set;

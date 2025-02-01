@@ -4,7 +4,6 @@ import net.craftersland.ctw.server.CTW;
 import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -121,7 +120,8 @@ public class ShooterAchievementHandler {
                 return currentAchievement == ShooterAchievements.SHOOTER2 || currentAchievement == ShooterAchievements.SHOOTER3 || currentAchievement == ShooterAchievements.SHOOTER4;
             } else if (achievement == ShooterAchievements.SHOOTER3) {
                 return currentAchievement == ShooterAchievements.SHOOTER3 || currentAchievement == ShooterAchievements.SHOOTER4;
-            } else return achievement == ShooterAchievements.SHOOTER4 && currentAchievement == ShooterAchievements.SHOOTER4;
+            } else
+                return achievement == ShooterAchievements.SHOOTER4 && currentAchievement == ShooterAchievements.SHOOTER4;
         }
         return false;
     }

@@ -152,6 +152,13 @@ public class SendCenteredMessage {
             this.length = length;
         }
 
+        public static DefaultFontInfo getDefaultFontInfo(char c) {
+            for (DefaultFontInfo dFI : DefaultFontInfo.values()) {
+                if (dFI.getCharacter() == c) return dFI;
+            }
+            return DefaultFontInfo.DEFAULT;
+        }
+
         public char getCharacter() {
             return this.character;
         }
@@ -163,13 +170,6 @@ public class SendCenteredMessage {
         public int getBoldLength() {
             if (this == DefaultFontInfo.SPACE) return this.getLength();
             return this.length + 1;
-        }
-
-        public static DefaultFontInfo getDefaultFontInfo(char c) {
-            for (DefaultFontInfo dFI : DefaultFontInfo.values()) {
-                if (dFI.getCharacter() == c) return dFI;
-            }
-            return DefaultFontInfo.DEFAULT;
         }
     }
 }

@@ -196,7 +196,9 @@ public class WoolHandler {
         this.cyanTakenList.add(p);
     }
 
-    public void removeCyanTakenByPlayer(final Player p) {this.cyanTakenList.remove(p); }
+    public void removeCyanTakenByPlayer(final Player p) {
+        this.cyanTakenList.remove(p);
+    }
 
     public boolean hadCyanTakenByPlayer(final Player p) {
         return this.cyanTakenList.contains(p);

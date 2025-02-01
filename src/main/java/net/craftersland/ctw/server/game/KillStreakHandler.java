@@ -20,8 +20,6 @@ public class KillStreakHandler {
     }
 
 
-
-
     public void addStreakKill(final Player p) {
         if (this.streak.containsKey(p)) {
             final int data = this.streak.get(p);

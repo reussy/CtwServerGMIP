@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server.utils;
 
 import net.craftersland.ctw.server.CTW;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class EconomyHandler {

@@ -1,8 +1,7 @@
 package net.craftersland.ctw.server.utils;
 
 import net.craftersland.ctw.server.CTW;
-import org.apache.commons.io.*;
-import org.bukkit.util.FileUtil;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.util.List;

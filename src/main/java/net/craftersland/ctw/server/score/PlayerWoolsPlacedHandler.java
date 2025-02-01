@@ -35,7 +35,7 @@ public class PlayerWoolsPlacedHandler {
 
     public void loadData(final Player p) {
         if (this.ctw.getDataHandler().hasAccount(p)) {
-           final int count = this.ctw.getDataHandler().getWoolsPlaced(p);
+            final int count = this.ctw.getDataHandler().getWoolsPlaced(p);
             this.woolsPlaced.put(p, count);
         } else {
             this.woolsPlaced.put(p, 0);

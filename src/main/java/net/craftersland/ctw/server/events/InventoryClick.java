@@ -32,7 +32,7 @@ public class InventoryClick implements Listener {
     public void onInventoryClick(final InventoryClickEvent event) {
         final Player p = (Player) event.getWhoClicked();
         if (event.getInventory() != null) {
-            if(event.getCursor().getType() != null) {
+            if (event.getCursor().getType() != null) {
                 if (event.getInventory().getTitle().matches(this.ctw.getKitHandler().getMainMenuTitle()) && p.getGameMode() == GameMode.SURVIVAL) {
                     if (event.isShiftClick()) {
                         event.setCancelled(true);

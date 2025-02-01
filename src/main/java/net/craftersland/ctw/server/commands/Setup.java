@@ -69,7 +69,7 @@ public class Setup implements CommandExecutor {
                         this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
                         p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.SetTimeUsage"));
                     } else if (args[0].matches("setarenaarea")) {
-                            Selection sel = this.ctw.getWorldEditPlugin().getSelection(p);
+                        Selection sel = this.ctw.getWorldEditPlugin().getSelection(p);
                         if (sel != null) {
                             this.ctw.getMapConfigHandler().setArenaArea("ArenaArea", sel);
                             this.ctw.getSoundHandler().sendConfirmSound(p.getLocation(), p);

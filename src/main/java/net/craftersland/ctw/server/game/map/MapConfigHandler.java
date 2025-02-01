@@ -15,6 +15,7 @@ import java.io.File;
 import java.util.*;
 
 public class MapConfigHandler {
+    private final CTW ctw;
     public int maxPlayers;
     public String time;
     public Location spectatorSpawn;
@@ -33,7 +34,6 @@ public class MapConfigHandler {
     public List<CuboidSelection> blueNoAccess;
     public CuboidSelection gameArea;
     public ItemStack[] startupKit;
-    private CTW ctw;
 
     public MapConfigHandler(final CTW ctw) {
         this.protectedAreas = new ArrayList<CuboidSelection>();

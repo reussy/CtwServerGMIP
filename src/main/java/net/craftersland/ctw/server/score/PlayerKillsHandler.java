@@ -50,7 +50,7 @@ public class PlayerKillsHandler {
 
                 player.sendMessage(" ");
                 player.sendMessage(" ");
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&8+--------------------------------------+"));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8+--------------------------------------+"));
                 player.sendMessage(" ");
 
                 try {
@@ -59,12 +59,12 @@ public class PlayerKillsHandler {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a         2do Asesino &8- &7" + top3.get(1).getKey() + " &8- &e " + top3.get(1).getValue()));
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&d           3er Asesino &8- &7" + top3.get(2).getKey() + " &8- &e " + top3.get(2).getValue()));
 
-                }catch (IndexOutOfBoundsException e) {
+                } catch (IndexOutOfBoundsException e) {
                     ctw.getSendMessage().sendCenteredMessage(player, "&cNo han habido jugadores suficientes...");
                 }
 
                 player.sendMessage(" ");
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&8+--------------------------------------+"));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8+--------------------------------------+"));
             }
         });
     }

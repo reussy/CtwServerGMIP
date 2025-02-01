@@ -22,5 +22,5 @@ BlueNoAccess:
 VictoryParticles:
   Red: 0.0#64.0#0.0#-90#1
   Blue: 0.0#64.0#0.0#-90#1
-StartupKit: {}
+StartupKit: { }
 

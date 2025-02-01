@@ -130,7 +130,7 @@ public class PlayerHandler {
 
             } else if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
 
-                if(PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p) != null){
+                if (PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p) != null) {
 
                     PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
                     playerManager.unequipParticle();
@@ -207,7 +207,7 @@ public class PlayerHandler {
                     p.setGameMode(GameMode.SURVIVAL);
                     p.setHealth(p.getMaxHealth());
 
-                    if(PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p) != null){
+                    if (PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p) != null) {
 
                         PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
                         playerManager.unequipParticle();

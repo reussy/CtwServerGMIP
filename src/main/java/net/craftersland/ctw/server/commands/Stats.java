@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server.commands;
 
 import net.craftersland.ctw.server.CTW;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,7 +9,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Stats implements CommandExecutor {
     private final CTW ctw;

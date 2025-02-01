@@ -4,7 +4,6 @@ import net.craftersland.ctw.server.CTW;
 import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -121,7 +120,8 @@ public class WoolAchievementHandler {
                 return currentAchievement == WoolAchievements.WOOLMASTER2 || currentAchievement == WoolAchievements.WOOLMASTER3 || currentAchievement == WoolAchievements.WOOLMASTER4;
             } else if (achievement == WoolAchievements.WOOLMASTER3) {
                 return currentAchievement == WoolAchievements.WOOLMASTER3 || currentAchievement == WoolAchievements.WOOLMASTER4;
-            } else return achievement == WoolAchievements.WOOLMASTER4 && currentAchievement == WoolAchievements.WOOLMASTER4;
+            } else
+                return achievement == WoolAchievements.WOOLMASTER4 && currentAchievement == WoolAchievements.WOOLMASTER4;
         }
         return false;
     }

@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +90,7 @@ public class SoundHandler {
     public void broadcastDragon() {
         this.broadcastSound(Sound.ENDERDRAGON_GROWL);
     }
+
     public void broadcastDragonWings() {
         this.broadcastSound(Sound.ENDERDRAGON_WINGS);
     }

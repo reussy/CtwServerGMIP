@@ -29,25 +29,25 @@ public class PickupItem implements Listener {
 
         Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
 
-                if (event.getItem().getItemStack().getType() == Material.WOOL) {
-                    final ItemStack item = event.getItem().getItemStack();
-                    final Player p = event.getPlayer();
+            if (event.getItem().getItemStack().getType() == Material.WOOL) {
+                final ItemStack item = event.getItem().getItemStack();
+                final Player p = event.getPlayer();
 
-                    if (item.getData().getData() == 14) {
-                        PickupItem.this.ctw.getTakenWools().redWoolTakenCheck(p);
-                    } else if (item.getData().getData() == 6) {
-                        PickupItem.this.ctw.getTakenWools().pinkWoolTakenCheck(p);
-                    } else if (item.getData().getData() == 11) {
-                        PickupItem.this.ctw.getTakenWools().blueWoolTakenCheck(p);
-                    } else if (item.getData().getData() == 9) {
-                        PickupItem.this.ctw.getTakenWools().cyanWoolTakenCheck(p);
-                    }
+                if (item.getData().getData() == 14) {
+                    PickupItem.this.ctw.getTakenWools().redWoolTakenCheck(p);
+                } else if (item.getData().getData() == 6) {
+                    PickupItem.this.ctw.getTakenWools().pinkWoolTakenCheck(p);
+                } else if (item.getData().getData() == 11) {
+                    PickupItem.this.ctw.getTakenWools().blueWoolTakenCheck(p);
+                } else if (item.getData().getData() == 9) {
+                    PickupItem.this.ctw.getTakenWools().cyanWoolTakenCheck(p);
                 }
+            }
         });
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onItem(InventoryPickupItemEvent e){
+    public void onItem(InventoryPickupItemEvent e) {
 
         if (PickupItem.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) {
             e.setCancelled(true);

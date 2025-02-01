@@ -61,7 +61,7 @@ public class Moving implements Listener {
     public void onPlayerMoveWool(final PlayerMoveEvent event) {
         if (!event.isCancelled() && event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 
-            if(ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
+            if (ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
                 final Player p = event.getPlayer();
                 final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
 

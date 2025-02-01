@@ -4,7 +4,7 @@ main: net.craftersland.ctw.server.CTW
 api-version: 1.16
 authors: [ CraftersLand edited Ak ]
 load: POSTWORLD
-softdepend: [Vault, EffectLib, AAC, TitleManager, WorldEdit, PlayerPoints]
+softdepend: [ Vault, EffectLib, AAC, TitleManager, WorldEdit, PlayerPoints ]
 description: Plugin CTW
 
 commands:

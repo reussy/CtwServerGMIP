@@ -15,14 +15,14 @@ public class AntiSkyBridge implements Listener {
     public AntiSkyBridge(final CTW ctw) {
         this.ctw = ctw;
     }
-    
+
     @EventHandler
     public void onPlaceBlock(BlockPlaceEvent e) {
 
         Block block = e.getBlock();
         if (block.getLocation().getY() >= this.ctw.getMapConfigHandler().pinkWool.getY() + 25) {
 
-            if(block.getType() == Material.LAVA_BUCKET ||block.getType() == Material.WATER_BUCKET){
+            if (block.getType() == Material.LAVA_BUCKET || block.getType() == Material.WATER_BUCKET) {
 
                 e.setCancelled(true);
                 return;

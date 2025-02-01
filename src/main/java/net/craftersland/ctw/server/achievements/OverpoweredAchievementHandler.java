@@ -4,7 +4,6 @@ import net.craftersland.ctw.server.CTW;
 import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -121,7 +120,8 @@ public class OverpoweredAchievementHandler {
                 return currentAchievement == OverpoweredAchievements.OVERPOWERED2 || currentAchievement == OverpoweredAchievements.OVERPOWERED3 || currentAchievement == OverpoweredAchievements.OVERPOWERED4;
             } else if (achievement == OverpoweredAchievements.OVERPOWERED3) {
                 return currentAchievement == OverpoweredAchievements.OVERPOWERED3 || currentAchievement == OverpoweredAchievements.OVERPOWERED4;
-            } else return achievement == OverpoweredAchievements.OVERPOWERED4 && currentAchievement == OverpoweredAchievements.OVERPOWERED4;
+            } else
+                return achievement == OverpoweredAchievements.OVERPOWERED4 && currentAchievement == OverpoweredAchievements.OVERPOWERED4;
         }
         return false;
     }

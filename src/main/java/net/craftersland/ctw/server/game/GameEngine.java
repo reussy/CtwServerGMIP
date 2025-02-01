@@ -4,16 +4,15 @@ import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameEngine {
     private final CTW ctw;
-    private int countdown;
     public GameStages gameStage;
     public String motd;
+    private int countdown;
 
     public GameEngine(final CTW ctw) {
         this.countdown = 35;

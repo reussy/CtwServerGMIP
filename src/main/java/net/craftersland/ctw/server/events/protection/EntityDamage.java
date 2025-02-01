@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server.events.protection;
 
 import net.craftersland.ctw.server.CTW;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;

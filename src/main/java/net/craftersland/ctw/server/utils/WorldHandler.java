@@ -1,7 +1,7 @@
 package net.craftersland.ctw.server.utils;
 
 import net.craftersland.ctw.server.CTW;
-import org.apache.commons.io.*;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;

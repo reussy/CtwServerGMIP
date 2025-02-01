@@ -34,7 +34,7 @@ public class BlockPlace implements Listener {
                         this.redWoolPlaced(p);
                         Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &c" + p.getName() + " &7ha colocado la lana &cRoja")));
                         Bukkit.getScheduler().scheduleSyncDelayedTask(ctw, () -> Bukkit.dispatchCommand(ctw.getServer().getConsoleSender(), "mysterydust add " + p.getName() + " " + 4));
-                    }else{
+                    } else {
                         p.sendMessage(ChatColor.RED + "No puedes colocar la lana porque no hay los jugadores suficientes.");
                         event.setCancelled(true);
                     }
@@ -54,7 +54,7 @@ public class BlockPlace implements Listener {
                         Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &c" + p.getName() + " &7ha colocado la lana &dRosa")));
 
                         Bukkit.getScheduler().scheduleSyncDelayedTask(ctw, () -> Bukkit.dispatchCommand(ctw.getServer().getConsoleSender(), "mysterydust add " + p.getName() + " " + 4));
-                    }else{
+                    } else {
                         p.sendMessage(ChatColor.RED + "No puedes colocar la lana porque no hay los jugadores suficientes.");
                         event.setCancelled(true);
                     }
@@ -72,7 +72,7 @@ public class BlockPlace implements Listener {
                         Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &9" + p.getName() + " &7ha colocado la lana &9Azul")));
 
                         Bukkit.getScheduler().scheduleSyncDelayedTask(ctw, () -> Bukkit.dispatchCommand(ctw.getServer().getConsoleSender(), "mysterydust add " + p.getName() + " " + 4));
-                    }else{
+                    } else {
                         p.sendMessage(ChatColor.RED + "No puedes colocar la lana porque no hay los jugadores suficientes.");
                         event.setCancelled(true);
                     }
@@ -90,7 +90,7 @@ public class BlockPlace implements Listener {
 
                         Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4! &9" + p.getName() + " &7ha colocado la lana &3Cyan")));
                         Bukkit.getScheduler().scheduleSyncDelayedTask(ctw, () -> Bukkit.dispatchCommand(ctw.getServer().getConsoleSender(), "mysterydust add " + p.getName() + " " + 4));
-                    }else{
+                    } else {
                         p.sendMessage(ChatColor.RED + "No puedes colocar la lana porque no hay los jugadores suficientes.");
                         event.setCancelled(true);
                     }
