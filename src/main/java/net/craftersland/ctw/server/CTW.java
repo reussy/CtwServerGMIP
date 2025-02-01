@@ -147,6 +147,18 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
 
         tm = (TitleManagerAPI) Bukkit.getServer().getPluginManager().getPlugin("TitleManager");
 
+        if (tm == null) {
+            CTW.log.severe("TitleManager not found! Disabling plugin.");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        if (Bukkit.getPluginManager().getPlugin("JScoreboards") != null) {
+            CTW.log.info("JScoreboards dependency detected.");
+        } else {
+            CTW.log.severe("JScoreboards dependency could not found!");
+        }
+
         CTW.log.info("CTWserver has been successfully loaded!");
         this.isEnabled = true;
     }

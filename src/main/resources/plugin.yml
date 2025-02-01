@@ -21,8 +21,6 @@ commands:
   setup:
     description: si
 
-
-
 permissions:
   CTW.admin:
     description: Admin commands access
