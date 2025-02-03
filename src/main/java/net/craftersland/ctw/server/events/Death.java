@@ -52,7 +52,7 @@ public class Death implements Listener {
     }
 
     @EventHandler
-    public void onMoveEvent(final PlayerMoveEvent event) {
+    public void onMoveEvent(final @NotNull PlayerMoveEvent event) {
         final Player player = event.getPlayer();
         final Location loc = player.getLocation();
         final int y = (int) loc.getY();
@@ -96,12 +96,15 @@ public class Death implements Listener {
         killer.playSound(killer.getLocation(), Sound.LEVEL_UP, 3.0f, 3.0f);
     }
 
-
     @EventHandler
     public void onPlayerDeath(final @NotNull PlayerDeathEvent event) {
         event.setDeathMessage("");
 
         Player player = event.getEntity();
+
+        if (this.ctw.getWoolHandler().listPlayersred().contains(player) || this.ctw.getWoolHandler().listPlayerspink().contains(player) || this.ctw.getWoolHandler().listPlayersblue().contains(player) || this.ctw.getWoolHandler().listPlayerscyan().contains(player)) {
+            Bukkit.getOnlinePlayers().forEach(player1 -> this.ctw.getSoundHandler().sendPickupWoolSound(player1));
+        }
 
         // Eliminar los jugadores de la lista de wools
         this.ctw.getWoolHandler().listPlayersred().remove(player);
