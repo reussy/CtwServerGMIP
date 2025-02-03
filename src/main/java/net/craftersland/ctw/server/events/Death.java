@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Death implements Listener {
 
 
     @EventHandler
-    public void onSplash(PotionSplashEvent e) {
+    public void onSplash(@NotNull PotionSplashEvent e) {
         if (e.getEntity().getShooter() instanceof Player) {
             Player player = ((Player) e.getEntity().getShooter()).getPlayer();
 
@@ -86,7 +87,7 @@ public class Death implements Listener {
     }
 
     @EventHandler
-    public void onDeath(final PlayerDeathEvent e) {
+    public void onDeath(final @NotNull PlayerDeathEvent e) {
         final Player killer = e.getEntity().getKiller();
 
         if (killer == null) {
@@ -97,8 +98,16 @@ public class Death implements Listener {
 
 
     @EventHandler
-    public void onPlayerDeath(final PlayerDeathEvent event) {
+    public void onPlayerDeath(final @NotNull PlayerDeathEvent event) {
         event.setDeathMessage("");
+
+        Player player = event.getEntity();
+
+        // Eliminar los jugadores de la lista de wools
+        this.ctw.getWoolHandler().listPlayersred().remove(player);
+        this.ctw.getWoolHandler().listPlayerspink().remove(player);
+        this.ctw.getWoolHandler().listPlayersblue().remove(player);
+        this.ctw.getWoolHandler().listPlayerscyan().remove(player);
 
         Death.this.ctw.getTakenWools().checkForLostWool(event.getEntity(), event.getDrops());
         event.getDrops().clear();
@@ -194,7 +203,7 @@ public class Death implements Listener {
 
     }
 
-    private void addPoints(Player p, Player killer, String rawMsg4) {
+    private void addPoints(Player p, Player killer, @NotNull String rawMsg4) {
 
         final String rawMsg5 = rawMsg4.replace("%KilledPlayer%", Death.this.ctw.getMessageUtils().getTeamColor(p));
         final String rawMsg6 = rawMsg5.replace("%Killer%", Death.this.ctw.getMessageUtils().getTeamColor(killer));
@@ -202,7 +211,7 @@ public class Death implements Listener {
 
     }
 
-    private void addPoints2(Player p, Player killer, String rawMsg6) {
+    private void addPoints2(Player p, Player killer, @NotNull String rawMsg6) {
 
         Death.this.sendDeathMessage(rawMsg6.replaceAll("&", "§"));
         if (this.ctw.getGameEngine().gameStage != GameEngine.GameStages.COUNTDOWN) {
