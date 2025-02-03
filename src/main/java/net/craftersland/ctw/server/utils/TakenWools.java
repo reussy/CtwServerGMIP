@@ -5,10 +5,14 @@ import net.craftersland.ctw.server.game.TeamHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class TakenWools {
     private final CTW ctw;
@@ -35,7 +39,9 @@ public class TakenWools {
                 this.ctw.getWoolHandler().addRedTakenByPlayer(p);
                 this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.RedWoolCapture").replaceAll("%PlayerName%", p.getName()));
                 this.ctw.getTeamWoolsCaptured().addRedCaptured();
+                this.sendSoundToEnemy("red");
             }
+            setNewEquipment(p);
         }
     }
 
@@ -57,7 +63,9 @@ public class TakenWools {
                 this.ctw.getWoolHandler().addPinkTakenByPlayer(p);
                 this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.PinkWoolCapture").replaceAll("%PlayerName%", p.getName()));
                 this.ctw.getTeamWoolsCaptured().addRedCaptured();
+                this.sendSoundToEnemy("red");
             }
+            setNewEquipment(p);
         }
     }
 
@@ -79,7 +87,9 @@ public class TakenWools {
                 this.ctw.getWoolHandler().addBlueTakenByPlayer(p);
                 this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.BlueWoolCapture").replaceAll("%PlayerName%", p.getName()));
                 this.ctw.getTeamWoolsCaptured().addBlueCaptured();
+                this.sendSoundToEnemy("blue");
             }
+            setNewEquipment(p);
         }
     }
 
@@ -101,7 +111,9 @@ public class TakenWools {
                 this.ctw.getWoolHandler().addCyanTakenByPlayer(p);
                 this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.CyanWoolCapture").replaceAll("%PlayerName%", p.getName()));
                 this.ctw.getTeamWoolsCaptured().addBlueCaptured();
+                this.sendSoundToEnemy("blue");
             }
+            setNewEquipment(p);
         }
     }
 
@@ -168,12 +180,38 @@ public class TakenWools {
         }
     }
 
-    private boolean woolLost(final List<ItemStack> items, final byte data) {
+    private boolean woolLost(final @NotNull List<ItemStack> items, final byte data) {
         for (final ItemStack i : items) {
             if (i != null && i.getType() == Material.WOOL && i.getData().getData() == data) {
                 return true;
             }
         }
         return false;
+    }
+
+    private void setNewEquipment(@NotNull Player p) {
+
+        if (CTW.getPlayersAlreadyEquipped().contains(p.getUniqueId())) return;
+
+        this.ctw.getSoundHandler().sendNewEquipmentSound(p.getLocation(), p);
+
+        ItemStack ironChestplate = new ItemStack(Material.IRON_CHESTPLATE);
+        ironChestplate.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+        ItemStack ironBoot = new ItemStack(Material.IRON_BOOTS);
+        ironBoot.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+
+        p.getInventory().setChestplate(ironChestplate);
+        p.getInventory().setBoots(ironBoot);
+        p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 64));
+
+        CTW.getPlayersAlreadyEquipped().add(p.getUniqueId());
+    }
+
+    private void sendSoundToEnemy(@NotNull String team){
+        if (team.equalsIgnoreCase("red")){
+            this.ctw.getTeamHandler().blueTeamCopy().forEach(player -> this.ctw.getSoundHandler().sendPickupWoolSound(player));
+        } else {
+            this.ctw.getTeamHandler().redTeamCopy().forEach(player -> this.ctw.getSoundHandler().sendPickupWoolSound(player));
+        }
     }
 }

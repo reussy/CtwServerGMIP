@@ -33,6 +33,8 @@ public class Respawning implements Listener {
             event.setRespawnLocation(this.ctw.getMapConfigHandler().spectatorSpawn);
             this.ctw.getPlayerHandler().respawnSpectator(p);
         }
+
+        CTW.getPlayersAlreadyEquipped().remove(p.getUniqueId());
     }
 
     private void loadChunkCheck(final Location l) {

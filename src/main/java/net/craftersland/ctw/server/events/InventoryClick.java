@@ -5,10 +5,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryClick implements Listener {
@@ -25,6 +27,13 @@ public class InventoryClick implements Listener {
 
             e.setCancelled(true);
 
+        }
+    }
+
+    @EventHandler
+    public void cancelRemoveArmor(InventoryClickEvent e) {
+        if (e.getSlotType() == InventoryType.SlotType.ARMOR) {
+            e.setCancelled(true);
         }
     }
 

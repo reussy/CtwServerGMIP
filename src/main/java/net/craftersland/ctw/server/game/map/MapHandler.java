@@ -4,8 +4,10 @@ import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.GameEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.nio.file.FileSystems;
 
 public class MapHandler {
     private final CTW ctw;
@@ -37,7 +39,7 @@ public class MapHandler {
 
     private void loadFirstMap() {
         final String copyMapName = "Map-" + this.currentMap;
-        final File worldToCopy = new File("Maps" + System.getProperty("file.separator") + this.currentMap);
+        final File worldToCopy = new File("Maps" + FileSystems.getDefault().getSeparator() + this.currentMap);
         this.ctw.getWorldHandler().copyWorld(copyMapName, worldToCopy);
         this.ctw.getWorldHandler().loadWorld(copyMapName);
         Bukkit.getScheduler().runTaskLater(this.ctw, new Runnable() {
@@ -87,48 +89,32 @@ public class MapHandler {
     public void loadNextMap() {
         this.mapToUnload = this.currentMapWorld.getName();
         final String copyMapName = "Map-" + this.currentMap;
-        final File worldToCopy = new File("Maps" + System.getProperty("file.separator") + this.currentMap);
+        final File worldToCopy = new File("Maps" + FileSystems.getDefault().getSeparator() + this.currentMap);
         this.ctw.getWorldHandler().copyWorld(copyMapName, worldToCopy);
-        Bukkit.getScheduler().runTaskLater(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                MapHandler.this.ctw.getWorldHandler().loadWorld(copyMapName);
-            }
-        }, 20L);
+        Bukkit.getScheduler().runTaskLater(this.ctw, () -> MapHandler.this.ctw.getWorldHandler().loadWorld(copyMapName), 20L);
     }
 
     public void startNextMap() {
-        Bukkit.getScheduler().runTaskAsynchronously(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                final String mapName = "Map-" + MapHandler.this.currentMap;
-                MapHandler.this.currentMapWorld = Bukkit.getWorld(mapName);
-                MapHandler.this.ctw.getMapConfigHandler().loadConfig(MapHandler.this.currentMap);
-                MapHandler.this.setMapTime();
-                MapHandler.this.ctw.getWoolHandler().resetWoolsStats();
-                MapHandler.this.ctw.getNewScoreboardHandler().initializeVariables();
-                //MapHandler.this.ctw.getScoreboardHandler().startTimer();
-                MapHandler.this.ctw.getPlayerHandler().respawnAllPlayers();
-                MapHandler.this.ctw.getWoolHandler().removeWools();
-                MapHandler.this.ctw.getTeamScoreHandler().resetScores();
-                MapHandler.this.ctw.getTeamKillsHandler().resetScores();
-                MapHandler.this.ctw.getTeamWoolsCaptured().resetData();
-                MapHandler.this.ctw.getTeamDamageHandler().resetData();
-                Bukkit.getScheduler().runTaskLater(MapHandler.this.ctw, new Runnable() {
-                    @Override
-                    public void run() {
-                        if (MapHandler.this.mapToUnload != null) {
-                            MapHandler.this.ctw.getWorldHandler().unloadWorld(MapHandler.this.mapToUnload);
-                            Bukkit.getScheduler().runTaskLaterAsynchronously(MapHandler.this.ctw, new Runnable() {
-                                @Override
-                                public void run() {
-                                    MapHandler.this.ctw.getWorldHandler().deleteWorld(MapHandler.this.mapToUnload);
-                                }
-                            }, 20L);
-                        }
-                    }
-                }, 100L);
-            }
+        Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
+            final String mapName = "Map-" + MapHandler.this.currentMap;
+            MapHandler.this.currentMapWorld = Bukkit.getWorld(mapName);
+            MapHandler.this.ctw.getMapConfigHandler().loadConfig(MapHandler.this.currentMap);
+            MapHandler.this.setMapTime();
+            MapHandler.this.ctw.getWoolHandler().resetWoolsStats();
+            MapHandler.this.ctw.getNewScoreboardHandler().initializeVariables();
+            //MapHandler.this.ctw.getScoreboardHandler().startTimer();
+            MapHandler.this.ctw.getPlayerHandler().respawnAllPlayers();
+            MapHandler.this.ctw.getWoolHandler().removeWools();
+            MapHandler.this.ctw.getTeamScoreHandler().resetScores();
+            MapHandler.this.ctw.getTeamKillsHandler().resetScores();
+            MapHandler.this.ctw.getTeamWoolsCaptured().resetData();
+            MapHandler.this.ctw.getTeamDamageHandler().resetData();
+            Bukkit.getScheduler().runTaskLater(MapHandler.this.ctw, () -> {
+                if (MapHandler.this.mapToUnload != null) {
+                    MapHandler.this.ctw.getWorldHandler().unloadWorld(MapHandler.this.mapToUnload);
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(MapHandler.this.ctw, () -> MapHandler.this.ctw.getWorldHandler().deleteWorld(MapHandler.this.mapToUnload), 20L);
+                }
+            }, 100L);
         });
     }
 }

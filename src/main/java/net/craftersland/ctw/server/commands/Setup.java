@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -138,7 +139,7 @@ public class Setup implements CommandExecutor {
                     } else if (args[0].matches("setminhight")) {
                         this.setNumberToConfig(args[1], p, "ProtectedHight.minHight");
                     } else if (args[0].matches("settime")) {
-                        this.settime(args[1], p);
+                        this.setTime(args[1], p);
                     } else if (args[0].matches("delprotectedarea")) {
                         this.removeArea(args[1], p, "ProtectedAreas");
                     } else if (args[0].matches("delrednoaccess")) {
@@ -165,41 +166,38 @@ public class Setup implements CommandExecutor {
 
     private void save() {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "save-all");
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, new Runnable() {
-            @Override
-            public void run() {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, () -> {
+            try {
+                FileUtils.deleteDirectory(new File("Maps" + FileSystems.getDefault().getSeparator() + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "data"));
+                FileUtils.deleteDirectory(new File("Maps" + FileSystems.getDefault().getSeparator() + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "region"));
+            } catch (Exception e) {
+                e.printStackTrace();
                 try {
-                    FileUtils.deleteDirectory(new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "data"));
-                    FileUtils.deleteDirectory(new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "region"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    try {
-                        FileUtils.copyDirectory(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "data"), new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "data"));
-                        FileUtils.copyDirectory(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "region"), new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "region"));
-                        FileUtils.copyFile(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "level.dat"), new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "level.dat"));
-                    } catch (Exception e2) {
-                        CTW.log.warning("Error saving map! Error: " + e2.getMessage());
-                        e2.printStackTrace();
-                    }
-                    return;
-                } finally {
-                    try {
-                        FileUtils.copyDirectory(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "data"), new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "data"));
-                        FileUtils.copyDirectory(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "region"), new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "region"));
-                        FileUtils.copyFile(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "level.dat"), new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "level.dat"));
-                    } catch (Exception e2) {
-                        CTW.log.warning("Error saving map! Error: " + e2.getMessage());
-                        e2.printStackTrace();
-                    }
-                }
-                try {
-                    FileUtils.copyDirectory(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "data"), new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "data"));
-                    FileUtils.copyDirectory(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "region"), new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "region"));
-                    FileUtils.copyFile(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "level.dat"), new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "level.dat"));
+                    FileUtils.copyDirectory(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "data"), new File("Maps" + FileSystems.getDefault().getSeparator() + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "data"));
+                    FileUtils.copyDirectory(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "region"), new File("Maps" + FileSystems.getDefault().getSeparator() + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "region"));
+                    FileUtils.copyFile(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "level.dat"), new File("Maps" + FileSystems.getDefault().getSeparator() + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "level.dat"));
                 } catch (Exception e2) {
                     CTW.log.warning("Error saving map! Error: " + e2.getMessage());
                     e2.printStackTrace();
                 }
+                return;
+            } finally {
+                try {
+                    FileUtils.copyDirectory(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "data"), new File("Maps" + FileSystems.getDefault().getSeparator() + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "data"));
+                    FileUtils.copyDirectory(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "region"), new File("Maps" + FileSystems.getDefault().getSeparator() + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "region"));
+                    FileUtils.copyFile(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "level.dat"), new File("Maps" + FileSystems.getDefault().getSeparator() + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "level.dat"));
+                } catch (Exception e2) {
+                    CTW.log.warning("Error saving map! Error: " + e2.getMessage());
+                    e2.printStackTrace();
+                }
+            }
+            try {
+                FileUtils.copyDirectory(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "data"), new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "data"));
+                FileUtils.copyDirectory(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "region"), new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "region"));
+                FileUtils.copyFile(new File("Map-" + Setup.this.ctw.getMapHandler().currentMap + FileSystems.getDefault().getSeparator() + "level.dat"), new File("Maps" + System.getProperty("file.separator") + Setup.this.ctw.getMapHandler().currentMap + System.getProperty("file.separator") + "level.dat"));
+            } catch (Exception e2) {
+                CTW.log.warning("Error saving map! Error: " + e2.getMessage());
+                e2.printStackTrace();
             }
         }, 20L);
         this.ctw.getMapConfigHandler().reloadConfig();
@@ -251,7 +249,7 @@ public class Setup implements CommandExecutor {
             final List<String> noRedArea = this.ctw.getMapConfigHandler().getArea("RedNoAccess", p.getLocation());
             final List<String> noBlueArea = this.ctw.getMapConfigHandler().getArea("BlueNoAccess", p.getLocation());
             if (!protectedAreas.isEmpty()) {
-                msg.add(new StringBuilder().append(ChatColor.DARK_PURPLE).append(ChatColor.BOLD).append("Protected areas:").toString());
+                msg.add(String.valueOf(ChatColor.DARK_PURPLE) + ChatColor.BOLD + "Protected areas:");
                 int no = 0;
                 for (final String s : protectedAreas) {
                     msg.add(" " + no + ". " + s);
@@ -259,7 +257,7 @@ public class Setup implements CommandExecutor {
                 }
             }
             if (!noRedArea.isEmpty()) {
-                msg.add(new StringBuilder().append(ChatColor.DARK_PURPLE).append(ChatColor.BOLD).append("Red no access areas:").toString());
+                msg.add(String.valueOf(ChatColor.DARK_PURPLE) + ChatColor.BOLD + "Red no access areas:");
                 int no = 0;
                 for (final String s : noRedArea) {
                     msg.add(" " + no + ". " + s);
@@ -267,7 +265,7 @@ public class Setup implements CommandExecutor {
                 }
             }
             if (!noBlueArea.isEmpty()) {
-                msg.add(new StringBuilder().append(ChatColor.DARK_PURPLE).append(ChatColor.BOLD).append("Blue no access areas:").toString());
+                msg.add(String.valueOf(ChatColor.DARK_PURPLE) + ChatColor.BOLD + "Blue no access areas:");
                 int no = 0;
                 for (final String s : noBlueArea) {
                     msg.add(" " + no + ". " + s);
@@ -302,7 +300,7 @@ public class Setup implements CommandExecutor {
         }
     }
 
-    private void settime(final String data, final Player p) {
+    private void setTime(final String data, final Player p) {
         if (data.matches("day")) {
             this.ctw.getMapConfigHandler().setString("day", "Time");
             this.ctw.getSoundHandler().sendConfirmSound(p.getLocation(), p);

@@ -15,11 +15,11 @@ public class Kits implements CommandExecutor {
     }
 
     public boolean onCommand(final CommandSender sender, final Command command, final String cmdlabel, final String[] args) {
-        if (cmdlabel.equalsIgnoreCase("kit")) {
+        if (cmdlabel.equalsIgnoreCase("shop")) {
             if (sender instanceof Player) {
                 final Player p = (Player) sender;
                 if (args.length == 0) {
-                    this.ctw.getKitHandler().sendMainMenu(p);
+                    this.ctw.getKitHandler().sendKitMenu(p);
                 } else {
                     this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
                     p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.KitUsage"));

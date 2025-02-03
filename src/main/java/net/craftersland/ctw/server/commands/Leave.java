@@ -35,14 +35,11 @@ public class Leave implements CommandExecutor {
     }
 
     private void teleportToLobby(final Player p) {
-        Bukkit.getScheduler().runTaskAsynchronously(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                final ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                out.writeUTF("Connect");
-                out.writeUTF(Leave.this.ctw.getLobbyServersHandler().getLobbyToTeleport());
-                p.sendPluginMessage(Leave.this.ctw, "BungeeCord", out.toByteArray());
-            }
+        Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
+            final ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            out.writeUTF("Connect");
+            out.writeUTF(Leave.this.ctw.getLobbyServersHandler().getLobbyToTeleport());
+            p.sendPluginMessage(Leave.this.ctw, "BungeeCord", out.toByteArray());
         });
     }
 }

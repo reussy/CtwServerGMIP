@@ -11,7 +11,7 @@ public class KillStreakHandler {
     private final Map<Player, Integer> streak;
 
     public KillStreakHandler(final CTW ctw) {
-        this.streak = new HashMap<Player, Integer>();
+        this.streak = new HashMap<>();
         this.ctw = ctw;
     }
 

@@ -1,6 +1,7 @@
 package net.craftersland.ctw.server.game;
 
 import net.craftersland.ctw.server.CTW;
+import net.craftersland.ctw.server.utils.RestartHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -23,21 +24,18 @@ public class GameEngine {
     }
 
     private void gameEngineTask() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                if (GameEngine.this.gameStage != GameStages.LOADING && GameEngine.this.gameStage != GameStages.IDLE) {
-                    if (GameEngine.this.gameStage == GameStages.COUNTDOWN) {
-                        GameEngine.this.countdownStage();
-                    } else if (GameEngine.this.gameStage == GameStages.RUNNING) {
-                        GameEngine.this.checkForWoolsPlaced();
-                        final String rawMotd = GameEngine.this.ctw.getLanguageHandler().getMessage("MOTD-Status.Status").replace("%MapName%", GameEngine.this.ctw.getMapHandler().currentMap);
-                        GameEngine.this.motd = rawMotd.replaceAll("&", "§");
-                    }
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, () -> {
+            if (GameEngine.this.gameStage != GameStages.LOADING && GameEngine.this.gameStage != GameStages.IDLE) {
+                if (GameEngine.this.gameStage == GameStages.COUNTDOWN) {
+                    GameEngine.this.countdownStage();
+                } else if (GameEngine.this.gameStage == GameStages.RUNNING) {
+                    GameEngine.this.checkForWoolsPlaced();
+                    final String rawMotd = GameEngine.this.ctw.getLanguageHandler().getMessage("MOTD-Status.Status").replace("%MapName%", GameEngine.this.ctw.getMapHandler().currentMap);
+                    GameEngine.this.motd = rawMotd.replaceAll("&", "§");
                 }
-                GameEngine.this.ctw.getJoinMenu().menuUpdateTask();
-                GameEngine.this.ctw.getRestartHandler().checkMemoryUsage();
             }
+            GameEngine.this.ctw.getJoinMenu().menuUpdateTask();
+            GameEngine.this.ctw.getRestartHandler().checkMemoryUsage();
         }, 20L, 20L);
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, () -> {
@@ -72,7 +70,7 @@ public class GameEngine {
                 if (!rawMSG.isEmpty()) {
                     for (String s : rawMSG) {
                         s = s.replace("%MapName%", ChatColor.YELLOW + this.ctw.getMapHandler().currentMap);
-                        processedMSG.add(s.replace("%countdown%", new StringBuilder().append(this.countdown).toString()));
+                        processedMSG.add(s.replace("%countdown%", String.valueOf(this.countdown)));
                     }
                     for (final String s : processedMSG) {
                         Bukkit.broadcastMessage(s.replaceAll("&", "§"));
@@ -127,6 +125,11 @@ public class GameEngine {
                 this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.CountdownOver.title").replaceAll("&", "§"), this.ctw.getLanguageHandler().getMessage("TitleMessages.CountdownOver.subtitle").replaceAll("&", "§"));
                 this.ctw.getSoundHandler().broadcastLevelUpSound();
                 ctw.map = this.ctw.getMapHandler().currentMap;
+
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    this.ctw.getEconomyHandler().resetCoins(player);
+                    CTW.log.info("Coins reset for all players.");
+                });
 
             } else {
                 --this.countdown;

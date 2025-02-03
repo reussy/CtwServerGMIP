@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,14 @@ public class SoundHandler {
 
     public void sendLavaPopSound(final Location l, final Player p) {
         p.playSound(l, Sound.LAVA_POP, 1.0f, 5.0f);
+    }
+
+    public void sendNewEquipmentSound(final Location l, final Player p) {
+        p.playSound(l, Sound.SPLASH, 2.0f, 2.0f);
+    }
+
+    public void sendPickupWoolSound(@NotNull Player p) {
+        p.playSound(p.getLocation(), Sound.VILLAGER_NO, 1.0F, 3.0F);
     }
 
     public void sendDoubleKillSound(final Location l, final Player p) {

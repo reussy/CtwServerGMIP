@@ -2,21 +2,26 @@ package net.craftersland.ctw.server.game;
 
 import dev.jcsoftware.jscoreboards.JGlobalScoreboard;
 import dev.jcsoftware.jscoreboards.JScoreboardTeam;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class NewScoreboard {
 
     private final CTW ctw;
     private JGlobalScoreboard scoreboard;
+    private String map;
     private String timer;
     private int startTime;
     private String players;
@@ -37,7 +42,6 @@ public class NewScoreboard {
 
 
     public NewScoreboard(final CTW ctw) {
-
         this.ctw = ctw;
         this.initializeVariables();
         this.alerts();
@@ -45,7 +49,7 @@ public class NewScoreboard {
         this.teamCountTask();
         this.setScoreboard();
         this.createTeams();
-
+        this.setScoreboard();
     }
 
     public void alerts() {
@@ -71,8 +75,9 @@ public class NewScoreboard {
     public void initializeVariables() {
 
         this.startTime = 0;
-        this.timer = "cargando";
-        this.players = "cargando";
+        this.map = ChatColor.translateAlternateColorCodes('&', "&f" + this.ctw.getMapHandler().currentMap);
+        this.timer = "Cargando...";
+        this.players = "Cargando...";
         this.woolNotPlaced = this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolNotPlaced");
         this.woolPickedUp = ctw.getLanguageHandler().getMessage("Scoreboard.WoolPickedUp");
         this.woolPlaced = this.ctw.getLanguageHandler().getMessage("Scoreboard.WoolPlaced");
@@ -89,19 +94,21 @@ public class NewScoreboard {
 
     public void setScoreboard() {
         this.scoreboard = new JGlobalScoreboard(
-
-                () -> String.valueOf(ChatColor.GOLD) + ChatColor.BOLD + "CTW [" + ChatColor.WHITE + Bukkit.getServer().getOnlinePlayers().size() + ChatColor.GOLD + ChatColor.BOLD + "]",
-
-                () -> Arrays.asList(" ", date, " ", timer, players, " ", teamblue, cyanWool, blueWool, " ", teamred, pinkWool, redWool, " ", "&emc.gamesmadeinpola.com")
-
+                () -> replacePlaceholders(this.ctw.getLanguageHandler().getMessage("Scoreboard.Title")),
+                () -> replacePlaceholders(this.ctw.getLanguageHandler().getMessageList("Scoreboard.Lines"))
         );
     }
 
     public void teamCountTask() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, () -> {
-            players = "  " + ChatColor.BLUE + NewScoreboard.this.ctw.getTeamHandler().countBlueTeam() + ChatColor.GRAY + " vs " + ChatColor.RED + NewScoreboard.this.ctw.getTeamHandler().countRedTeam();
-        }, 18L, 20);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, () -> players = "  " + ChatColor.BLUE + NewScoreboard.this.ctw.getTeamHandler().countBlueTeam() + ChatColor.GRAY + " vs " + ChatColor.RED + NewScoreboard.this.ctw.getTeamHandler().countRedTeam(), 18L, 20);
+    }
 
+    private int getRedTeamSize() {
+        return this.ctw.getTeamHandler().countRedTeam();
+    }
+
+    private int getBlueTeamSize() {
+        return this.ctw.getTeamHandler().countBlueTeam();
     }
 
     public void timerTask() {
@@ -118,50 +125,33 @@ public class NewScoreboard {
 
                 if (min < 10) {
                     if (sec < 10) {
-
-                        newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + "0" + min + ":" + "0" + sec;
-
+                        newTime = ChatColor.WHITE + "0" + min + ":" + "0" + sec;
                     } else {
-
-                        newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + "0" + min + ":" + sec;
-
+                        newTime = ChatColor.WHITE + "0" + min + ":" + sec;
                     }
                 } else {
 
                     if (sec < 10) {
-
-                        newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + min + ":" + "0" + sec;
+                        newTime = ChatColor.WHITE + "" + min + ":" + "0" + sec;
 
                     } else {
-
-                        newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + min + ":" + sec;
+                        newTime =  ChatColor.WHITE + "" + min + ":" + sec;
                     }
                 }
 
             } else {
-
                 if (min < 10) {
-
                     if (sec < 10) {
-
-                        newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + "0" + hour + ":" + "0" + min + ":" + "0" + sec;
+                        newTime = ChatColor.WHITE + "0" + hour + ":" + "0" + min + ":" + "0" + sec;
                     } else {
-
-                        newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + "0" + hour + ":" + "0" + min + ":" + sec;
-
+                        newTime = ChatColor.WHITE + "0" + hour + ":" + "0" + min + ":" + sec;
                     }
-
                 } else {
-
                     if (sec < 10) {
-
-                        newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + "0" + hour + ":" + min + ":" + "0" + sec;
+                        newTime = ChatColor.WHITE + "0" + hour + ":" + min + ":" + "0" + sec;
                     } else {
-
-                        newTime = String.valueOf(ChatColor.WHITE) + ChatColor.BOLD + ctw.getMapHandler().currentMap + ChatColor.WHITE + ": " + "0" + hour + ":" + min + ":" + sec;
-
+                        newTime = ChatColor.WHITE + "0" + hour + ":" + min + ":" + sec;
                     }
-
                 }
             }
 
@@ -176,7 +166,7 @@ public class NewScoreboard {
         new BukkitRunnable() {
             public void run() {
                 if (!NewScoreboard.this.ctw.getWoolHandler().isCyanPlaced()) {
-                    if (NewScoreboard.this.ctw.getWoolHandler().listPlayerscyan().size() == 0) {
+                    if (NewScoreboard.this.ctw.getWoolHandler().listPlayerscyan().isEmpty()) {
 
                         NewScoreboard.this.cyanWool = ChatColor.DARK_AQUA + NewScoreboard.this.woolNotPlaced + ChatColor.GRAY + " " + NewScoreboard.this.ctw.getLanguageHandler().getMessage("Words.Cyan");
 
@@ -185,10 +175,7 @@ public class NewScoreboard {
                             NewScoreboard.this.cyanWool = ChatColor.DARK_AQUA + NewScoreboard.this.woolPickedUp + ChatColor.GRAY + " " + NewScoreboard.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + " \u26a0";
                         }
                         if (NewScoreboard.this.alertStatus == 1) {
-
-
                             NewScoreboard.this.cyanWool = ChatColor.DARK_AQUA + NewScoreboard.this.woolPickedUp + ChatColor.GRAY + " " + NewScoreboard.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + ChatColor.RED + " \u26a0";
-
                         }
                     }
                 } else {
@@ -204,21 +191,14 @@ public class NewScoreboard {
         new BukkitRunnable() {
             public void run() {
                 if (!ctw.getWoolHandler().isBluePlaced()) {
-                    if (ctw.getWoolHandler().listPlayersblue().size() == 0) {
-
+                    if (ctw.getWoolHandler().listPlayersblue().isEmpty()) {
                         blueWool = ChatColor.BLUE + woolNotPlaced + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Blue");
-
                     } else {
                         if (alertStatus == 0) {
-
-
                             blueWool = ChatColor.BLUE + woolPickedUp + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Blue") + " \u26a0";
-
                         }
                         if (alertStatus == 1) {
-
                             blueWool = ChatColor.BLUE + woolPickedUp + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Blue") + ChatColor.RED + " \u26a0";
-
                         }
                     }
                 } else {
@@ -233,16 +213,11 @@ public class NewScoreboard {
         new BukkitRunnable() {
             public void run() {
                 if (!ctw.getWoolHandler().isRedPlaced()) {
-                    if (ctw.getWoolHandler().listPlayersred().size() == 0) {
-
+                    if (ctw.getWoolHandler().listPlayersred().isEmpty()) {
                         redWool = ChatColor.RED + woolNotPlaced + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Red");
-
                     } else {
                         if (alertStatus == 0) {
-
-
                             redWool = ChatColor.RED + woolPickedUp + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Red") + " \u26a0";
-
                         }
                         if (alertStatus == 1) {
 
@@ -262,20 +237,14 @@ public class NewScoreboard {
         new BukkitRunnable() {
             public void run() {
                 if (!ctw.getWoolHandler().isPinkPlaced()) {
-                    if (ctw.getWoolHandler().listPlayerspink().size() == 0) {
-
+                    if (ctw.getWoolHandler().listPlayerspink().isEmpty()) {
                         pinkWool = ChatColor.LIGHT_PURPLE + woolNotPlaced + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Pink");
-
                     } else {
                         if (alertStatus == 0) {
-
                             pinkWool = ChatColor.LIGHT_PURPLE + woolPickedUp + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Pink") + " \u26a0";
-
                         }
                         if (alertStatus == 1) {
-
                             pinkWool = ChatColor.LIGHT_PURPLE + woolPickedUp + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Pink") + ChatColor.RED + " \u26a0";
-
                         }
                     }
                 } else {
@@ -313,4 +282,22 @@ public class NewScoreboard {
         teamBlue.addPlayer(p);
     }
 
+    private @NotNull String replacePlaceholders(@NotNull String message) {
+       return message
+                .replace("%Date%", this.date)
+                .replace("%MapName%", this.map)
+                .replace("%Time%", this.timer)
+                .replace("%RedWoolStatus%", this.redWool)
+                .replace("%PinkWoolStatus%", this.pinkWool)
+                .replace("%BlueWoolStatus%", this.blueWool)
+                .replace("%CyanWoolStatus%", this.cyanWool)
+                .replace("%BlueTeamPlayers%", String.valueOf(this.getBlueTeamSize()))
+                .replace("%RedTeamPlayers%", String.valueOf(this.getRedTeamSize()));
+    }
+
+    @Contract("_ -> param1")
+    private @NotNull List<String> replacePlaceholders(@NotNull List<String> messages) {
+        messages.replaceAll(this::replacePlaceholders);
+        return messages;
+    }
 }

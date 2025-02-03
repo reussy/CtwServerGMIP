@@ -35,6 +35,12 @@ public class EconomyHandler {
         }
     }
 
+    public void resetCoins(final Player p) {
+        if (this.ctw.isValutEnabled) {
+            CTW.economy.withdrawPlayer(p, CTW.economy.getBalance(p));
+        }
+    }
+
     public Double getCoins(final Player p) {
         Double balance = 0.0;
         if (this.ctw.isValutEnabled) {

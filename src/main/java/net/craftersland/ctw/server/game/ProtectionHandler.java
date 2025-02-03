@@ -5,7 +5,7 @@ import net.craftersland.ctw.server.CTW;
 import org.bukkit.Location;
 
 public class ProtectionHandler {
-    private CTW ctw;
+    private final CTW ctw;
 
     public ProtectionHandler(final CTW ctw) {
         this.ctw = ctw;

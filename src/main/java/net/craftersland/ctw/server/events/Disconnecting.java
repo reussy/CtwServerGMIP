@@ -1,11 +1,14 @@
 package net.craftersland.ctw.server.events;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.PluginDisableEvent;
 
 public class Disconnecting implements Listener {
     private final CTW ctw;
@@ -44,5 +47,19 @@ public class Disconnecting implements Listener {
             Disconnecting.this.ctw.getEffectUtils().removeEffectsOnDisconnect(p);
 
         });
+    }
+
+    @EventHandler
+    public void onDisable(PluginDisableEvent event) {
+        if (!Bukkit.getOnlinePlayers().isEmpty()) {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
+                    final ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                    out.writeUTF("Connect");
+                    out.writeUTF(this.ctw.getLobbyServersHandler().getLobbyToTeleport());
+                    player.sendPluginMessage(this.ctw, "BungeeCord", out.toByteArray());
+                });
+            });
+        }
     }
 }

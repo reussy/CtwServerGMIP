@@ -21,13 +21,13 @@ public class WoolHandler {
     private final List<Player> cyanTakenList;
 
     public WoolHandler(final CTW ctw) {
-        this.woolsTaken = new HashMap<Wools, Boolean>();
-        this.woolsPlaced = new HashMap<Wools, Boolean>();
-        this.woolsPlacedByPlayer = new HashMap<Wools, Player>();
-        this.redTakenList = new ArrayList<Player>();
-        this.pinkTakenList = new ArrayList<Player>();
-        this.blueTakenList = new ArrayList<Player>();
-        this.cyanTakenList = new ArrayList<Player>();
+        this.woolsTaken = new HashMap<>();
+        this.woolsPlaced = new HashMap<>();
+        this.woolsPlacedByPlayer = new HashMap<>();
+        this.redTakenList = new ArrayList<>();
+        this.pinkTakenList = new ArrayList<>();
+        this.blueTakenList = new ArrayList<>();
+        this.cyanTakenList = new ArrayList<>();
         this.ctw = ctw;
         this.resetWoolsStats();
     }
@@ -52,14 +52,11 @@ public class WoolHandler {
     }
 
     public void removeWools() {
-        Bukkit.getScheduler().runTaskLater(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().redWool).setType(Material.AIR);
-                WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().pinkWool).setType(Material.AIR);
-                WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().blueWool).setType(Material.AIR);
-                WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().cyanWool).setType(Material.AIR);
-            }
+        Bukkit.getScheduler().runTaskLater(this.ctw, () -> {
+            WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().redWool).setType(Material.AIR);
+            WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().pinkWool).setType(Material.AIR);
+            WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().blueWool).setType(Material.AIR);
+            WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().cyanWool).setType(Material.AIR);
         }, 10L);
     }
 

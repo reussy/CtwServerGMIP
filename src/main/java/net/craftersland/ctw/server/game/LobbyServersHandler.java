@@ -19,10 +19,10 @@ public class LobbyServersHandler {
     private String lobbyToTeleport;
 
     public LobbyServersHandler(final CTW ctw) {
-        this.lobbysAddress = new HashMap<String, String>();
-        this.onlineLobbys = new HashSet<String>();
-        this.lobbysPlayerCount = new HashMap<String, Integer>();
-        this.mapForSorting = new HashMap<Integer, String>();
+        this.lobbysAddress = new HashMap<>();
+        this.onlineLobbys = new HashSet<>();
+        this.lobbysPlayerCount = new HashMap<>();
+        this.mapForSorting = new HashMap<>();
         this.lobbyToTeleport = "lobby";
         this.ctw = ctw;
         this.lobbyToTeleport = ctw.getConfigHandler().getStringList("LobbyServers").get(0);

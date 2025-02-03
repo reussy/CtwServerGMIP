@@ -23,7 +23,6 @@ public class AntiSkyBridge implements Listener {
         if (block.getLocation().getY() >= this.ctw.getMapConfigHandler().pinkWool.getY() + 25) {
 
             if (block.getType() == Material.LAVA_BUCKET || block.getType() == Material.WATER_BUCKET) {
-
                 e.setCancelled(true);
                 return;
             }

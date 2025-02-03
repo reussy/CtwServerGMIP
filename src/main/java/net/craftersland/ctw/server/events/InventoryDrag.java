@@ -25,5 +25,9 @@ public class InventoryDrag implements Listener {
                 event.setCancelled(true);
             }
         }
+        // Cancel move armor
+        if (event.getInventorySlots().contains(5) || event.getInventorySlots().contains(6) || event.getInventorySlots().contains(7) || event.getInventorySlots().contains(8)) {
+            event.setCancelled(true);
+        }
     }
 }

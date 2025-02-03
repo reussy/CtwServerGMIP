@@ -1,6 +1,7 @@
 package net.craftersland.ctw.server;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import de.slikey.effectlib.EffectManager;
@@ -30,6 +31,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -114,6 +117,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     private static LobbyServersHandler lsH;
     private static WorldEditPlugin we;
     private static RestartHandler rH;
+    private static Set<UUID> playersAlreadyEquipped;
 
     static {
         CTW.economy = null;
@@ -153,10 +157,11 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
             return;
         }
 
-        if (Bukkit.getPluginManager().getPlugin("JScoreboards") != null) {
-            CTW.log.info("JScoreboards dependency detected.");
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            CTW.log.info("PlaceholderAPI found and is enabled.");
         } else {
-            CTW.log.severe("JScoreboards dependency could not found!");
+            getLogger().severe("Could not find PlaceholderAPI! This plugin is required."); //
+            Bukkit.getPluginManager().disablePlugin(this);
         }
 
         CTW.log.info("CTWserver has been successfully loaded!");
@@ -174,7 +179,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         this.getCommand("g").setExecutor(gChat);
         this.getCommand("leave").setExecutor(leave);
         this.getCommand("stats").setExecutor(stats);
-        this.getCommand("kit").setExecutor(kit);
+        this.getCommand("shop").setExecutor(kit);
         this.getCommand("setup").setExecutor(setup);
     }
 
@@ -203,7 +208,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         pm.registerEvents(new FireSpread(this), this);
         pm.registerEvents(new Moving(this), this);
         pm.registerEvents(new PistonExtend(this), this);
-        pm.registerEvents(new InventoryClose(this), this);
+        //pm.registerEvents(new InventoryClose(this), this);
         pm.registerEvents(new LiquidFlow(this), this);
         pm.registerEvents(new InventoryDrag(this), this);
         pm.registerEvents(new ShootBow(this), this);
@@ -212,7 +217,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     }
 
     public void loadClass() {
-
+        CTW.playersAlreadyEquipped = new HashSet<>();
         CTW.cH = new ConfigHandler(this);
         CTW.lH = new LanguageHandler(this);
         CTW.soH = new SoundHandler(this);
@@ -293,6 +298,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     }
 
     public void onDisable() {
+
         this.isDisabling = true;
         this.isEnabled = true;
         CTW.em.dispose();
@@ -301,6 +307,10 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         Bukkit.getScheduler().cancelTasks(this);
         HandlerList.unregisterAll(this);
         CTW.log.info("CTWserver has been disabled");
+    }
+
+    public static Set<UUID> getPlayersAlreadyEquipped() {
+        return playersAlreadyEquipped;
     }
 
     public ConfigHandler getConfigHandler() {

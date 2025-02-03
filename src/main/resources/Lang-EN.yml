@@ -4,6 +4,28 @@
 
 #Chat messages. Full color and format codes support.
 #Codes: http://minecraft.gamepedia.com/Formatting_codes#Color_codes
+
+Scoreboard:
+  #Health is shown under the player name.
+  Health: '&cHP'
+  #Wool symbols.
+  WoolNotPlaced: ' â¬œ'
+  WoolPickedUp: ' âƒž'
+  WoolPlaced: ' â¬›'
+  Title: '&6&lCapture The Wool'
+  Lines:
+    - '&7Map: &e%MapName%'
+    - '&7Time: &e%Time%'
+    - '&r '
+    - '&cRed Team (%RedTeamPlayers%)'
+    - '%RedWoolStatus%'
+    - '%PinkWoolStatus%'
+    - '&9&lBlue Team (%BlueTeamPlayers%)'
+    - '%BlueWoolStatus%'
+    - '%CyanWoolStatus%'
+    - '&r '
+    - 'mc.serverip.com'
+
 ChatMessages:
   #This message is sent when you join the game. Each line represents a new row, you can add/remove lines if you need.
   #To disable set to:  JoinMessage: {}
@@ -129,12 +151,23 @@ ChatMessages:
     - '&97. &cSet cyan wool location:&9 /setup setcyanwool'
     - '&98. &cSet arena area:&9 /setup setarenaarea'
     - '&99. &cSet protected area:&9 /setup setprotectedarea'
+    - '&910. &cDelete protected area:&9 /setup delprotectedarea'
     - '&910. &cSet red no access area:&9 /setup setrednoaccess'
+    - '&911. &cDelete red no access area:&9 /setup delrednoaccess'
+    - '&913. &cSet particles red victory:&9 /setup setredparticles'
+    - '&916. &cSet red wool spawner:&9 /setup setredwoolspawner'
+    - '&917. &cSet pink wool spawner:&9 /setup setpinkwoolspawner'
     - '&911. &cSet blue no access area:&9 /setup setbluenoaccess'
+    - '&912. &cDelete blue no access area:&9 /setup delbluenoaccess'
+    - '&914. &cSet particles blue victory:&9 /setup setblueparticles'
+    - '&915. &cSet blue wool spawner:&9 /setup setbluewoolspawner'
+    - '&916. &cSet cyan wool spawner:&9 /setup setcyanwoolspawner'
     - '&912. &cSet startup kit:&9 /setup setstartupkit'
+    - '&912. &cSet team max players:&9 /setup setteammaxplayers'
+    - '&912. &cSet max hight:&9 /setup setmaxhight'
+    - '&912. &cSet min hight:&9 /setup setminhight'
+    - '&912. &cSet time:&9 /setup settime'
     - '&912. &cSave settings:&9 /setup save'
-    - ' '
-    - '&e&lFull setup details on plugin spigot page!'
     - ' '
   #Game Stats broadcast messages
   GameStats:
@@ -148,8 +181,6 @@ ChatMessages:
     - ' '
     - ' &7Check your stats: &f/stats'
     - ' '
-
-
 
 #Title/subtitle messages. Full color codes support.
 #Codes: http://minecraft.gamepedia.com/Formatting_codes#Color_codes
@@ -242,7 +273,6 @@ TitleMessages:
     title: ''
     subtitle: '&cUnstoppable!'
 
-
 #Action Bar messages
 ActionBarMessages:
   SpectatorJoinMessage: '&6&lJoin the game with: &e&l/join'
@@ -260,26 +290,14 @@ ActionBarMessages:
   BlueWoolLost: '%PlayerName% &7&llost the &1&lBLUE Wool!'
   CyanWoolLost: '%PlayerName% &7&llost the &3&lCYAN Wool!'
 
-
 #Tab messages
 TabList:
   Header: '&6&lMAP: &e&l%MapName%'
   Footer: '&fWINS: &c%RedTeamVictory%&7 vs &1%BlueTeamVictory%'
 
-
 #Kick messages
 KickMessages:
   Error: '&cThere was an error! Please re-join.'
-
-
-#Scoreboard text.
-Scoreboard:
-  #Health is shown under the player name.
-  Health: '&cHP'
-  #Wool symbols.
-  WoolNotPlaced: ' â¬œ'
-  WoolPickedUp: ' âƒž'
-  WoolPlaced: ' â¬›'
 
 #Words
 Words:

@@ -13,8 +13,8 @@ public class ProtectedMoveHandler {
     private final Set<Player> msgCooldown;
 
     public ProtectedMoveHandler(final CTW ctw) {
-        this.players = new HashSet<Player>();
-        this.msgCooldown = new HashSet<Player>();
+        this.players = new HashSet<>();
+        this.msgCooldown = new HashSet<>();
         this.ctw = ctw;
     }
 
@@ -32,24 +32,16 @@ public class ProtectedMoveHandler {
 
     public void sendWarningMsg(final Player p) {
         if (!this.msgCooldown.contains(p)) {
-            Bukkit.getScheduler().runTaskAsynchronously(this.ctw, new Runnable() {
-                @Override
-                public void run() {
-                    ProtectedMoveHandler.this.msgCooldown.add(p);
-                    p.sendMessage(ProtectedMoveHandler.this.ctw.getLanguageHandler().getMessage("ChatMessages.CantEnterArea").replaceAll("&", "§"));
-                    ProtectedMoveHandler.this.removeMsgCooldown(p);
-                    ProtectedMoveHandler.this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
-                }
+            Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
+                ProtectedMoveHandler.this.msgCooldown.add(p);
+                p.sendMessage(ProtectedMoveHandler.this.ctw.getLanguageHandler().getMessage("ChatMessages.CantEnterArea").replaceAll("&", "§"));
+                ProtectedMoveHandler.this.removeMsgCooldown(p);
+                ProtectedMoveHandler.this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
             });
         }
     }
 
     private void removeMsgCooldown(final Player p) {
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                ProtectedMoveHandler.this.msgCooldown.remove(p);
-            }
-        }, 100L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, () -> ProtectedMoveHandler.this.msgCooldown.remove(p), 100L);
     }
 }

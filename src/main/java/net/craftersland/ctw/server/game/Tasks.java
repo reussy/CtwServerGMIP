@@ -26,12 +26,7 @@ public class Tasks {
     }
 
     private void GameStage() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.broadcastMessage(String.valueOf(Tasks.this.ctw.getGameEngine().gameStage));
-            }
-        }, 20L, 100);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, () -> Bukkit.broadcastMessage(String.valueOf(Tasks.this.ctw.getGameEngine().gameStage)), 20L, 100);
     }
 
 

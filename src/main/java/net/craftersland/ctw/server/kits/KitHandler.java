@@ -11,31 +11,31 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class KitHandler {
-    private CTW ctw;
+    private final CTW ctw;
     private Inventory mainMenu;
-    private Map<Player, Inventory> kitMenu;
-    private Map<Player, Inventory> enchantMenu;
+    private final Map<Player, Inventory> kitMenu;
+    private final Map<Player, Inventory> enchantMenu;
 
     public KitHandler(final CTW ctw) {
         this.mainMenu = null;
-        this.kitMenu = new HashMap<Player, Inventory>();
-        this.enchantMenu = new HashMap<Player, Inventory>();
+        this.kitMenu = new HashMap<>();
+        this.enchantMenu = new HashMap<>();
         this.ctw = ctw;
     }
 
     private void createMainMenu(final Player p) {
         if (this.mainMenu == null) {
-            final Inventory inv = Bukkit.createInventory((InventoryHolder) p, 9, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.MainMenu").replaceAll("&", "§"));
-            this.mainMenu = inv;
+            this.mainMenu = Bukkit.createInventory(p, 9, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.MainMenu").replaceAll("&", "§"));
         }
     }
 
-    private ItemStack setKitMenuItem() {
+    private @NotNull ItemStack setKitMenuItem() {
         final ItemStack item = new ItemStack(Material.CHEST);
         final ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(this.ctw.getLanguageHandler().getMessage("MenuGUI.ItemNames.KitMenuItem").replaceAll("&", "§"));
@@ -43,7 +43,7 @@ public class KitHandler {
         return item;
     }
 
-    private ItemStack setTrashMenuItem() {
+    private @NotNull ItemStack setTrashMenuItem() {
         final ItemStack item = new ItemStack(Material.FLOWER_POT_ITEM);
         final ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(this.ctw.getLanguageHandler().getMessage("MenuGUI.ItemNames.TrashMenuItem").replaceAll("&", "§"));
@@ -51,7 +51,7 @@ public class KitHandler {
         return item;
     }
 
-    private ItemStack setEnchantsMenuItem() {
+    private @NotNull ItemStack setEnchantsMenuItem() {
         final ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
         final ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(this.ctw.getLanguageHandler().getMessage("MenuGUI.ItemNames.EnchantsMenuItem").replaceAll("&", "§"));
@@ -107,21 +107,19 @@ public class KitHandler {
     }
 
     public void sendTrashMenu(final Player p) {
-        final Inventory inv = Bukkit.createInventory((InventoryHolder) p, 27, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.TrashMenu").replaceAll("&", "§"));
+        final Inventory inv = Bukkit.createInventory(p, 27, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.TrashMenu").replaceAll("&", "§"));
         p.openInventory(inv);
         this.ctw.getSoundHandler().sendChestOpenSound(p.getLocation(), p);
     }
 
     private Inventory createKitsMenu(final Player p) {
-        final Double bal = CTW.economy.getBalance((OfflinePlayer) p);
-        final Inventory inv = Bukkit.createInventory((InventoryHolder) p, 45, String.valueOf(this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.KitsMenu").replaceAll("&", "§")) + ChatColor.GRAY + " - " + ChatColor.YELLOW + bal.intValue() + " \u26c0");
-        return inv;
+        final double bal = CTW.economy.getBalance(p);
+        return Bukkit.createInventory(p, 45, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.KitsMenu").replaceAll("&", "§") + ChatColor.GRAY + " - " + ChatColor.YELLOW + (int) bal + " \u26c0");
     }
 
     private Inventory createEnchantsMenu(final Player p) {
-        final Double bal = CTW.economy.getBalance((OfflinePlayer) p);
-        final Inventory inv = Bukkit.createInventory((InventoryHolder) p, 27, String.valueOf(this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.EnchantsMenu").replaceAll("&", "§")) + ChatColor.GRAY + " - " + ChatColor.YELLOW + bal.intValue() + " \u26c0");
-        return inv;
+        final double bal = CTW.economy.getBalance(p);
+        return Bukkit.createInventory(p, 27, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.EnchantsMenu").replaceAll("&", "§") + ChatColor.GRAY + " - " + ChatColor.YELLOW + (int) bal + " \u26c0");
     }
 
     public void removeInventory(final Player p) {
@@ -163,12 +161,10 @@ public class KitHandler {
     }
 
     public Inventory getKitsInventory(final Player p) {
-        final Inventory inv = this.kitMenu.get(p);
-        return inv;
+        return this.kitMenu.get(p);
     }
 
     public Inventory getEnchantsInventory(final Player p) {
-        final Inventory inv = this.enchantMenu.get(p);
-        return inv;
+        return this.enchantMenu.get(p);
     }
 }

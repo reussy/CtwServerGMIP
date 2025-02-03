@@ -71,7 +71,6 @@ public class Moving implements Listener {
                     ApplicableRegionSet set = regionManager.getApplicableRegions(p.getLocation());
 
                     if (set.size() == 0) {
-                        ctw.getLogger().warning("Region not found for player " + p.getName() + " at location " + p.getLocation().toString());
                         return;
                     }
 
@@ -94,7 +93,6 @@ public class Moving implements Listener {
                     ApplicableRegionSet set = regionManager.getApplicableRegions(p.getLocation());
 
                     if (set.size() == 0) {
-                        ctw.getLogger().warning("Region not found for player " + p.getName() + " at location " + p.getLocation().toString());
                         return;
                     }
 
