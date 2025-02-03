@@ -128,7 +128,6 @@ public class GameEngine {
 
                 Bukkit.getOnlinePlayers().forEach(player -> {
                     this.ctw.getEconomyHandler().resetCoins(player);
-                    CTW.log.info("Coins reset for all players.");
                 });
 
             } else {
