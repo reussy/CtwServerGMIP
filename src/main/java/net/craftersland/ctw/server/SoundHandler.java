@@ -60,6 +60,10 @@ public class SoundHandler {
         p.playSound(p.getLocation(), Sound.VILLAGER_NO, 1.0F, 3.0F);
     }
 
+    public void sendPlayerWoolDeathSound(@NotNull Player p) {
+        p.playSound(p.getLocation(), Sound.VILLAGER_DEATH, 1.0F, 3.0F);
+    }
+
     public void sendDoubleKillSound(final Location l, final Player p) {
         if (this.pl.getConfigHandler().getBoolean("Settings.EnableKillStreakSounds")) {
             p.playSound(l, Sound.CREEPER_DEATH, 1.0f, 1.0f);

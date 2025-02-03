@@ -103,7 +103,7 @@ public class Death implements Listener {
         Player player = event.getEntity();
 
         if (this.ctw.getWoolHandler().listPlayersred().contains(player) || this.ctw.getWoolHandler().listPlayerspink().contains(player) || this.ctw.getWoolHandler().listPlayersblue().contains(player) || this.ctw.getWoolHandler().listPlayerscyan().contains(player)) {
-            Bukkit.getOnlinePlayers().forEach(player1 -> this.ctw.getSoundHandler().sendPickupWoolSound(player1));
+            Bukkit.getOnlinePlayers().forEach(player1 -> this.ctw.getSoundHandler().sendPlayerWoolDeathSound(player1));
         }
 
         // Eliminar los jugadores de la lista de wools
