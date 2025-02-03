@@ -2,7 +2,6 @@ package net.craftersland.ctw.server.game;
 
 import dev.jcsoftware.jscoreboards.JGlobalScoreboard;
 import dev.jcsoftware.jscoreboards.JScoreboardTeam;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,7 +12,6 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +47,6 @@ public class NewScoreboard {
         this.teamCountTask();
         this.setScoreboard();
         this.createTeams();
-        this.setScoreboard();
     }
 
     public void alerts() {
@@ -167,9 +164,7 @@ public class NewScoreboard {
             public void run() {
                 if (!NewScoreboard.this.ctw.getWoolHandler().isCyanPlaced()) {
                     if (NewScoreboard.this.ctw.getWoolHandler().listPlayerscyan().isEmpty()) {
-
                         NewScoreboard.this.cyanWool = ChatColor.DARK_AQUA + NewScoreboard.this.woolNotPlaced + ChatColor.GRAY + " " + NewScoreboard.this.ctw.getLanguageHandler().getMessage("Words.Cyan");
-
                     } else {
                         if (NewScoreboard.this.alertStatus == 0) {
                             NewScoreboard.this.cyanWool = ChatColor.DARK_AQUA + NewScoreboard.this.woolPickedUp + ChatColor.GRAY + " " + NewScoreboard.this.ctw.getLanguageHandler().getMessage("Words.Cyan") + " \u26a0";
@@ -179,12 +174,12 @@ public class NewScoreboard {
                         }
                     }
                 } else {
-
                     cyanWool = ChatColor.DARK_AQUA + woolPlaced + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Cyan");
                     this.cancel();
                 }
             }
         }.runTaskTimerAsynchronously(this.ctw, 0, 20);
+        this.scoreboard.updateScoreboard();
     }
 
     public void blueWoolTaken() {
@@ -207,6 +202,7 @@ public class NewScoreboard {
                 }
             }
         }.runTaskTimerAsynchronously(this.ctw, 0, 20);
+        this.scoreboard.updateScoreboard();
     }
 
     public void redWoolTaken() {
@@ -231,6 +227,7 @@ public class NewScoreboard {
                 }
             }
         }.runTaskTimerAsynchronously(this.ctw, 0, 20);
+        this.scoreboard.updateScoreboard();
     }
 
     public void pinkWoolTaken() {
@@ -253,6 +250,7 @@ public class NewScoreboard {
                 }
             }
         }.runTaskTimerAsynchronously(this.ctw, 0, 20);
+        this.scoreboard.updateScoreboard();
     }
 
     public void addPlayer(Player player) {
@@ -275,7 +273,6 @@ public class NewScoreboard {
 
     public void addToRedTeam(final Player p) {
         teamRed.addPlayer(p);
-
     }
 
     public void addToBlueTeam(final Player p) {
