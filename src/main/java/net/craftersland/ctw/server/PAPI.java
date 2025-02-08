@@ -61,6 +61,8 @@ public class PAPI extends PlaceholderExpansion {
             return plugin.getTeamHandler().blueTeamCopy().size() + "";
         }
 
+        // Player specific placeholders
+
         if (!player.isOnline()){
             return "Offline";
         }

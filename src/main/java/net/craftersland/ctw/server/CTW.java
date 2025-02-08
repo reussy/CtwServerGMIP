@@ -159,6 +159,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             CTW.log.info("PlaceholderAPI found and is enabled.");
+            new PAPI(this).register();
         } else {
             getLogger().severe("Could not find PlaceholderAPI! This plugin is required."); //
             Bukkit.getPluginManager().disablePlugin(this);
