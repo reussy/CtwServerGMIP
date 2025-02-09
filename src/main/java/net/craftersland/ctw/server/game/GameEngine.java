@@ -4,7 +4,9 @@ import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.utils.RestartHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ public class GameEngine {
     public String motd;
     private int countdown;
 
-    public GameEngine(final CTW ctw) {
+    public GameEngine(final @NotNull CTW ctw) {
         this.countdown = 35;
         this.ctw = ctw;
         this.motd = ctw.getLanguageHandler().getMessage("MOTD-Status.Loading").replaceAll("&", "§");
@@ -125,8 +127,10 @@ public class GameEngine {
                 this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.CountdownOver.title").replaceAll("&", "§"), this.ctw.getLanguageHandler().getMessage("TitleMessages.CountdownOver.subtitle").replaceAll("&", "§"));
                 this.ctw.getSoundHandler().broadcastLevelUpSound();
                 ctw.map = this.ctw.getMapHandler().currentMap;
+                setPlayerSurvival();
 
                 Bukkit.getOnlinePlayers().forEach(player -> {
+                    if (this.ctw.getTeamHandler().isSpectator(player)) return;
                     this.ctw.getEconomyHandler().resetCoins(player);
                 });
 
@@ -153,6 +157,9 @@ public class GameEngine {
             this.setWonSpectators(red, blue);
             this.spawnRedFireworks(red);
             ctw.getSoundHandler().broadcastDragon();
+            Bukkit.getScheduler().runTask(ctw, this::setPlayerSpectator);
+
+
             final List<String> rawMsg = new ArrayList<String>(this.ctw.getLanguageHandler().getMessageList("ChatMessages.RedVictory"));
             if (!rawMsg.isEmpty()) {
                 for (final String s : rawMsg) {
@@ -208,7 +215,7 @@ public class GameEngine {
         }
     }
 
-    private void spawnRedFireworks(final List<Player> red) {
+    private void spawnRedFireworks(final @NotNull List<Player> red) {
         if (!red.isEmpty()) {
             for (final Player p : red) {
                 if (p != null && p.isOnline()) {
@@ -221,7 +228,7 @@ public class GameEngine {
         }
     }
 
-    private void spawnBlueFireworks(final List<Player> blue) {
+    private void spawnBlueFireworks(final @NotNull List<Player> blue) {
         if (!blue.isEmpty()) {
             for (final Player p : blue) {
                 if (p != null && p.isOnline()) {
@@ -234,7 +241,7 @@ public class GameEngine {
         }
     }
 
-    private void setWonSpectators(final List<Player> red, final List<Player> blue) {
+    private void setWonSpectators(final @NotNull List<Player> red, final List<Player> blue) {
         if (!red.isEmpty()) {
             for (final Player p : red) {
                 if (p != null && p.isOnline()) {
@@ -259,6 +266,22 @@ public class GameEngine {
         COUNTDOWN("COUNTDOWN", 4);
 
         GameStages(final String s, final int n) {
+        }
+    }
+
+    private void setPlayerSpectator(){
+        for (Player p : Bukkit.getOnlinePlayers()){
+            if (this.ctw.getTeamHandler().isBlueTeam(p) || this.ctw.getTeamHandler().isRedTeam(p)){
+                p.setGameMode(GameMode.SPECTATOR);
+            }
+        }
+    }
+
+    private void setPlayerSurvival(){
+        for (Player p : Bukkit.getOnlinePlayers()){
+            if (this.ctw.getTeamHandler().isBlueTeam(p) || this.ctw.getTeamHandler().isRedTeam(p)){
+                p.setGameMode(GameMode.SURVIVAL);
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ public class KillStreakHandler {
     }
 
     public void resetData(final Player p) {
-        this.streak.put(p, 0);
+        this.streak.replace(p, 0);
     }
 
 
@@ -31,7 +31,7 @@ public class KillStreakHandler {
     }
 
     public Integer getStreak(final Player p) {
-        return this.streak.get(p);
+        return this.streak.getOrDefault(p, 0);
     }
 
     public void removeOnDisconnect(final Player p) {
