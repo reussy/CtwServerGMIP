@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import de.slikey.effectlib.EffectManager;
@@ -136,6 +135,10 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         this.isDisabling = false;
         this.isValutEnabled = false;
         this.isAacEnabled = false;
+    }
+
+    public static Set<UUID> getPlayersAlreadyEquipped() {
+        return playersAlreadyEquipped;
     }
 
     public void onEnable() {
@@ -308,10 +311,6 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         Bukkit.getScheduler().cancelTasks(this);
         HandlerList.unregisterAll(this);
         CTW.log.info("CTWserver has been disabled");
-    }
-
-    public static Set<UUID> getPlayersAlreadyEquipped() {
-        return playersAlreadyEquipped;
     }
 
     public ConfigHandler getConfigHandler() {

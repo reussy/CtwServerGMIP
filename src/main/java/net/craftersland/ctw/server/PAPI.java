@@ -63,7 +63,7 @@ public class PAPI extends PlaceholderExpansion {
 
         // Player specific placeholders
 
-        if (!player.isOnline()){
+        if (!player.isOnline()) {
             return "Offline";
         }
 

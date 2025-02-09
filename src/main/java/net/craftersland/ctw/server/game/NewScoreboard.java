@@ -132,7 +132,7 @@ public class NewScoreboard {
                         newTime = ChatColor.WHITE + "" + min + ":" + "0" + sec;
 
                     } else {
-                        newTime =  ChatColor.WHITE + "" + min + ":" + sec;
+                        newTime = ChatColor.WHITE + "" + min + ":" + sec;
                     }
                 }
 
@@ -280,7 +280,7 @@ public class NewScoreboard {
     }
 
     private @NotNull String replacePlaceholders(@NotNull String message) {
-       return message
+        return message
                 .replace("%Date%", this.date)
                 .replace("%MapName%", this.map)
                 .replace("%Time%", this.timer)

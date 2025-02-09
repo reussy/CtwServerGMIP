@@ -5,10 +5,8 @@ import net.craftersland.ctw.server.game.GameEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -18,9 +16,9 @@ import java.util.Map;
 
 public class KitHandler {
     private final CTW ctw;
-    private Inventory mainMenu;
     private final Map<Player, Inventory> kitMenu;
     private final Map<Player, Inventory> enchantMenu;
+    private Inventory mainMenu;
 
     public KitHandler(final CTW ctw) {
         this.mainMenu = null;

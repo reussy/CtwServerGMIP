@@ -11,8 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 public class TakenWools {
     private final CTW ctw;
@@ -207,8 +205,8 @@ public class TakenWools {
         CTW.getPlayersAlreadyEquipped().add(p.getUniqueId());
     }
 
-    private void sendSoundToEnemy(@NotNull String team){
-        if (team.equalsIgnoreCase("red")){
+    private void sendSoundToEnemy(@NotNull String team) {
+        if (team.equalsIgnoreCase("red")) {
             this.ctw.getTeamHandler().blueTeamCopy().forEach(player -> this.ctw.getSoundHandler().sendPickupWoolSound(player));
         } else {
             this.ctw.getTeamHandler().redTeamCopy().forEach(player -> this.ctw.getSoundHandler().sendPickupWoolSound(player));

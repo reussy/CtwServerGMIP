@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server.game;
 
 import net.craftersland.ctw.server.CTW;
-import net.craftersland.ctw.server.utils.RestartHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -258,6 +257,22 @@ public class GameEngine {
         }
     }
 
+    private void setPlayerSpectator() {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (this.ctw.getTeamHandler().isBlueTeam(p) || this.ctw.getTeamHandler().isRedTeam(p)) {
+                p.setGameMode(GameMode.SPECTATOR);
+            }
+        }
+    }
+
+    private void setPlayerSurvival() {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (this.ctw.getTeamHandler().isBlueTeam(p) || this.ctw.getTeamHandler().isRedTeam(p)) {
+                p.setGameMode(GameMode.SURVIVAL);
+            }
+        }
+    }
+
     public enum GameStages {
         LOADING("LOADING", 0),
         RUNNING("RUNNING", 1),
@@ -266,22 +281,6 @@ public class GameEngine {
         COUNTDOWN("COUNTDOWN", 4);
 
         GameStages(final String s, final int n) {
-        }
-    }
-
-    private void setPlayerSpectator(){
-        for (Player p : Bukkit.getOnlinePlayers()){
-            if (this.ctw.getTeamHandler().isBlueTeam(p) || this.ctw.getTeamHandler().isRedTeam(p)){
-                p.setGameMode(GameMode.SPECTATOR);
-            }
-        }
-    }
-
-    private void setPlayerSurvival(){
-        for (Player p : Bukkit.getOnlinePlayers()){
-            if (this.ctw.getTeamHandler().isBlueTeam(p) || this.ctw.getTeamHandler().isRedTeam(p)){
-                p.setGameMode(GameMode.SURVIVAL);
-            }
         }
     }
 }

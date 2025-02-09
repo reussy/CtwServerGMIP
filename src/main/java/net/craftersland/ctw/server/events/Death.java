@@ -307,7 +307,7 @@ public class Death implements Listener {
         }
     }
 
-    private boolean checkArmor(@NotNull Player player){
+    private boolean checkArmor(@NotNull Player player) {
 
         if (player.getInventory().getHelmet() == null
                 || player.getInventory().getChestplate() == null
