@@ -117,7 +117,7 @@ public class Death implements Listener {
 
         Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
 
-            final Player p = event.getEntity();
+            Player p = event.getEntity();
             Death.this.ctw.getKillStreakHandler().resetData(p);
 
             if (p.getLastDamageCause() == null) {
@@ -126,9 +126,13 @@ public class Death implements Listener {
                 p.setLastDamageCause(event1);
             }
 
+            if (!(p.getLastDamageCause().getEntity() instanceof Player)) return;
+            if (p.getKiller() == null) return;
+
             if (p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-                final Player killer = p.getKiller();
-                final String rawMsg1 = Death.this.ctw.getLanguageHandler().getMessage("ChatMessages.MeleeDeathBroadcast").replace("%WeaponLogo%", Death.this.getWeaponLogo(killer));
+
+                Player killer = p.getKiller();
+                String rawMsg1 = Death.this.ctw.getLanguageHandler().getMessage("ChatMessages.MeleeDeathBroadcast").replace("%WeaponLogo%", Death.this.getWeaponLogo(killer));
                 addPoints(p, killer, rawMsg1);
                 Death.this.ctw.getPlayerKillsHandler().addMeleeKill(killer);
                 Death.this.ctw.getMeleeAchievementHandler().checkForAchievements(killer);
@@ -138,19 +142,15 @@ public class Death implements Listener {
                 addRegen(killer);
 
             } else if (p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
-                final Player killer = p.getKiller();
+                Player killer = p.getKiller();
                 addRegen(killer);
                 int distance;
 
                 try {
-
                     PlayerProjectile pj = ctw.playerProjectile.get(killer.getUniqueId());
                     distance = pj.getProjectile(p.getUniqueId());
-
                 } catch (NullPointerException e) {
-
                     distance = (int) p.getLocation().distance(killer.getLocation());
-
                 }
 
                 final String rawMsg4 = Death.this.ctw.getLanguageHandler().getMessage("ChatMessages.BowDeathBroadcast").replace("%WeaponLogo%", Death.this.getWeaponLogo(killer));
@@ -168,8 +168,8 @@ public class Death implements Listener {
                 final Player killer = Death.this.ctw.getLastDamageHandler().getKiller(p);
                 if (killer != null) {
                     addRegen(killer);
-                    final String icon = Death.this.ctw.getLanguageHandler().getMessage("Icons.Other");
-                    final String rawMsg4 = Death.this.ctw.getLanguageHandler().getMessage("ChatMessages.VoidDeathBroadcast").replace("%WeaponLogo%", icon);
+                    String icon = Death.this.ctw.getLanguageHandler().getMessage("Icons.Other");
+                    String rawMsg4 = Death.this.ctw.getLanguageHandler().getMessage("ChatMessages.VoidDeathBroadcast").replace("%WeaponLogo%", icon);
                     addPoints(p, killer, rawMsg4);
                     Death.this.ctw.getKillStreakHandler().addStreakKill(killer);
                     final String weaponType = Death.this.ctw.getLastDamageHandler().getWeaponType(p);
@@ -219,7 +219,7 @@ public class Death implements Listener {
         Death.this.sendDeathMessage(rawMsg6.replaceAll("&", "§"));
         if (this.ctw.getGameEngine().gameStage != GameEngine.GameStages.COUNTDOWN) {
 
-            ctw.getPlayerKillsHandler().addKill(killer.getName());
+            ctw.getPlayerKillsHandler().addKillMatch(killer);
 
             if ((ctw.getTeamHandler().countBlueTeam() + ctw.getTeamHandler().countRedTeam()) > 3) {
 
@@ -233,40 +233,17 @@ public class Death implements Listener {
     }
 
     private void addRegen(Player killer) {
+
+        if (killer == null) {
+            return;
+        }
+
         if (this.ctw.getGameEngine().gameStage != GameEngine.GameStages.COUNTDOWN) {
             killer.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
             killer.getInventory().addItem(new ItemStack(Material.ARROW, 12));
         }
 
-        if (killer.getInventory().getHelmet() == null || killer.getInventory().getChestplate() == null || killer.getInventory().getLeggings() == null || killer.getInventory().getBoots() == null) {
-            return;
-        }
-
-        if (killer.getInventory().getHelmet().getType() == Material.IRON_HELMET) {
-            return;
-        } else if (killer.getInventory().getBoots().getType() == Material.IRON_BOOTS) {
-            return;
-        } else if (killer.getInventory().getLeggings().getType() == Material.IRON_LEGGINGS) {
-            return;
-        } else if (killer.getInventory().getChestplate().getType() == Material.IRON_CHESTPLATE) {
-            return;
-        } else if (killer.getInventory().getHelmet().getType() == Material.DIAMOND_HELMET) {
-            return;
-        } else if (killer.getInventory().getBoots().getType() == Material.DIAMOND_BOOTS) {
-            return;
-        } else if (killer.getInventory().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
-            return;
-        } else if (killer.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
-            return;
-        } else if (killer.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
-            return;
-        } else if (killer.getInventory().getBoots().getType() == Material.GOLD_BOOTS) {
-            return;
-        } else if (killer.getInventory().getLeggings().getType() == Material.GOLD_LEGGINGS) {
-            return;
-        } else if (killer.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
-            return;
-        }
+        if (!checkArmor(killer)) return;
 
         new BukkitRunnable() {
             @Override
@@ -328,5 +305,42 @@ public class Death implements Listener {
                 }
             }
         }
+    }
+
+    private boolean checkArmor(@NotNull Player player){
+
+        if (player.getInventory().getHelmet() == null
+                || player.getInventory().getChestplate() == null
+                || player.getInventory().getLeggings() == null
+                || player.getInventory().getBoots() == null) {
+            return false;
+        }
+
+        if (player.getInventory().getHelmet().getType() == Material.IRON_HELMET) {
+            return false;
+        } else if (player.getInventory().getBoots().getType() == Material.IRON_BOOTS) {
+            return false;
+        } else if (player.getInventory().getLeggings().getType() == Material.IRON_LEGGINGS) {
+            return false;
+        } else if (player.getInventory().getChestplate().getType() == Material.IRON_CHESTPLATE) {
+            return false;
+        } else if (player.getInventory().getHelmet().getType() == Material.DIAMOND_HELMET) {
+            return false;
+        } else if (player.getInventory().getBoots().getType() == Material.DIAMOND_BOOTS) {
+            return false;
+        } else if (player.getInventory().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
+            return false;
+        } else if (player.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
+            return false;
+        } else if (player.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
+            return false;
+        } else if (player.getInventory().getBoots().getType() == Material.GOLD_BOOTS) {
+            return false;
+        } else if (player.getInventory().getLeggings().getType() == Material.GOLD_LEGGINGS) {
+            return false;
+        } else if (player.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
+            return false;
+        }
+        return true;
     }
 }
