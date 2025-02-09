@@ -139,7 +139,7 @@ public class KitHandler {
         this.ctw.getItemKitHandler().addItemsToMenu(inv, p);
     }
 
-    private void populateEnchantMenu(final Inventory inv, final Player p) {
+    private void populateEnchantMenu(final @NotNull Inventory inv, final Player p) {
         inv.setItem(0, this.ctw.getEnchantSharpnessI().setKitItem(p));
         inv.setItem(1, this.ctw.getEnchantSharpnessII().setKitItem(p));
 

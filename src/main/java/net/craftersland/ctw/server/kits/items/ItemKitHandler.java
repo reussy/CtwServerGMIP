@@ -8,19 +8,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class ItemKitHandler {
     private final CTW ctw;
     private final List<String> kitKeys;
     private final List<ItemStack> items;
+    private final Map<Integer, ItemStack> itemMap;
 
     public ItemKitHandler(final CTW ctw) {
-        this.kitKeys = new LinkedList<String>();
-        this.items = new LinkedList<ItemStack>();
+        this.kitKeys = new LinkedList<>();
+        this.items = new LinkedList<>();
+        this.itemMap = new HashMap<>();
         this.ctw = ctw;
         this.createItems();
     }
@@ -42,12 +43,12 @@ public class ItemKitHandler {
                 this.runKitCommands(p, kitKey);
                 final Double finalBal = initialBal - this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price");
                 this.ctw.getSoundHandler().sendItemPickupSound(p.getLocation(), p);
-                final String s = this.ctw.getLanguageHandler().getMessage("ChatMessages.KitReceived").replaceAll("%balance%", new StringBuilder(String.valueOf(finalBal.intValue())).toString());
+                final String s = this.ctw.getLanguageHandler().getMessage("ChatMessages.KitReceived").replaceAll("%balance%", String.valueOf(finalBal.intValue()));
                 p.sendMessage(s.replaceAll("&", "§"));
             } else {
                 this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
-                String s2 = this.ctw.getLanguageHandler().getMessage("ChatMessages.NotEnoughCoins").replaceAll("%coinsNeeded%", new StringBuilder(String.valueOf(this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price").intValue())).toString());
-                s2 = s2.replaceAll("%balance%", new StringBuilder(String.valueOf(initialBal.intValue())).toString());
+                String s2 = this.ctw.getLanguageHandler().getMessage("ChatMessages.NotEnoughCoins").replaceAll("%coinsNeeded%", String.valueOf(this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price").intValue()));
+                s2 = s2.replaceAll("%balance%", String.valueOf(initialBal.intValue()));
                 p.sendMessage(s2.replaceAll("&", "§"));
             }
         }
@@ -70,24 +71,36 @@ public class ItemKitHandler {
 
     public void addItemsToMenu(final Inventory inv, final Player p) {
         if (!this.kitKeys.isEmpty()) {
+
+            for (int i = 0; i < inv.getSize(); i++) {
+                for (final String key : this.kitKeys) {
+                    int slot = this.ctw.getKitConfigHandler().getInteger(key + ".Slot");
+                    if (i == slot) {
+                        inv.setItem(i, this.updateItem(this.itemMap.get(slot), p, key));
+                    }
+                }
+            }
+
+            /*
             for (final ItemStack i : this.items) {
-                final Integer slot = this.items.indexOf(i);
+                final int slot = this.items.indexOf(i);
                 inv.setItem(slot, this.updateItem(i, p, this.kitKeys.get(slot)));
             }
+             */
         }
     }
 
-    private ItemStack updateItem(final ItemStack i, final Player p, final String kitKey) {
+    private @NotNull ItemStack updateItem(final ItemStack i, final Player p, final String kitKey) {
         final ItemStack item = new ItemStack(i);
         final ItemMeta meta = item.getItemMeta();
         final boolean hasPermission = this.hasKitPermission(p, kitKey);
         final boolean hasAchievement = this.hasKitAchievement(p, kitKey);
         if (hasPermission && hasAchievement) {
-            meta.setDisplayName(new StringBuilder().append(ChatColor.GREEN).append(ChatColor.BOLD).append(meta.getDisplayName()).toString());
+            meta.setDisplayName(String.valueOf(ChatColor.GREEN) + ChatColor.BOLD + meta.getDisplayName());
         } else {
-            meta.setDisplayName(new StringBuilder().append(ChatColor.RED).append(ChatColor.BOLD).append(meta.getDisplayName()).append(ChatColor.GRAY).append(" (").append(this.ctw.getLanguageHandler().getMessage("Words.Locked")).append(")").toString());
+            meta.setDisplayName(String.valueOf(ChatColor.RED) + ChatColor.BOLD + meta.getDisplayName() + ChatColor.GRAY + " (" + this.ctw.getLanguageHandler().getMessage("Words.Locked") + ")");
         }
-        final ArrayList<String> lore = new ArrayList<String>(meta.getLore());
+        ArrayList<String> lore = new ArrayList<>(meta.getLore());
         if (!hasPermission) {
             for (final String s : this.ctw.getKitConfigHandler().getStringList(kitKey + ".DisplayItem.NoPermissionLore")) {
                 lore.add(s.replaceAll("&", "§"));
@@ -113,7 +126,7 @@ public class ItemKitHandler {
         return true;
     }
 
-    private Boolean hasKitPermission(final Player p, final String kitKey) {
+    private @NotNull Boolean hasKitPermission(final Player p, final String kitKey) {
         if (!this.ctw.getKitConfigHandler().getBoolean(kitKey + ".Requirements.Premission.Enabled")) {
             return true;
         }
@@ -135,7 +148,7 @@ public class ItemKitHandler {
         }
     }
 
-    private ItemStack createItemStack(final String kitName) {
+    private @NotNull ItemStack createItemStack(final String kitName) {
         final ItemStack item = new ItemStack(Material.getMaterial(this.ctw.getKitConfigHandler().getString(kitName + ".DisplayItem.Material")), 1, Short.parseShort(this.ctw.getKitConfigHandler().getString(kitName + ".DisplayItem.Data")));
         final ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(this.ctw.getKitConfigHandler().getString(kitName + ".DisplayItem.DisplayName"));
@@ -145,6 +158,8 @@ public class ItemKitHandler {
         }
         meta.setLore(lore);
         item.setItemMeta(meta);
+        int slot = this.ctw.getKitConfigHandler().getInteger(kitName + ".Slot");
+        this.itemMap.put(slot, item);
         return item;
     }
 }
