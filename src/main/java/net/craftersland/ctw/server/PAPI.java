@@ -79,8 +79,16 @@ public class PAPI extends PlaceholderExpansion {
             return plugin.getPlayerKillsHandler().getTotalKills(player.getPlayer()) + "";
         }
 
-        if (params.equalsIgnoreCase("player_streak")) {
-            return plugin.getKillStreakHandler().getStreak(player.getPlayer()) + "";
+        if (params.equalsIgnoreCase("player_match_melee_kills")) {
+            return plugin.getPlayerKillsHandler().getMeleeKillsMatch(player.getPlayer()) + "";
+        }
+
+        if (params.equalsIgnoreCase("player_match_bow_kills")) {
+            return plugin.getPlayerKillsHandler().getBowKillsMatch(player.getPlayer()) + "";
+        }
+
+        if (params.equalsIgnoreCase("player_match_total_kills")) {
+            return plugin.getPlayerKillsHandler().getKillsMatch(player.getPlayer()) + "";
         }
 
         return "...";
