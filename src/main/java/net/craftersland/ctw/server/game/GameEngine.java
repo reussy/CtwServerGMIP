@@ -194,6 +194,8 @@ public class GameEngine {
             this.setWonSpectators(red, blue);
             this.spawnBlueFireworks(blue);
             ctw.getSoundHandler().broadcastDragon();
+            Bukkit.getScheduler().runTask(ctw, this::setPlayerSpectator);
+
             final List<String> rawMsg = new ArrayList<String>(this.ctw.getLanguageHandler().getMessageList("ChatMessages.BlueVictory"));
             if (!rawMsg.isEmpty()) {
                 for (final String s : rawMsg) {
