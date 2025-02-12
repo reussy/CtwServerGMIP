@@ -11,6 +11,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class InventoryClick implements Listener {
     private final CTW ctw;
@@ -37,7 +38,7 @@ public class InventoryClick implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClick(final InventoryClickEvent event) {
+    public void onInventoryClick(final @NotNull InventoryClickEvent event) {
         final Player p = (Player) event.getWhoClicked();
         if (event.getInventory() != null) {
             if (event.getCursor().getType() != null) {

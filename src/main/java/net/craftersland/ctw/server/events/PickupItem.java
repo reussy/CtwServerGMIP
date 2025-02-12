@@ -48,11 +48,8 @@ public class PickupItem implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onItem(InventoryPickupItemEvent e) {
-
         if (PickupItem.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) {
             e.setCancelled(true);
         }
-
-
     }
 }

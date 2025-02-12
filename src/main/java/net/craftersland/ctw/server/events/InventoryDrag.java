@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class InventoryDrag implements Listener {
     private final CTW ctw;
@@ -14,7 +15,7 @@ public class InventoryDrag implements Listener {
     }
 
     @EventHandler
-    public void onInventoryDrag(final InventoryDragEvent event) {
+    public void onInventoryDrag(final @NotNull InventoryDragEvent event) {
         final Player p = (Player) event.getWhoClicked();
         if (event.getInventory() != null) {
             if (event.getInventory().getTitle().matches(this.ctw.getKitHandler().getMainMenuTitle())) {
@@ -25,9 +26,13 @@ public class InventoryDrag implements Listener {
                 event.setCancelled(true);
             }
         }
+
+        /*
         // Cancel move armor
         if (event.getInventorySlots().contains(5) || event.getInventorySlots().contains(6) || event.getInventorySlots().contains(7) || event.getInventorySlots().contains(8)) {
             event.setCancelled(true);
         }
+
+         */
     }
 }

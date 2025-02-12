@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class Stats implements CommandExecutor {
         this.ctw = ctw;
     }
 
-    public boolean onCommand(final CommandSender sender, final Command command, final String cmdlabel, final String[] args) {
+    public boolean onCommand(final CommandSender sender, final Command command, final @NotNull String cmdlabel, final String[] args) {
         if (!cmdlabel.equalsIgnoreCase("stats")) {
             return false;
         }
