@@ -200,7 +200,7 @@ public class TakenWools {
 
         p.getInventory().setChestplate(ironChestplate);
         p.getInventory().setBoots(ironBoot);
-        p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 64));
+        p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 12));
 
         CTW.getPlayersAlreadyEquipped().add(p.getUniqueId());
     }
