@@ -46,11 +46,11 @@ public class PAPI extends PlaceholderExpansion {
         }
 
         if (params.equalsIgnoreCase("red_victories")) {
-            return plugin.getTeamScoreHandler().getRedScore() + "";
+            return plugin.getTeamVictoryHandler().getRedVictoryScore() + "";
         }
 
         if (params.equalsIgnoreCase("blue_victories")) {
-            return plugin.getTeamScoreHandler().getBlueScore() + "";
+            return plugin.getTeamVictoryHandler().getBlueVictoryScore() + "";
         }
 
         if (params.equalsIgnoreCase("red_players")) {
