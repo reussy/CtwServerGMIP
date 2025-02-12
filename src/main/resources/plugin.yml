@@ -3,23 +3,23 @@ version: ${project.version}
 main: net.craftersland.ctw.server.CTW
 api-version: 1.16
 authors: [ CraftersLand edited Ak ]
-load: POSTWORLD
-softdepend: [ Vault, EffectLib, AAC, TitleManager, WorldEdit, PlayerPoints, PlaceholderAPI ]
+load: POST WORLD
+soft depend: [ Vault, EffectLib, AAC, TitleManager, WorldEdit, PlayerPoints, PlaceholderAPI ]
 description: Plugin CTW
 
 commands:
   join:
-    description: si
+    description: Join the game
   g:
-    description: si
+    description: Speak in global chat
   leave:
-    description: si
+    description: Leave the game
   stats:
-    description: si
+    description: Player stats
   shop:
-    description: si
+    description: Shop menu
   setup:
-    description: si
+    description: Setup the game
 
 permissions:
   CTW.admin:
