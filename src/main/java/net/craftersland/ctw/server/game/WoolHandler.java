@@ -3,6 +3,7 @@ package net.craftersland.ctw.server.game;
 import net.craftersland.ctw.server.CTW;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -53,10 +54,25 @@ public class WoolHandler {
 
     public void removeWools() {
         Bukkit.getScheduler().runTaskLater(this.ctw, () -> {
-            WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().redWool).setType(Material.AIR);
-            WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().pinkWool).setType(Material.AIR);
-            WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().blueWool).setType(Material.AIR);
-            WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().cyanWool).setType(Material.AIR);
+            Block redWool = WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().redWool);
+            Block pinkWool = WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().pinkWool);
+            Block blueWool = WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().blueWool);
+            Block cyanWool = WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().cyanWool);
+            if (redWool != null) {
+                redWool.setType(Material.AIR);
+            }
+
+            if (pinkWool != null) {
+                pinkWool.setType(Material.AIR);
+            }
+
+            if (blueWool != null) {
+                blueWool.setType(Material.AIR);
+            }
+
+            if (cyanWool != null) {
+                cyanWool.setType(Material.AIR);
+            }
         }, 10L);
     }
 
