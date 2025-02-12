@@ -160,7 +160,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
             return;
         }
 
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             CTW.log.info("PlaceholderAPI found and is enabled.");
             new PAPI(this).register();
         } else {
@@ -298,7 +298,6 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         CTW.ikH = new ItemKitHandler(this);
         CTW.dr = new DisableRecipe(this);
         CTW.pmH = new ProtectedMoveHandler(this);
-
     }
 
     public void onDisable() {
