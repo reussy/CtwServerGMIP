@@ -88,7 +88,7 @@ public class PAPI extends PlaceholderExpansion {
         }
 
         if (params.equalsIgnoreCase("player_match_total_kills")) {
-            return plugin.getPlayerKillsHandler().getKillsMatch(player.getPlayer()) + "";
+            return plugin.getPlayerKillsHandler().getTotalKillsMatch(player.getPlayer()) + "";
         }
 
         return "...";
