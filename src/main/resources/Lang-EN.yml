@@ -91,6 +91,8 @@ ChatMessages:
   GlobalPrefix: '[ALL] '
   SpectatorPrefix: '[Spec] '
   TeamPrefix: '[Team] '
+  RedPrefix: '[Red] '
+  BluePrefix: '[Blue] '
   JoinUsage: '&cCommand usage:&7 /join'
   AreadyJoinedTeam: '&cYou already joined a team! To leave do:&7 /leave'
   KitUsage: '&cUsage:&7 /kit'
