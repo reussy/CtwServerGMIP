@@ -13,9 +13,9 @@ public class EconomyHandler {
     public void addCoins(final Player p, final Double amount) {
         if (this.ctw.isValutEnabled) {
             if (p.hasPermission("CTW.3xCoinMultiplier")) {
-                CTW.economy.depositPlayer(p, amount * 3.0);
+                CTW.economy.depositPlayer(p, amount + (amount * 0.03));
             } else if (p.hasPermission("CTW.2xCoinMultiplier")) {
-                CTW.economy.depositPlayer(p, amount * 2.0);
+                CTW.economy.depositPlayer(p, amount + (amount * 0.02));
             } else {
                 CTW.economy.depositPlayer(p, amount);
             }
@@ -24,13 +24,13 @@ public class EconomyHandler {
 
     public void takeCoins(final Player p, final Double amount) {
         if (this.ctw.isValutEnabled) {
-            final Double balance = CTW.economy.getBalance(p);
+            final double balance = CTW.economy.getBalance(p);
             if (balance >= amount) {
                 CTW.economy.withdrawPlayer(p, amount);
             } else {
                 this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
-                final String msg = this.ctw.getLanguageHandler().getMessage("ChatMessages.NotEnoughCoins").replaceAll("%coinsNeeded%", new StringBuilder(String.valueOf(amount.intValue())).toString());
-                p.sendMessage(msg.replaceAll("%balance%", balance.toString()));
+                final String msg = this.ctw.getLanguageHandler().getMessage("ChatMessages.NotEnoughCoins").replaceAll("%coinsNeeded%", String.valueOf(amount.intValue()));
+                p.sendMessage(msg.replaceAll("%balance%", Double.toString(balance)));
             }
         }
     }
