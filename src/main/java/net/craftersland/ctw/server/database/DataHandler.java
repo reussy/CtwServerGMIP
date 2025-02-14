@@ -256,8 +256,7 @@ public class DataHandler {
             if (result.next()) {
                 final int meleeKills = result.getInt("melee_kills");
                 final int bowKills = result.getInt("bow_kills");
-                final Integer[] kills = {meleeKills, bowKills};
-                return kills;
+                return new Integer[]{meleeKills, bowKills};
             }
         } catch (SQLException e) {
             CTW.log.warning("Error: " + e.getMessage());
