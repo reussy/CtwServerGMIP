@@ -51,15 +51,11 @@ public class Disconnecting implements Listener {
 
     @EventHandler
     public void onDisable(PluginDisableEvent event) {
-        if (!Bukkit.getOnlinePlayers().isEmpty()) {
-            Bukkit.getOnlinePlayers().forEach(player -> {
-                Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
-                    final ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                    out.writeUTF("Connect");
-                    out.writeUTF(this.ctw.getLobbyServersHandler().getLobbyToTeleport());
-                    player.sendPluginMessage(this.ctw, "BungeeCord", out.toByteArray());
-                });
-            });
-        }
+        Bukkit.getOnlinePlayers().forEach(player -> Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
+            final ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            out.writeUTF("Connect");
+            out.writeUTF(this.ctw.getLobbyServersHandler().getLobbyToTeleport());
+            player.sendPluginMessage(this.ctw, "BungeeCord", out.toByteArray());
+        }));
     }
 }
