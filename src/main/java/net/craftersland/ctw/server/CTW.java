@@ -22,12 +22,14 @@ import net.craftersland.ctw.server.score.*;
 import net.craftersland.ctw.server.utils.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -168,7 +170,9 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
             Bukkit.getPluginManager().disablePlugin(this);
         }
 
-        CTW.log.info("CTWserver has been successfully loaded!");
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lCTW &aSuccessfully enabled!"));
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lCTW &7version &a" + this.getDescription().getVersion() + " &7by &aCraftersLand"));
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lCTW &7modified &aby reussy & Ak for &6GamesMadeInPola"));
         this.isEnabled = true;
     }
 
@@ -197,6 +201,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         pm.registerEvents(new InventoryClick(this), this);
         pm.registerEvents(new Respawning(this), this);
         pm.registerEvents(new PickupItem(this), this);
+        pm.registerEvents(new ItemDrop(this), this);
         pm.registerEvents(new Death(this), this);
         pm.registerEvents(new onProjectile(this), this);
         pm.registerEvents(new PlayerFall(this), this);
@@ -301,7 +306,6 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     }
 
     public void onDisable() {
-
         this.isDisabling = true;
         this.isEnabled = true;
         CTW.em.dispose();
@@ -620,7 +624,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         return CTW.rH;
     }
 
-    public void onPluginMessageReceived(final String channel, final Player player, final byte[] message) {
+    public void onPluginMessageReceived(final @NotNull String channel, final Player player, final byte[] message) {
         if (channel.equals("BungeeCord")) {
             final ByteArrayDataInput in = ByteStreams.newDataInput(message);
             final String subchannel = in.readUTF();
@@ -638,7 +642,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     private void setupEconomy() {
         if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
             CTW.log.info("Vault dependency detected.");
-            final RegisteredServiceProvider<Economy> economyProvider = (RegisteredServiceProvider<Economy>) this.getServer().getServicesManager().getRegistration((Class) Economy.class);
+            RegisteredServiceProvider<Economy> economyProvider = this.getServer().getServicesManager().getRegistration(Economy.class);
             if (economyProvider != null) {
                 CTW.economy = economyProvider.getProvider();
                 CTW.log.info("Economy system detected: " + economyProvider.getProvider().getName());
