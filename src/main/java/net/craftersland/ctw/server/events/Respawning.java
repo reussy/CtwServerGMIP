@@ -8,7 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class Respawning implements Listener {
     private final CTW ctw;
@@ -17,8 +19,14 @@ public class Respawning implements Listener {
         this.ctw = ctw;
     }
 
+    @EventHandler
+    public void onSpawn(@NotNull CreatureSpawnEvent event){
+        if (event.getEntity() instanceof Player) return;
+        event.setCancelled(true);
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onRespawn(final PlayerRespawnEvent event) {
+    public void onRespawn(final @NotNull PlayerRespawnEvent event) {
         final Player p = event.getPlayer();
         final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
         if (team == TeamHandler.Teams.RED) {
