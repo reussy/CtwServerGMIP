@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.jetbrains.annotations.NotNull;
 
 public class StartupKit {
     private final CTW ctw;
@@ -14,19 +15,19 @@ public class StartupKit {
         this.ctw = ctw;
     }
 
-    public void saveStartupKit(final Player p) {
+    public void saveStartupKit(final @NotNull Player p) {
         for (int i = 0; i < p.getInventory().getSize(); ++i) {
             final ItemStack item = p.getInventory().getItem(i);
             this.ctw.getMapConfigHandler().saveStartupKit(item, i);
         }
     }
 
-    public void giveStartupKit(final Player p) {
+    public void giveStartupKit(final @NotNull Player p) {
         p.setHealth(p.getMaxHealth());
         p.getInventory().setContents(this.ctw.getMapConfigHandler().startupKit);
     }
 
-    public void setRedSuit(final Player p) {
+    public void setRedSuit(final @NotNull Player p) {
         final ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
         final LeatherArmorMeta lamHelmet = (LeatherArmorMeta) helmet.getItemMeta();
         lamHelmet.setColor(Color.fromRGB(255, 85, 85));
