@@ -6,10 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PlayerKillsHandler {
@@ -19,7 +16,7 @@ public class PlayerKillsHandler {
     private final Map<Player, Integer> meleeKills;
 
     // Match stats
-    private final HashMap<String, Integer> kills;
+    private final HashMap<String, Integer> totalKillsMatch;
     private final HashMap<String, Integer> meleeKillsMatch;
     private final HashMap<String, Integer> bowKillsMatch;
 
@@ -30,7 +27,7 @@ public class PlayerKillsHandler {
         this.meleeKills = new HashMap<>();
 
         // Match stats
-        this.kills = new HashMap<>();
+        this.totalKillsMatch = new HashMap<>();
         this.meleeKillsMatch = new HashMap<>();
         this.bowKillsMatch = new HashMap<>();
         this.ctw = ctw;
@@ -47,13 +44,13 @@ public class PlayerKillsHandler {
         }
     }
 
-    public HashMap<String, Integer> getKills() {
-        return kills;
+    public HashMap<String, Integer> getTotalKillsMatch() {
+        return totalKillsMatch;
     }
 
     public void orderKills() {
 
-        List<Map.Entry<String, Integer>> top3 = kills.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(3).collect(Collectors.toList());
+        List<Map.Entry<String, Integer>> top3 = totalKillsMatch.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(3).collect(Collectors.toList());
 
         Bukkit.getOnlinePlayers().forEach(player -> {
             if (player != null) {
@@ -79,8 +76,8 @@ public class PlayerKillsHandler {
         });
     }
 
-    public void resetKills() {
-        kills.clear();
+    public void resetTotalKillsMatch() {
+        totalKillsMatch.clear();
     }
 
     public void saveKillsToDatabasse(final Player p) {
@@ -105,33 +102,40 @@ public class PlayerKillsHandler {
         }
     }
 
-    public void addBowKill(final Player p) {
-        final int bowKills = this.bowKills.get(p);
-        final int totalKills = this.totalKills.get(p);
+    public void addBowKill(final @NotNull Player p) {
+        int totalKills = this.totalKills.get(p) == null ? 0 : this.totalKills.get(p);
+        int bowKills = this.bowKills.get(p) == null ? 0 : this.bowKills.get(p);
         try {
-            this.bowKills.put(p, bowKills + 1);
-            this.totalKills.put(p, totalKills + 1);
-            this.bowKillsMatch.put(p.getName(), this.bowKillsMatch.get(p.getName()) + 1);
-            this.kills.put(p.getName(), this.kills.get(p.getName()) + 1);
+            bowKills = bowKills + 1;
+            totalKills = totalKills + 1;
+            this.addTotalKillMatch(p);
+            this.totalKills.put(p, totalKills);
+            this.bowKills.put(p, bowKills);
+
+            this.addBowKillMatch(p);
             this.addTeamKill(p);
         } catch (Exception e) {
             if (p != null) {
                 Bukkit.getScheduler().runTask(this.ctw, () -> p.kickPlayer(PlayerKillsHandler.this.ctw.getLanguageHandler().getMessage("KickMessages.Error")));
             }
+            this.ctw.getLogger().severe("Error adding bow kill to player: " + Objects.requireNonNull(p).getName() + " - " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     public void addMeleeKill(final Player p) {
-        int kills = 0;
+        int meleeKills = 0;
         if (this.meleeKills.containsKey(p)) {
-            kills = this.meleeKills.get(p);
+            meleeKills = this.meleeKills.get(p);
         }
-        this.meleeKills.put(p, kills + 1);
+        this.meleeKills.put(p, meleeKills + 1);
         this.addMeleeKillMatch(p);
+
         int tkills = 0;
         if (this.totalKills.containsKey(p)) {
             tkills = this.totalKills.get(p);
         }
+        this.addTotalKillMatch(p);
         this.totalKills.put(p, tkills + 1);
         this.addTeamKill(p);
     }
@@ -156,12 +160,12 @@ public class PlayerKillsHandler {
         }
     }
 
-    public void addKillMatch(final @NotNull Player p) {
+    public void addTotalKillMatch(final @NotNull Player p) {
         final String name = p.getName();
-        if (!this.kills.containsKey(name)) {
-            this.kills.put(name, 1);
+        if (!this.totalKillsMatch.containsKey(name)) {
+            this.totalKillsMatch.put(name, 1);
         } else {
-            this.kills.put(name, this.kills.get(name) + 1);
+            this.totalKillsMatch.put(name, this.totalKillsMatch.get(name) + 1);
         }
     }
 
@@ -183,10 +187,10 @@ public class PlayerKillsHandler {
         }
     }
 
-    public int getKillsMatch(final @NotNull Player p) {
-        final String name = p.getName();
-        if (this.kills.containsKey(name)) {
-            return this.kills.get(name);
+    public int getTotalKillsMatch(final @NotNull Player p) {
+        String name = p.getName();
+        if (this.totalKillsMatch.containsKey(name)) {
+            return this.totalKillsMatch.get(name);
         }
         return 0;
     }
