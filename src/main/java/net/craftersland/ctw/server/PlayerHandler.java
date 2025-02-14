@@ -90,15 +90,13 @@ public class PlayerHandler {
                         p.setGameMode(GameMode.SPECTATOR);
                     } else {
                         p.setGameMode(GameMode.SURVIVAL);
-
-
                     }
                 }
             });
             this.ctw.getMessageUtils().sendTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.JoinRedTeam.title").replaceAll("&", "§"), this.ctw.getLanguageHandler().getMessage("TitleMessages.JoinRedTeam.subtitle").replaceAll("&", "§"), p);
             this.ctw.getSoundHandler().sendCompleteSound(this.ctw.getMapConfigHandler().redSpawn, p);
             final List<String> rawMsg = new ArrayList<String>(this.ctw.getLanguageHandler().getMessageList("ChatMessages.JoinRedTeam"));
-            final List<String> processedMsg = new ArrayList<String>();
+            final List<String> processedMsg = new ArrayList<>();
             if (!rawMsg.isEmpty()) {
                 for (final String s : rawMsg) {
                     processedMsg.add(s.replaceAll("&", "§"));

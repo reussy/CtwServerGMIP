@@ -41,9 +41,9 @@ public class ItemKitHandler {
             } else if (initialBal >= this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price")) {
                 CTW.economy.withdrawPlayer(p, this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price"));
                 this.runKitCommands(p, kitKey);
-                final Double finalBal = initialBal - this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price");
+                final double finalBal = initialBal - this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price");
                 this.ctw.getSoundHandler().sendItemPickupSound(p.getLocation(), p);
-                final String s = this.ctw.getLanguageHandler().getMessage("ChatMessages.KitReceived").replaceAll("%balance%", String.valueOf(finalBal.intValue()));
+                final String s = this.ctw.getLanguageHandler().getMessage("ChatMessages.KitReceived").replaceAll("%balance%", String.valueOf((int) finalBal));
                 p.sendMessage(s.replaceAll("&", "§"));
             } else {
                 this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);

@@ -36,9 +36,9 @@ public class PlayerBowDistanceKillHandler {
     public void loadData(final Player p) {
         if (this.ctw.getDataHandler().hasAccount(p)) {
             final int count = this.ctw.getDataHandler().getBowDistanceKill(p);
-            this.distanceRecord.put(p, count);
+            this.distanceRecord.put(p, Integer.valueOf(count));
         } else {
-            this.distanceRecord.put(p, 0);
+            this.distanceRecord.put(p, Integer.valueOf(0));
         }
     }
 
@@ -50,7 +50,6 @@ public class PlayerBowDistanceKillHandler {
     }
 
     public Integer getDistanceKill(final Player p) {
-        final int count = this.distanceRecord.get(p);
-        return count;
+        return this.distanceRecord.get(p);
     }
 }

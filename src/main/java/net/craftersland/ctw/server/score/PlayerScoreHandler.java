@@ -27,8 +27,8 @@ public class PlayerScoreHandler {
             this.score.put(p, sc);
             this.addTeamScore(p, sc);
         } else {
-            final int scor = this.score.get(p);
-            this.score.put(p, scor + sc);
+            int currentScore = this.score.getOrDefault(p, 0);
+            this.score.put(p, currentScore + sc);
             this.addTeamScore(p, sc);
         }
     }
@@ -37,8 +37,8 @@ public class PlayerScoreHandler {
         if (!this.score.containsKey(p)) {
             this.score.put(p, sc);
         } else {
-            final int scor = this.score.get(p);
-            this.score.put(p, scor - sc);
+            int currentScore = this.score.getOrDefault(p, 0);
+            this.score.put(p, currentScore - sc);
         }
     }
 

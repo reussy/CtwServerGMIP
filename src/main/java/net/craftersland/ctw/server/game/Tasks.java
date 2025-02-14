@@ -14,14 +14,11 @@ public class Tasks {
     }
 
     private void tenSecTask() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                Tasks.this.ctw.getSpectatorTask().sendSpectatorMessage();
-                Tasks.this.ctw.getLobbyServersHandler().updateLobbysStatus();
-                Tasks.this.ctw.getLobbyLink().sendMotd();
-                Tasks.this.ctw.getEffectUtils().checkForVipEffects();
-            }
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this.ctw, () -> {
+            Tasks.this.ctw.getSpectatorTask().sendSpectatorMessage();
+            Tasks.this.ctw.getLobbyServersHandler().updateLobbysStatus();
+            Tasks.this.ctw.getLobbyLink().sendMotd();
+            Tasks.this.ctw.getEffectUtils().checkForVipEffects();
         }, 20L, 200L);
     }
 

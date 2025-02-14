@@ -1,5 +1,6 @@
 package net.craftersland.ctw.server.kits;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.GameEngine;
 import org.bukkit.Bukkit;
@@ -110,9 +111,8 @@ public class KitHandler {
         this.ctw.getSoundHandler().sendChestOpenSound(p.getLocation(), p);
     }
 
-    private Inventory createKitsMenu(final Player p) {
-        final double bal = CTW.economy.getBalance(p);
-        return Bukkit.createInventory(p, 45, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.KitsMenu").replaceAll("&", "§") + ChatColor.GRAY + " - " + ChatColor.YELLOW + (int) bal + " \u26c0");
+    private Inventory createKitsMenu(Player p) {
+        return Bukkit.createInventory(p, 45, ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(p, this.ctw.getLanguageHandler().getMessage("MenuGUI.MenuTitles.KitsMenu"))));
     }
 
     private Inventory createEnchantsMenu(final Player p) {

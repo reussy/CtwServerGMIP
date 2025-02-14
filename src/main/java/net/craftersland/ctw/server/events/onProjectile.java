@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 public class onProjectile implements Listener {
 
@@ -19,7 +20,7 @@ public class onProjectile implements Listener {
 
 
     @EventHandler
-    public void onShoot(EntityDamageByEntityEvent e) {
+    public void onShoot(@NotNull EntityDamageByEntityEvent e) {
 
         Entity arro = e.getDamager();
 
