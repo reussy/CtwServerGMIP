@@ -66,8 +66,8 @@ public class GameEngine {
                 if (this.ctw.getConfigHandler().getInteger("Settings.ServerRestartAfterGamesPlayed") != 0 && this.ctw.getMapHandler().getPlayedMaps() > this.ctw.getConfigHandler().getInteger("Settings.ServerRestartAfterGamesPlayed")) {
                     this.ctw.getRestartHandler().serverStop();
                 }
-                final List<String> rawMSG = new ArrayList<String>(this.ctw.getLanguageHandler().getMessageList("ChatMessages.CountdownStart"));
-                final List<String> processedMSG = new ArrayList<String>();
+                final List<String> rawMSG = new ArrayList<>(this.ctw.getLanguageHandler().getMessageList("ChatMessages.CountdownStart"));
+                final List<String> processedMSG = new ArrayList<>();
                 if (!rawMSG.isEmpty()) {
                     for (String s : rawMSG) {
                         s = s.replace("%MapName%", ChatColor.YELLOW + this.ctw.getMapHandler().currentMap);
@@ -118,7 +118,11 @@ public class GameEngine {
                 this.ctw.getMessageUtils().broadcastTitleMessage(rawTitle2, rawsubtitle2);
                 this.ctw.getSoundHandler().broadcastArrowHitPlayerSound();
                 this.ctw.getMapHandler().startNextMap();
-                ctw.getPlayerKillsHandler().resetKills();
+                ctw.getPlayerKillsHandler().resetTotalKillsMatch();
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    if (this.ctw.getTeamHandler().isSpectator(player)) return;
+                    this.ctw.getEconomyHandler().resetCoins(player);
+                });
                 --this.countdown;
             } else if (this.countdown == 0) {
                 this.countdown = 35;
@@ -127,11 +131,6 @@ public class GameEngine {
                 this.ctw.getSoundHandler().broadcastLevelUpSound();
                 ctw.map = this.ctw.getMapHandler().currentMap;
                 setPlayerSurvival();
-
-                Bukkit.getOnlinePlayers().forEach(player -> {
-                    if (this.ctw.getTeamHandler().isSpectator(player)) return;
-                    this.ctw.getEconomyHandler().resetCoins(player);
-                });
 
             } else {
                 --this.countdown;
@@ -204,12 +203,9 @@ public class GameEngine {
             }
             this.ctw.getMessageUtils().broadcastGameStats();
             this.ctw.getEffectUtils().sendTextParticles(TeamHandler.Teams.BLUE);
-            Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, new Runnable() {
-                @Override
-                public void run() {
-                    GameEngine.this.ctw.getMessageUtils().broadcastTitleMessage(GameEngine.this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueVictory.title"), GameEngine.this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueVictory.subtitle"));
-                    GameEngine.this.ctw.getSoundHandler().broadcastLevelUpSound();
-                }
+            Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, () -> {
+                GameEngine.this.ctw.getMessageUtils().broadcastTitleMessage(GameEngine.this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueVictory.title"), GameEngine.this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueVictory.subtitle"));
+                GameEngine.this.ctw.getSoundHandler().broadcastLevelUpSound();
             }, 30L);
         } catch (Exception e) {
             e.printStackTrace();
