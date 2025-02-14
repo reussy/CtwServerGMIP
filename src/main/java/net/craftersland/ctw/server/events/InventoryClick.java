@@ -20,21 +20,23 @@ public class InventoryClick implements Listener {
         this.ctw = ctw;
     }
 
+    /*
     @EventHandler
-    public void onFoodChange(FoodLevelChangeEvent e) {
+    public void onFoodChange(@NotNull FoodLevelChangeEvent e) {
         if (e.getEntity() instanceof Player) {
-            Player player = (Player) e.getEntity();
-
             e.setCancelled(true);
-
         }
     }
 
+     */
+
     @EventHandler
     public void cancelRemoveArmor(InventoryClickEvent e) {
+        /*
         if (e.getSlotType() == InventoryType.SlotType.ARMOR) {
             e.setCancelled(true);
         }
+         */
     }
 
     @EventHandler
@@ -122,6 +124,7 @@ public class InventoryClick implements Listener {
                     if (event.isShiftClick()) {
                         event.setCancelled(true);
                     }
+
                     if (event.getSlot() == 4) {
                         this.closeInv(p);
                         this.ctw.getPlayerHandler().autoAddTeam(p);
@@ -147,7 +150,7 @@ public class InventoryClick implements Listener {
                         }
                     }
 
-                } else if ((event.getCurrentItem().getType() == Material.WOOL && p.getGameMode() == GameMode.SURVIVAL) || (event.getCursor().getType() == Material.WOOL && p.getGameMode() == GameMode.SURVIVAL)) {
+                } else if ((event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.WOOL && p.getGameMode() == GameMode.SURVIVAL) || (event.getCursor().getType() == Material.WOOL && p.getGameMode() == GameMode.SURVIVAL)) {
                     final ItemStack item = event.getCurrentItem();
                     final ItemStack cursor = event.getCursor();
                     if (!event.getViewers().isEmpty()) {
