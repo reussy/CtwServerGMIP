@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityDamage implements Listener {
     private final CTW ctw;
@@ -21,7 +22,7 @@ public class EntityDamage implements Listener {
     }
 
     @EventHandler
-    public void onEntityDamage(final EntityDamageByEntityEvent event) {
+    public void onEntityDamage(final @NotNull EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
             this.checkEntity(event);
             if (event.getEntity() instanceof Player) {
