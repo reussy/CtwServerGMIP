@@ -1,6 +1,7 @@
 package net.craftersland.ctw.server.game;
 
 import net.craftersland.ctw.server.CTW;
+import net.craftersland.ctw.server.utils.StartupKit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -131,6 +132,10 @@ public class GameEngine {
                 this.ctw.getSoundHandler().broadcastLevelUpSound();
                 ctw.map = this.ctw.getMapHandler().currentMap;
                 setPlayerSurvival();
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    if (this.ctw.getTeamHandler().isSpectator(player)) return;
+                    StartupKit.setUnbreakableArmor(player);
+                });
 
             } else {
                 --this.countdown;

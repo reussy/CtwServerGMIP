@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -198,11 +199,20 @@ public class TakenWools {
         ItemStack ironBoot = new ItemStack(Material.IRON_BOOTS);
         ironBoot.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
 
+        ItemMeta chestplateItemMeta = ironChestplate.getItemMeta();
+        chestplateItemMeta.spigot().setUnbreakable(true);
+        ironChestplate.setItemMeta(chestplateItemMeta);
+
+        ItemMeta bootsMeta = ironBoot.getItemMeta();
+        bootsMeta.spigot().setUnbreakable(true);
+        ironBoot.setItemMeta(bootsMeta);
+
         p.getInventory().setChestplate(ironChestplate);
         p.getInventory().setBoots(ironBoot);
         p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 12));
 
         CTW.getPlayersAlreadyEquipped().add(p.getUniqueId());
+        StartupKit.setUnbreakableArmor(p);
     }
 
     private void sendSoundToEnemy(@NotNull String team) {
