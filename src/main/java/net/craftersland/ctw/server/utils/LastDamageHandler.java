@@ -7,16 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LastDamageHandler {
-    private final CTW ctw;
     private final Map<Player, Long> lastDamageTime;
     private final Map<Player, Player> lastDamager;
     private final Map<Player, String> weaponUsed;
 
-    public LastDamageHandler(final CTW ctw) {
-        this.ctw = ctw;
-        this.lastDamageTime = new HashMap<Player, Long>();
-        this.lastDamager = new HashMap<Player, Player>();
-        this.weaponUsed = new HashMap<Player, String>();
+    public LastDamageHandler() {
+        this.lastDamageTime = new HashMap<>();
+        this.lastDamager = new HashMap<>();
+        this.weaponUsed = new HashMap<>();
     }
 
     public void setData(final Player p, final Player damager, final String weaponType) {

@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 public class EntityDamage implements Listener {
@@ -71,17 +72,6 @@ public class EntityDamage implements Listener {
 
                 event.setCancelled(true);
             }
-        }
-    }
-
-    @EventHandler
-    public void onItem(PlayerItemDamageEvent event) {
-
-        ItemStack weapon = event.getItem();
-
-        if (weapon.getType() == Material.DIAMOND_SWORD || weapon.getType() == Material.GOLD_SWORD || weapon.getType() == Material.STONE_SWORD || weapon.getType() == Material.IRON_SWORD || weapon.getType() == Material.WOOD_SWORD) {
-            weapon.getItemMeta().spigot().setUnbreakable(true);
-            event.getPlayer().updateInventory();
         }
     }
 
