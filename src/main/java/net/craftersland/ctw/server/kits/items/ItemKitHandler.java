@@ -17,39 +17,45 @@ public class ItemKitHandler {
     private final List<String> kitKeys;
     private final List<ItemStack> items;
     private final Map<Integer, ItemStack> itemMap;
+    private final Map<Integer, String> keyItemMap;
 
     public ItemKitHandler(final CTW ctw) {
         this.kitKeys = new LinkedList<>();
         this.items = new LinkedList<>();
         this.itemMap = new HashMap<>();
+        this.keyItemMap = new HashMap<>();
         this.ctw = ctw;
         this.createItems();
     }
 
-    public void sendKit(final Player p, final int slotClicked) {
-        if (slotClicked + 1 <= this.kitKeys.size()) {
-            final String kitKey = this.kitKeys.get(slotClicked);
-            final Double initialBal = CTW.economy.getBalance(p);
-            final boolean hasPermission = this.hasKitPermission(p, kitKey);
-            final boolean hasAchievement = this.hasKitAchievement(p, kitKey);
-            if (!hasPermission) {
-                this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
-                p.sendMessage(this.ctw.getKitConfigHandler().getString(kitKey + ".Requirements.Premission.NoPermissionMessage").replaceAll("&", "§"));
-            } else if (!hasAchievement) {
-                this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
-                p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.KitLocked").replaceAll("&", "§"));
-            } else if (initialBal >= this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price")) {
-                CTW.economy.withdrawPlayer(p, this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price"));
-                this.runKitCommands(p, kitKey);
-                final double finalBal = initialBal - this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price");
-                this.ctw.getSoundHandler().sendItemPickupSound(p.getLocation(), p);
-                final String s = this.ctw.getLanguageHandler().getMessage("ChatMessages.KitReceived").replaceAll("%balance%", String.valueOf((int) finalBal));
-                p.sendMessage(s.replaceAll("&", "§"));
-            } else {
-                this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
-                String s2 = this.ctw.getLanguageHandler().getMessage("ChatMessages.NotEnoughCoins").replaceAll("%coinsNeeded%", String.valueOf(this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price").intValue()));
-                s2 = s2.replaceAll("%balance%", String.valueOf(initialBal.intValue()));
-                p.sendMessage(s2.replaceAll("&", "§"));
+    public void sendKit(final @NotNull Player p, final int slotClicked) {
+
+        for (int i = 0; i < p.getOpenInventory().countSlots(); i++) {
+            if (slotClicked == i) {
+                final String kitKey = this.keyItemMap.get(i);
+                final Double initialBal = CTW.economy.getBalance(p);
+                final boolean hasPermission = this.hasKitPermission(p, kitKey);
+                final boolean hasAchievement = this.hasKitAchievement(p, kitKey);
+
+                if (!hasPermission) {
+                    this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
+                    p.sendMessage(this.ctw.getKitConfigHandler().getString(kitKey + ".Requirements.Premission.NoPermissionMessage").replaceAll("&", "§"));
+                } else if (!hasAchievement) {
+                    this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
+                    p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.KitLocked").replaceAll("&", "§"));
+                } else if (initialBal >= this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price")) {
+                    CTW.economy.withdrawPlayer(p, this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price"));
+                    this.runKitCommands(p, kitKey);
+                    final double finalBal = initialBal - this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price");
+                    this.ctw.getSoundHandler().sendItemPickupSound(p.getLocation(), p);
+                    final String s = this.ctw.getLanguageHandler().getMessage("ChatMessages.KitReceived").replaceAll("%balance%", String.valueOf((int) finalBal));
+                    p.sendMessage(s.replaceAll("&", "§"));
+                } else {
+                    this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
+                    String s2 = this.ctw.getLanguageHandler().getMessage("ChatMessages.NotEnoughCoins").replaceAll("%coinsNeeded%", String.valueOf(this.ctw.getKitConfigHandler().getDouble(kitKey + ".Requirements.Price").intValue()));
+                    s2 = s2.replaceAll("%balance%", String.valueOf(initialBal.intValue()));
+                    p.sendMessage(s2.replaceAll("&", "§"));
+                }
             }
         }
     }
@@ -160,6 +166,7 @@ public class ItemKitHandler {
         item.setItemMeta(meta);
         int slot = this.ctw.getKitConfigHandler().getInteger(kitName + ".Slot");
         this.itemMap.put(slot, item);
+        this.keyItemMap.put(slot, kitName);
         return item;
     }
 }
