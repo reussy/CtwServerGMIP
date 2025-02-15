@@ -58,7 +58,6 @@ public class Death implements Listener {
         final int y = (int) loc.getY();
 
         if (y < this.ctw.getMapConfigHandler().pinkWool.getY() - 40 && player.getGameMode() != GameMode.CREATIVE) {
-
                 if (!player.isDead()) {
                     player.setLastDamageCause(new EntityDamageEvent(player, EntityDamageEvent.DamageCause.VOID, player.getHealth()));
                     player.damage(player.getHealth(), null);
@@ -210,7 +209,7 @@ public class Death implements Listener {
                         .replace("%WeaponLogo%", this.ctw.getLanguageHandler().getMessage("Icons.Other"))
                         .replace("%KilledPlayer%", this.ctw.getMessageUtils().getTeamColor(victim));
 
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', voidSelfDeathBroadcast));
+                sendDeathMessage(ChatColor.translateAlternateColorCodes('&', voidSelfDeathBroadcast));
                 this.ctw.getPlayerScoreHandler().takeScore(victim, this.ctw.getConfigHandler().getInteger("Rewards.Score.death"));
                 this.ctw.getMessageUtils().sendScoreMessage(victim, "-" + this.ctw.getConfigHandler().getInteger("Rewards.Score.death"), null);
             }
