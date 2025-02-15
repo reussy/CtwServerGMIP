@@ -45,7 +45,7 @@ public class Respawning implements Listener {
         CTW.getPlayersAlreadyEquipped().remove(p.getUniqueId());
     }
 
-    private void loadChunkCheck(final Location l) {
+    private void loadChunkCheck(final @NotNull Location l) {
         final World w = l.getWorld();
         if (!w.getChunkAt(l).isLoaded()) {
             w.loadChunk(w.getChunkAt(l));

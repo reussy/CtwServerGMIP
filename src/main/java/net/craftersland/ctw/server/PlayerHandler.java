@@ -5,6 +5,7 @@ import com.yapzhenyie.GadgetsMenu.cosmetics.particles.ParticleType;
 import com.yapzhenyie.GadgetsMenu.player.PlayerManager;
 import net.craftersland.ctw.server.achievements.*;
 import net.craftersland.ctw.server.game.GameEngine;
+import net.craftersland.ctw.server.utils.StartupKit;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -144,6 +145,7 @@ public class PlayerHandler {
         if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
             this.ctw.getTeamHandler().setRedSuit(p);
             this.ctw.getStartupKit().giveStartupKit(p);
+            StartupKit.setUnbreakableArmor(p);
         }
     }
 
@@ -218,6 +220,7 @@ public class PlayerHandler {
         if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
             this.ctw.getTeamHandler().setBlueSuit(p);
             this.ctw.getStartupKit().giveStartupKit(p);
+            StartupKit.setUnbreakableArmor(p);
         }
     }
 

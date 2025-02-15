@@ -273,7 +273,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         CTW.pbH = new PlayerBowDistanceKillHandler(this);
         CTW.daH = new DistanceAchievementHandler(this);
         CTW.ksH = new KillStreakHandler(this);
-        CTW.ldH = new LastDamageHandler(this);
+        CTW.ldH = new LastDamageHandler();
         CTW.kH = new KitHandler(this);
         CTW.sh = new SharpnessI(this);
         CTW.ssh = new SharpnessII(this);

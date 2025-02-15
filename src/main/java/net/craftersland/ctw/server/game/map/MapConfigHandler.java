@@ -8,12 +8,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
-import java.nio.file.FileSystems;
 import java.util.*;
 
 public class MapConfigHandler {
@@ -36,12 +33,11 @@ public class MapConfigHandler {
     public List<CuboidSelection> blueNoAccess;
     public CuboidSelection gameArea;
     public ItemStack[] startupKit;
-    private final String[] UNBREAKABLE_ITEMS = {"HELMET", "CHESTPLATE", "LEGGINGS", "BOOTS", "SWORD"};
 
     public MapConfigHandler(final CTW ctw) {
-        this.protectedAreas = new ArrayList<>();
-        this.redNoAccess = new ArrayList<>();
-        this.blueNoAccess = new ArrayList<>();
+        this.protectedAreas = new ArrayList<CuboidSelection>();
+        this.redNoAccess = new ArrayList<CuboidSelection>();
+        this.blueNoAccess = new ArrayList<CuboidSelection>();
         this.ctw = ctw;
         this.createMapConfigFolder();
     }
@@ -67,17 +63,17 @@ public class MapConfigHandler {
 
     public void loadConfig(final String mapName) {
         Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
-            final File mapConfigFolder = new File("plugins" + FileSystems.getDefault().getSeparator() + "CTWserver" + FileSystems.getDefault().getSeparator() + "MapConfigs");
+            final File mapConfigFolder = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs");
             if (!mapConfigFolder.exists()) {
                 mapConfigFolder.mkdir();
             }
-            final File mapConfig = new File("plugins" + FileSystems.getDefault().getSeparator() + "CTWserver" + FileSystems.getDefault().getSeparator() + "MapConfigs" + FileSystems.getDefault().getSeparator() + mapName + ".yml");
+            final File mapConfig = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs" + System.getProperty("file.separator") + mapName + ".yml");
             if (!mapConfig.exists()) {
-                MapConfigHandler.this.ctw.saveResource("MapConfig.yml", false);
-                final File rawConfig = new File("plugins" + FileSystems.getDefault().getSeparator() + "CTWserver" + FileSystems.getDefault().getSeparator() + "MapConfig.yml");
+                this.ctw.saveResource("MapConfig.yml", false);
+                final File rawConfig = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfig.yml");
                 try {
                     FileUtils.moveFileToDirectory(rawConfig, mapConfigFolder, false);
-                    final File fileToRename = new File("plugins" + FileSystems.getDefault().getSeparator() + "CTWserver" + FileSystems.getDefault().getSeparator() + "MapConfigs" + FileSystems.getDefault().getSeparator() + "MapConfig.yml");
+                    final File fileToRename = new File("plugins" + System.getProperty("file.separator") + "CTWserver" + System.getProperty("file.separator") + "MapConfigs" + System.getProperty("file.separator") + "MapConfig.yml");
                     fileToRename.renameTo(mapConfig);
                 } catch (Exception e) {
                     CTW.log.severe("Error on create map config function! Error: " + e.getMessage());
@@ -85,77 +81,68 @@ public class MapConfigHandler {
                 }
             }
             final FileConfiguration cfg = YamlConfiguration.loadConfiguration(mapConfig);
-            MapConfigHandler.this.maxPlayers = cfg.getInt("MaxPlayersPerTeam");
-            MapConfigHandler.this.time = cfg.getString("Time");
+            this.maxPlayers = cfg.getInt("MaxPlayersPerTeam");
+            this.time = cfg.getString("Time");
             final String[] spectatorSpawnString = cfg.getString("SpectatorSpawn").split("#");
-            MapConfigHandler.this.spectatorSpawn = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(spectatorSpawnString[0]), Double.parseDouble(spectatorSpawnString[1]), Double.parseDouble(spectatorSpawnString[2]), Float.parseFloat(spectatorSpawnString[3]), Float.parseFloat(spectatorSpawnString[4]));
+            this.spectatorSpawn = new Location(this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(spectatorSpawnString[0]), Double.parseDouble(spectatorSpawnString[1]), Double.parseDouble(spectatorSpawnString[2]), Float.parseFloat(spectatorSpawnString[3]), Float.parseFloat(spectatorSpawnString[4]));
             final String[] redSpawnString = cfg.getString("RedTeam.Spawn").split("#");
-            MapConfigHandler.this.redSpawn = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(redSpawnString[0]), Double.parseDouble(redSpawnString[1]), Double.parseDouble(redSpawnString[2]), Float.parseFloat(redSpawnString[3]), Float.parseFloat(redSpawnString[4]));
+            this.redSpawn = new Location(this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(redSpawnString[0]), Double.parseDouble(redSpawnString[1]), Double.parseDouble(redSpawnString[2]), Float.parseFloat(redSpawnString[3]), Float.parseFloat(redSpawnString[4]));
             final String[] blueSpawnString = cfg.getString("BlueTeam.Spawn").split("#");
-            MapConfigHandler.this.blueSpawn = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(blueSpawnString[0]), Double.parseDouble(blueSpawnString[1]), Double.parseDouble(blueSpawnString[2]), Float.parseFloat(blueSpawnString[3]), Float.parseFloat(blueSpawnString[4]));
+            this.blueSpawn = new Location(this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(blueSpawnString[0]), Double.parseDouble(blueSpawnString[1]), Double.parseDouble(blueSpawnString[2]), Float.parseFloat(blueSpawnString[3]), Float.parseFloat(blueSpawnString[4]));
             final String[] redWoolString = cfg.getString("RedTeam.RedWool").split("#");
-            MapConfigHandler.this.redWool = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(redWoolString[0]), Integer.parseInt(redWoolString[1]), Integer.parseInt(redWoolString[2]));
+            this.redWool = new Location(this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(redWoolString[0]), Integer.parseInt(redWoolString[1]), Integer.parseInt(redWoolString[2]));
             final String[] pinkWoolString = cfg.getString("RedTeam.PinkWool").split("#");
-            MapConfigHandler.this.pinkWool = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(pinkWoolString[0]), Integer.parseInt(pinkWoolString[1]), Integer.parseInt(pinkWoolString[2]));
+            this.pinkWool = new Location(this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(pinkWoolString[0]), Integer.parseInt(pinkWoolString[1]), Integer.parseInt(pinkWoolString[2]));
             final String[] blueWoolString = cfg.getString("BlueTeam.BlueWool").split("#");
-            MapConfigHandler.this.blueWool = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(blueWoolString[0]), Integer.parseInt(blueWoolString[1]), Integer.parseInt(blueWoolString[2]));
+            this.blueWool = new Location(this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(blueWoolString[0]), Integer.parseInt(blueWoolString[1]), Integer.parseInt(blueWoolString[2]));
             final String[] cyanWoolString = cfg.getString("BlueTeam.CyanWool").split("#");
-            MapConfigHandler.this.cyanWool = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(cyanWoolString[0]), Integer.parseInt(cyanWoolString[1]), Integer.parseInt(cyanWoolString[2]));
+            this.cyanWool = new Location(this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(cyanWoolString[0]), Integer.parseInt(cyanWoolString[1]), Integer.parseInt(cyanWoolString[2]));
             final String[] redWonEffectString = cfg.getString("VictoryParticles.Red").split("#");
-            MapConfigHandler.this.redWonParticle = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(redWonEffectString[0]), Double.parseDouble(redWonEffectString[1]), Double.parseDouble(redWonEffectString[2]), Float.parseFloat(redWonEffectString[3]), Float.parseFloat(redWonEffectString[4]));
+            this.redWonParticle = new Location(this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(redWonEffectString[0]), Double.parseDouble(redWonEffectString[1]), Double.parseDouble(redWonEffectString[2]), Float.parseFloat(redWonEffectString[3]), Float.parseFloat(redWonEffectString[4]));
             final String[] blueWonEffectString = cfg.getString("VictoryParticles.Blue").split("#");
-            MapConfigHandler.this.blueWonParticle = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(blueWonEffectString[0]), Double.parseDouble(blueWonEffectString[1]), Double.parseDouble(blueWonEffectString[2]), Float.parseFloat(blueWonEffectString[3]), Float.parseFloat(blueWonEffectString[4]));
-            MapConfigHandler.this.maxHight = cfg.getInt("ProtectedHight.maxHight");
-            MapConfigHandler.this.minHight = cfg.getInt("ProtectedHight.minHight");
-            final List<String> protectedString = cfg.getStringList("ProtectedAreas");
+            this.blueWonParticle = new Location(this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(blueWonEffectString[0]), Double.parseDouble(blueWonEffectString[1]), Double.parseDouble(blueWonEffectString[2]), Float.parseFloat(blueWonEffectString[3]), Float.parseFloat(blueWonEffectString[4]));
+            this.maxHight = cfg.getInt("ProtectedHight.maxHight");
+            this.minHight = cfg.getInt("ProtectedHight.minHight");
+            final List<String> protectedString = (List<String>) cfg.getStringList("ProtectedAreas");
             if (!protectedString.isEmpty()) {
                 for (final String s : protectedString) {
                     final String[] data = s.split("#");
-                    final Location l1 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-                    final Location l2 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]));
-                    final CuboidSelection cs = new CuboidSelection(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, l1, l2);
-                    MapConfigHandler.this.protectedAreas.add(cs);
+                    final Location l1 = new Location(this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+                    final Location l2 = new Location(this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]));
+                    final CuboidSelection cs = new CuboidSelection(this.ctw.getMapHandler().currentMapWorld, l1, l2);
+                    this.protectedAreas.add(cs);
                 }
             }
-            final List<String> redNoAcc = cfg.getStringList("RedNoAccess");
+            final List<String> redNoAcc = (List<String>) cfg.getStringList("RedNoAccess");
             if (!redNoAcc.isEmpty()) {
                 for (final String s2 : redNoAcc) {
                     final String[] data2 = s2.split("#");
-                    final Location l3 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(data2[0]), Double.parseDouble(data2[1]), Double.parseDouble(data2[2]));
-                    final Location l4 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(data2[3]), Double.parseDouble(data2[4]), Double.parseDouble(data2[5]));
-                    final CuboidSelection cs2 = new CuboidSelection(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, l3, l4);
-                    MapConfigHandler.this.redNoAccess.add(cs2);
+                    final Location l3 = new Location(this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(data2[0]), Double.parseDouble(data2[1]), Double.parseDouble(data2[2]));
+                    final Location l4 = new Location(this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(data2[3]), Double.parseDouble(data2[4]), Double.parseDouble(data2[5]));
+                    final CuboidSelection cs2 = new CuboidSelection(this.ctw.getMapHandler().currentMapWorld, l3, l4);
+                    this.redNoAccess.add(cs2);
                 }
             }
-            final List<String> blueNoAcc = cfg.getStringList("BlueNoAccess");
+            final List<String> blueNoAcc = (List<String>) cfg.getStringList("BlueNoAccess");
             if (!blueNoAcc.isEmpty()) {
                 for (final String s3 : blueNoAcc) {
                     final String[] data3 = s3.split("#");
-                    final Location l5 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(data3[0]), Double.parseDouble(data3[1]), Double.parseDouble(data3[2]));
-                    final Location l6 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(data3[3]), Double.parseDouble(data3[4]), Double.parseDouble(data3[5]));
-                    final CuboidSelection cs3 = new CuboidSelection(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, l5, l6);
-                    MapConfigHandler.this.blueNoAccess.add(cs3);
+                    final Location l5 = new Location(this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(data3[0]), Double.parseDouble(data3[1]), Double.parseDouble(data3[2]));
+                    final Location l6 = new Location(this.ctw.getMapHandler().currentMapWorld, Double.parseDouble(data3[3]), Double.parseDouble(data3[4]), Double.parseDouble(data3[5]));
+                    final CuboidSelection cs3 = new CuboidSelection(this.ctw.getMapHandler().currentMapWorld, l5, l6);
+                    this.blueNoAccess.add(cs3);
                 }
             }
             final String[] arenaA = cfg.getString("ArenaArea").split("#");
-            final Location arenaLoc1 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(arenaA[0]), Integer.parseInt(arenaA[1]), Integer.parseInt(arenaA[2]));
-            final Location arenaLoc2 = new Location(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(arenaA[3]), Integer.parseInt(arenaA[4]), Integer.parseInt(arenaA[5]));
-            MapConfigHandler.this.gameArea = new CuboidSelection(MapConfigHandler.this.ctw.getMapHandler().currentMapWorld, arenaLoc1, arenaLoc2);
-            ArrayList<ItemStack> items = new ArrayList<>();
+            final Location arenaLoc1 = new Location(this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(arenaA[0]), Integer.parseInt(arenaA[1]), Integer.parseInt(arenaA[2]));
+            final Location arenaLoc2 = new Location(this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(arenaA[3]), Integer.parseInt(arenaA[4]), Integer.parseInt(arenaA[5]));
+            this.gameArea = new CuboidSelection(this.ctw.getMapHandler().currentMapWorld, arenaLoc1, arenaLoc2);
+            final ArrayList<ItemStack> items = new ArrayList<>();
             for (int i = 0; i < 36; ++i) {
-                ItemStack item = cfg.getItemStack("StartupKit." + i);
-
-                // Set unbreakable items
-                if (Arrays.stream(UNBREAKABLE_ITEMS).anyMatch(item.getType().name()::contains)){
-                    ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.spigot().setUnbreakable(true);
-                    itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-                    item.setItemMeta(itemMeta);
-                }
-
+                final ItemStack item = cfg.getItemStack("StartupKit." + i);
                 items.add(item);
             }
-            MapConfigHandler.this.startupKit = items.toArray(new ItemStack[items.size()]);
+            this.startupKit = items.toArray(new ItemStack[items.size()]);
             items.clear();
         });
     }
@@ -168,8 +155,8 @@ public class MapConfigHandler {
         if (!areaList.isEmpty()) {
             for (final String s : areaList) {
                 final String[] data = s.split("#");
-                final Location l1 = new Location(this.ctw.getMapHandler().currentMapWorld, (double) Integer.parseInt(data[0]), (double) Integer.parseInt(data[1]), (double) Integer.parseInt(data[2]));
-                final Location l2 = new Location(this.ctw.getMapHandler().currentMapWorld, (double) Integer.parseInt(data[3]), (double) Integer.parseInt(data[4]), (double) Integer.parseInt(data[5]));
+                final Location l1 = new Location(this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+                final Location l2 = new Location(this.ctw.getMapHandler().currentMapWorld, Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]));
                 final CuboidSelection cs = new CuboidSelection(this.ctw.getMapHandler().currentMapWorld, l1, l2);
                 if (cs.contains(loc)) {
                     areas.add(s);

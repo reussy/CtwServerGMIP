@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 
 public class Joining implements Listener {
     private final CTW ctw;
@@ -16,7 +17,7 @@ public class Joining implements Listener {
     }
 
     @EventHandler
-    public void onLogin(final PlayerLoginEvent event) {
+    public void onLogin(final @NotNull PlayerLoginEvent event) {
         final Player p = event.getPlayer();
         Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, () -> {
             if (event.getResult().toString().equals("ALLOWED")) {

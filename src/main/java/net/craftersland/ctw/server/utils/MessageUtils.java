@@ -5,6 +5,7 @@ import net.craftersland.ctw.server.game.TeamHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class MessageUtils {
         Bukkit.getScheduler().runTask(this.ctw, () -> CTW.tm.sendActionbar(p, msg));
     }
 
-    public String getTeamColor(final Player p) {
+    public String getTeamColor(final @NotNull Player p) {
         String name = p.getName();
         final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
         if (team == TeamHandler.Teams.RED) {
@@ -49,13 +50,13 @@ public class MessageUtils {
         return name;
     }
 
-    public String getTeamColorBolded(final Player p) {
+    public String getTeamColorBolded(final @NotNull Player p) {
         String name = p.getName();
         final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
         if (team == TeamHandler.Teams.RED) {
-            name = new StringBuilder().append(ChatColor.RED).append(ChatColor.BOLD).append(name).toString();
+            name = String.valueOf(ChatColor.RED) + ChatColor.BOLD + name;
         } else if (team == TeamHandler.Teams.BLUE) {
-            name = new StringBuilder().append(ChatColor.BLUE).append(ChatColor.BOLD).append(name).toString();
+            name = String.valueOf(ChatColor.BLUE) + ChatColor.BOLD + name;
         }
         return name;
     }
@@ -78,27 +79,27 @@ public class MessageUtils {
         });
     }
 
-    public void sendScoreMessage(final Player p, final String score, final Integer coins) {
+    public void sendScoreMessage(final Player player, final String score, final Integer coins) {
         String msg = this.ctw.getLanguageHandler().getMessage("ChatMessages.ScoreMessage").replaceAll("%points%", score);
-        msg = msg.replaceAll("%score%", this.ctw.getPlayerScoreHandler().getScore(p).toString());
+        msg = msg.replaceAll("%score%", this.ctw.getPlayerScoreHandler().getScore(player).toString());
         if (coins != null) {
-            if (p.hasPermission("CTW.3xCoinMultiplier")) {
-                final int coin = coins * 3;
-                String cMsg = this.ctw.getLanguageHandler().getMessage("ChatMessages.Coins3xMultiplier").replaceAll("%coins%", new StringBuilder(String.valueOf(coin)).toString());
-                cMsg = cMsg.replaceAll("%balance%", this.ctw.getEconomyHandler().getCoins(p).toString());
+            if (player.hasPermission("CTW.3xCoinMultiplier")) {
+                final int coin = (int) (coins + (coins * 0.03));
+                String cMsg = this.ctw.getLanguageHandler().getMessage("ChatMessages.Coins3xMultiplier").replaceAll("%coins%", String.valueOf(coin));
+                cMsg = cMsg.replaceAll("%balance%", this.ctw.getEconomyHandler().getCoins(player).toString());
                 msg = msg + cMsg;
-            } else if (p.hasPermission("CTW.2xCoinMultiplier")) {
-                final int coin = coins * 2;
-                String cMsg = this.ctw.getLanguageHandler().getMessage("ChatMessages.Coins2xMultiplier").replaceAll("%coins%", new StringBuilder(String.valueOf(coin)).toString());
-                cMsg = cMsg.replaceAll("%balance%", this.ctw.getEconomyHandler().getCoins(p).toString());
+            } else if (player.hasPermission("CTW.2xCoinMultiplier")) {
+                final int coin = (int) (coins + (coins * 0.02));
+                String cMsg = this.ctw.getLanguageHandler().getMessage("ChatMessages.Coins2xMultiplier").replaceAll("%coins%", String.valueOf(coin));
+                cMsg = cMsg.replaceAll("%balance%", this.ctw.getEconomyHandler().getCoins(player).toString());
                 msg = msg + cMsg;
             } else {
-                String cMsg2 = this.ctw.getLanguageHandler().getMessage("ChatMessages.CoinsNoMultiplier").replaceAll("%coins%", new StringBuilder().append(coins).toString());
-                cMsg2 = cMsg2.replaceAll("%balance%", this.ctw.getEconomyHandler().getCoins(p).toString());
+                String cMsg2 = this.ctw.getLanguageHandler().getMessage("ChatMessages.CoinsNoMultiplier").replaceAll("%coins%", String.valueOf(coins));
+                cMsg2 = cMsg2.replaceAll("%balance%", this.ctw.getEconomyHandler().getCoins(player).toString());
                 msg = msg + cMsg2;
             }
         }
-        p.sendMessage(msg);
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
     }
 
     public void broadcastGameStats() {

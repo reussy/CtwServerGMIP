@@ -66,6 +66,7 @@ ChatMessages:
   MeleeDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7was killed by %Killer%'
   BowDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7was shoot by %Killer% &7from %distance% blocks.'
   VoidDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7was sent into the void by %Killer%'
+  VoidSelfDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7fell into the void'
   #Countdown messages. Each line represents a new row, you can add/remove lines if you need.
   #To disable set to:  CountdownStart: {}
   #Variables:
