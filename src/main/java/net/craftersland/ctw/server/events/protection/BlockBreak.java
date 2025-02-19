@@ -67,7 +67,7 @@ public class BlockBreak implements Listener {
         if (this.ctw.getProtectionHandler().isAreaProtected(l)) {
             if (event.getPlayer() != null) {
                 if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
-                    if (event.getBlock().getType() != Material.IRON_BLOCK && event.getBlock().getType() != Material.GOLD_BLOCK) {
+                    if (event.getBlock().getType() != Material.IRON_BLOCK && event.getBlock().getType() != Material.GOLD_BLOCK || event.getBlock().getType() != Material.WEB) {
                         event.setCancelled(true);
                     }
                 }

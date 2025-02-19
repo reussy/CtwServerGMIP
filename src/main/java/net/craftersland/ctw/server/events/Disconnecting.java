@@ -24,38 +24,33 @@ public class Disconnecting implements Listener {
 
             ctw.playerProjectile.remove(p.getUniqueId());
 
-            Disconnecting.this.ctw.getTeamHandler().removeOnDisconnect(p);
-            Disconnecting.this.ctw.getNewScoreboardHandler().removePlayer(p);
-            //Disconnecting.this.ctw.getNewScoreboardHandler().removeFromTeams(p);
-            Disconnecting.this.ctw.getWoolHandler().removeBlueTakenByPlayer(p);
-            Disconnecting.this.ctw.getWoolHandler().removeCyanTakenByPlayer(p);
-            Disconnecting.this.ctw.getWoolHandler().removePinkTakenByPlayer(p);
-            Disconnecting.this.ctw.getWoolHandler().removeRedTakenByPlayer(p);
-            Disconnecting.this.ctw.getPlayerScoreHandler().saveScoreToDatabase(p);
-            Disconnecting.this.ctw.getPlayerScoreHandler().removeEffect(p);
-            Disconnecting.this.ctw.getPlayerKillsHandler().saveKillsToDatabasse(p);
-            Disconnecting.this.ctw.getPlayerWoolsPlacedHandler().saveDataToDatabasse(p);
-            Disconnecting.this.ctw.getPlayerBowDistanceKillHandler().saveDataToDatabasse(p);
-            Disconnecting.this.ctw.getWoolAchievementHandler().removeOnDisconnect(p);
-            Disconnecting.this.ctw.getShooterAchievementHandler().removeOnDisconnect(p);
-            Disconnecting.this.ctw.getMeleeAchievementHandler().removeOnDisconnect(p);
-            Disconnecting.this.ctw.getOverpoweredAchievementHandler().removeOnDisconnect(p);
-            Disconnecting.this.ctw.getDistanceAchievementHandler().removeOnDisconnect(p);
-            Disconnecting.this.ctw.getKillStreakHandler().removeOnDisconnect(p);
-            Disconnecting.this.ctw.getKitHandler().removeInventory(p);
-            Disconnecting.this.ctw.getLastDamageHandler().removeData(p);
-            Disconnecting.this.ctw.getEffectUtils().removeEffectsOnDisconnect(p);
+            this.ctw.getTeamHandler().removeOnDisconnect(p);
+            this.ctw.getNewScoreboardHandler().removePlayer(p);
+            //this.ctw.getNewScoreboardHandler().removeFromTeams(p);
+            this.ctw.getWoolHandler().removeBlueTakenByPlayer(p);
+            this.ctw.getWoolHandler().removeCyanTakenByPlayer(p);
+            this.ctw.getWoolHandler().removePinkTakenByPlayer(p);
+            this.ctw.getWoolHandler().removeRedTakenByPlayer(p);
+            this.ctw.getPlayerScoreHandler().saveScoreToDatabase(p);
+            this.ctw.getPlayerScoreHandler().removeEffect(p);
+            this.ctw.getPlayerKillsHandler().saveKillsToDatabasse(p);
+            this.ctw.getPlayerWoolsPlacedHandler().saveDataToDatabasse(p);
+            this.ctw.getPlayerBowDistanceKillHandler().saveDataToDatabasse(p);
+            this.ctw.getWoolAchievementHandler().removeOnDisconnect(p);
+            this.ctw.getShooterAchievementHandler().removeOnDisconnect(p);
+            this.ctw.getMeleeAchievementHandler().removeOnDisconnect(p);
+            this.ctw.getOverpoweredAchievementHandler().removeOnDisconnect(p);
+            this.ctw.getDistanceAchievementHandler().removeOnDisconnect(p);
+            this.ctw.getKillStreakHandler().removeOnDisconnect(p);
+            this.ctw.getKitHandler().removeInventory(p);
+            this.ctw.getLastDamageHandler().removeData(p);
+            this.ctw.getEffectUtils().removeEffectsOnDisconnect(p);
 
-        });
-    }
-
-    @EventHandler
-    public void onDisable(PluginDisableEvent event) {
-        Bukkit.getOnlinePlayers().forEach(player -> Bukkit.getScheduler().runTaskAsynchronously(this.ctw, () -> {
-            final ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF("Connect");
             out.writeUTF(this.ctw.getLobbyServersHandler().getLobbyToTeleport());
-            player.sendPluginMessage(this.ctw, "BungeeCord", out.toByteArray());
-        }));
+            p.sendPluginMessage(this.ctw, "BungeeCord", out.toByteArray());
+
+        });
     }
 }

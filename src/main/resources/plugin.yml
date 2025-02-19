@@ -1,11 +1,11 @@
 name: CTWserver
 version: ${project.version}
 main: net.craftersland.ctw.server.CTW
-api-version: 1.16
-authors: [ CraftersLand edited Ak ]
+api-version: 1.13
+authors: [ CraftersLand edited Ak and reussy ]
 load: POST WORLD
 soft depend: [ Vault, EffectLib, AAC, TitleManager, WorldEdit, PlayerPoints, PlaceholderAPI ]
-description: Plugin CTW
+description: Capture The Wool server plugin.
 
 commands:
   join:

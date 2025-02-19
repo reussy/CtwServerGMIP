@@ -66,15 +66,12 @@ public class PlayerHandler {
     public void addSpectator(final Player p) {
         this.resetPlayer(p);
         this.ctw.getTeamHandler().addSpectator(p);
-        Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                final Location l = PlayerHandler.this.ctw.getMapConfigHandler().getSpectatorSpawn();
-                if (l != null) {
-                    p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().getSpectatorSpawn());
-                }
-                p.setGameMode(GameMode.SPECTATOR);
+        Bukkit.getScheduler().runTask(this.ctw, () -> {
+            final Location l = PlayerHandler.this.ctw.getMapConfigHandler().getSpectatorSpawn();
+            if (l != null) {
+                p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().getSpectatorSpawn());
             }
+            p.setGameMode(GameMode.SPECTATOR);
         });
     }
 

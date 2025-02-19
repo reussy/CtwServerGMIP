@@ -20,15 +20,12 @@ public class InventoryClick implements Listener {
         this.ctw = ctw;
     }
 
-    /*
     @EventHandler
     public void onFoodChange(@NotNull FoodLevelChangeEvent e) {
         if (e.getEntity() instanceof Player) {
             e.setCancelled(true);
         }
     }
-
-     */
 
     @EventHandler
     public void cancelRemoveArmor(InventoryClickEvent e) {

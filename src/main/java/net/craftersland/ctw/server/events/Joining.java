@@ -18,36 +18,34 @@ public class Joining implements Listener {
 
     @EventHandler
     public void onLogin(final @NotNull PlayerLoginEvent event) {
-        final Player p = event.getPlayer();
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, () -> {
-            if (event.getResult().toString().equals("ALLOWED")) {
-                Joining.this.ctw.getPlayerHandler().addSpectator(p);
-                //Joining.this.ctw.getScoreboardHandler().setScoreboardToPlayer(p);
-                Joining.this.ctw.getNewScoreboardHandler().addPlayer(p);
-                Joining.this.ctw.getPlayerHandler().sendJoinMessage(p);
-                Joining.this.ctw.getMessageUtils().sendTabTitleFooter(p);
-                Joining.this.ctw.getPlayerScoreHandler().loadInitialScore(p);
-                Joining.this.ctw.getPlayerScoreHandler().setEffect(p);
-                Joining.this.ctw.getPlayerKillsHandler().loadKills(p);
-                Joining.this.ctw.getPlayerWoolsPlacedHandler().loadData(p);
-                Joining.this.ctw.getPlayerBowDistanceKillHandler().loadData(p);
-                Joining.this.ctw.getWoolAchievementHandler().loadInitialAchievements(p);
-                Joining.this.ctw.getShooterAchievementHandler().loadInitialAchievements(p);
-                Joining.this.ctw.getMeleeAchievementHandler().loadInitialAchievements(p);
-                Joining.this.ctw.getOverpoweredAchievementHandler().loadInitialAchievements(p);
-                Joining.this.ctw.getDistanceAchievementHandler().loadInitialAchievements(p);
-                Joining.this.ctw.getKillStreakHandler().resetData(p);
 
-            }
+        if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) return;
+        
+        Player player = event.getPlayer();
+        Inventory joinTeamMenu = this.ctw.getJoinMenu().JoinMenuGUI(player);
+
+        this.ctw.getPlayerHandler().addSpectator(player);
+        this.ctw.getNewScoreboardHandler().addPlayer(player);
+
+        Bukkit.getScheduler().runTaskLater(this.ctw, () -> {
+            //this.ctw.getScoreboardHandler().setScoreboardToPlayer(p);
+            this.ctw.getPlayerHandler().sendJoinMessage(player);
+            this.ctw.getMessageUtils().sendTabTitleFooter(player);
+            this.ctw.getPlayerScoreHandler().loadInitialScore(player);
+            this.ctw.getPlayerScoreHandler().setEffect(player);
+            this.ctw.getPlayerKillsHandler().loadKills(player);
+            this.ctw.getPlayerWoolsPlacedHandler().loadData(player);
+            this.ctw.getPlayerBowDistanceKillHandler().loadData(player);
+            this.ctw.getKillStreakHandler().resetData(player);
         }, 1L);
 
-
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, () -> {
-            if (event.getResult().toString().equals("ALLOWED")) {
-                final Inventory inv = Joining.this.ctw.getJoinMenu().JoinMenuGUI(p);
-                p.openInventory(inv);
-
-            }
-        }, 30);
+        // Load achievements for player
+        this.ctw.getWoolAchievementHandler().loadInitialAchievements(player);
+        this.ctw.getShooterAchievementHandler().loadInitialAchievements(player);
+        this.ctw.getMeleeAchievementHandler().loadInitialAchievements(player);
+        this.ctw.getOverpoweredAchievementHandler().loadInitialAchievements(player);
+        this.ctw.getDistanceAchievementHandler().loadInitialAchievements(player);
+        
+        Bukkit.getScheduler().runTaskLater(this.ctw, () -> player.openInventory(joinTeamMenu), 15L);
     }
 }
