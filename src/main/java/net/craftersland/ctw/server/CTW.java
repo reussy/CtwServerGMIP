@@ -173,7 +173,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
 
         Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lCTW &aSuccessfully enabled!"));
         Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lCTW &7version &a" + this.getDescription().getVersion() + " &7by &aCraftersLand"));
-        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lCTW &7modified &aby reussy & Ak for &6GamesMadeInPola"));
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lCTW &7modified &aby reussy & Ak & DcRubik for &6GamesMadeInPola"));
         this.isEnabled = true;
     }
 
