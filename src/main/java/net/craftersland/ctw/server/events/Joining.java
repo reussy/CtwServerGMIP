@@ -25,10 +25,8 @@ public class Joining implements Listener {
         Inventory joinTeamMenu = this.ctw.getJoinMenu().JoinMenuGUI(player);
 
         this.ctw.getPlayerHandler().addSpectator(player);
-        this.ctw.getNewScoreboardHandler().addPlayer(player);
 
         Bukkit.getScheduler().runTaskLater(this.ctw, () -> {
-            //this.ctw.getScoreboardHandler().setScoreboardToPlayer(p);
             this.ctw.getPlayerHandler().sendJoinMessage(player);
             this.ctw.getMessageUtils().sendTabTitleFooter(player);
             this.ctw.getPlayerScoreHandler().loadInitialScore(player);
@@ -37,14 +35,15 @@ public class Joining implements Listener {
             this.ctw.getPlayerWoolsPlacedHandler().loadData(player);
             this.ctw.getPlayerBowDistanceKillHandler().loadData(player);
             this.ctw.getKillStreakHandler().resetData(player);
-        }, 1L);
+            this.ctw.getNewScoreboardHandler().addPlayer(player);
 
-        // Load achievements for player
-        this.ctw.getWoolAchievementHandler().loadInitialAchievements(player);
-        this.ctw.getShooterAchievementHandler().loadInitialAchievements(player);
-        this.ctw.getMeleeAchievementHandler().loadInitialAchievements(player);
-        this.ctw.getOverpoweredAchievementHandler().loadInitialAchievements(player);
-        this.ctw.getDistanceAchievementHandler().loadInitialAchievements(player);
+            // Load achievements for player
+            this.ctw.getWoolAchievementHandler().loadInitialAchievements(player);
+            this.ctw.getShooterAchievementHandler().loadInitialAchievements(player);
+            this.ctw.getMeleeAchievementHandler().loadInitialAchievements(player);
+            this.ctw.getOverpoweredAchievementHandler().loadInitialAchievements(player);
+            this.ctw.getDistanceAchievementHandler().loadInitialAchievements(player);
+        }, 1L);
         
         Bukkit.getScheduler().runTaskLater(this.ctw, () -> player.openInventory(joinTeamMenu), 15L);
     }
