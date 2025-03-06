@@ -11,6 +11,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,6 @@ public class PlayerHandler {
 
     public void addRedTeam(final Player p) {
         if (this.ctw.getTeamHandler().countRedTeam() < this.ctw.getMapConfigHandler().maxPlayers || p.hasPermission("CTW.joinfullteams")) {
-            this.resetPlayer(p);
             this.ctw.getTeamHandler().addRedTeam(p);
             this.ctw.getNewScoreboardHandler().addToRedTeam(p);
             Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
@@ -148,18 +148,14 @@ public class PlayerHandler {
 
     public void addBlueTeam(final Player p) {
         if (this.ctw.getTeamHandler().countBlueTeam() < this.ctw.getMapConfigHandler().maxPlayers || p.hasPermission("CTW.joinfullteams")) {
-            this.resetPlayer(p);
             this.ctw.getTeamHandler().addBlueTeam(p);
             this.ctw.getNewScoreboardHandler().addToBlueTeam(p);
-            Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
-                @Override
-                public void run() {
-                    p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().blueSpawn);
-                    if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) {
-                        p.setGameMode(GameMode.SPECTATOR);
-                    } else {
-                        p.setGameMode(GameMode.SURVIVAL);
-                    }
+            Bukkit.getScheduler().runTask(this.ctw, () -> {
+                p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().blueSpawn);
+                if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) {
+                    p.setGameMode(GameMode.SPECTATOR);
+                } else {
+                    p.setGameMode(GameMode.SURVIVAL);
                 }
             });
             this.ctw.getMessageUtils().sendTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.JoinBlueTeam.title").replaceAll("&", "§"), this.ctw.getLanguageHandler().getMessage("TitleMessages.JoinBlueTeam.subtitle").replaceAll("&", "§"), p);
@@ -192,27 +188,24 @@ public class PlayerHandler {
 
     public void respawnBlueTeam(final Player p) {
         this.resetPlayer(p);
-        Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
-            @Override
-            public void run() {
+        Bukkit.getScheduler().runTask(this.ctw, () -> {
 
-                if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) {
+            if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) {
 
-                    p.setGameMode(GameMode.ADVENTURE);
-                } else if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
+                p.setGameMode(GameMode.ADVENTURE);
+            } else if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
 
-                    p.setGameMode(GameMode.SURVIVAL);
-                    p.setHealth(p.getMaxHealth());
+                p.setGameMode(GameMode.SURVIVAL);
+                p.setHealth(p.getMaxHealth());
 
-                    if (PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p) != null) {
+                if (PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p) != null) {
 
-                        PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
-                        playerManager.unequipParticle();
+                    PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
+                    playerManager.unequipParticle();
 
-                    }
                 }
-                p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().blueSpawn);
             }
+            p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().blueSpawn);
         });
         if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
             this.ctw.getTeamHandler().setBlueSuit(p);
@@ -233,8 +226,8 @@ public class PlayerHandler {
         });
     }
 
-    private void resetPlayer(final Player p) {
-        p.getInventory().clear();
+    private void resetPlayer(final @NotNull Player p) {
+        clearInventory(p);
         p.getInventory().setHelmet(null);
         p.getInventory().setChestplate(null);
         p.getInventory().setLeggings(null);
@@ -248,6 +241,12 @@ public class PlayerHandler {
             for (final PotionEffect po : p.getActivePotionEffects()) {
                 p.removePotionEffect(po.getType());
             }
+        }
+    }
+
+    private void clearInventory(@NotNull Player player){
+        for (int i = 0; i < player.getInventory().getSize(); i++) {
+            player.getInventory().setItem(i, null);
         }
     }
 
@@ -271,71 +270,65 @@ public class PlayerHandler {
     // TODO Efecto
     public void playerSetWonSpectator(final Player p) {
         this.resetPlayer(p);
-        Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
-            @Override
-            public void run() {
+        Bukkit.getScheduler().runTask(this.ctw, () -> {
 
-                String effect = PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p);
+            String effect = PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p);
 
-                if (effect != null) {
-                    PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
-                    playerManager.equipParticle(ParticleType.valueOf(effect));
-                }
-
-                p.setGameMode(GameMode.ADVENTURE);
+            if (effect != null) {
+                PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
+                playerManager.equipParticle(ParticleType.valueOf(effect));
             }
+
+            p.setGameMode(GameMode.ADVENTURE);
         });
     }
 
     public void respawnAllPlayers() {
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                final List<Player> red = PlayerHandler.this.ctw.getTeamHandler().redTeamCopy();
-                final List<Player> blue = PlayerHandler.this.ctw.getTeamHandler().blueTeamCopy();
-                final List<Player> spec = PlayerHandler.this.ctw.getTeamHandler().spectatorsCopy();
-                if (!red.isEmpty()) {
-                    for (final Player p : red) {
-                        if (p != null && p.isOnline()) {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, () -> {
+            final List<Player> red = PlayerHandler.this.ctw.getTeamHandler().redTeamCopy();
+            final List<Player> blue = PlayerHandler.this.ctw.getTeamHandler().blueTeamCopy();
+            final List<Player> spec = PlayerHandler.this.ctw.getTeamHandler().spectatorsCopy();
+            if (!red.isEmpty()) {
+                for (final Player p : red) {
+                    if (p != null && p.isOnline()) {
 
-                            Bukkit.getScheduler().runTask(ctw, () -> {
+                        Bukkit.getScheduler().runTask(ctw, () -> {
 
-                                p.setGameMode(GameMode.SURVIVAL);
-                                p.setHealth(p.getMaxHealth());
-                                p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().redSpawn);
-                                ctw.getTeamHandler().setRedSuit(p);
-                                ctw.getStartupKit().giveStartupKit(p);
-                            });
+                            p.setGameMode(GameMode.SURVIVAL);
+                            p.setHealth(p.getMaxHealth());
+                            p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().redSpawn);
+                            ctw.getTeamHandler().setRedSuit(p);
+                            ctw.getStartupKit().giveStartupKit(p);
+                        });
 
-                            PlayerHandler.this.ctw.getKillStreakHandler().resetData(p);
-                        }
+                        PlayerHandler.this.ctw.getKillStreakHandler().resetData(p);
                     }
                 }
-                if (!blue.isEmpty()) {
-                    for (final Player p : blue) {
-                        if (p != null && p.isOnline()) {
-
-                            Bukkit.getScheduler().runTask(ctw, () -> {
-
-                                p.setGameMode(GameMode.SURVIVAL);
-                                p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().blueSpawn);
-                                ctw.getTeamHandler().setBlueSuit(p);
-                                ctw.getStartupKit().giveStartupKit(p);
-                            });
-
-                            PlayerHandler.this.ctw.getKillStreakHandler().resetData(p);
-                        }
-                    }
-                }
-                if (!spec.isEmpty()) {
-                    for (final Player p : spec) {
-                        if (p != null && p.isOnline() && PlayerHandler.this.ctw.getTeamHandler().isSpectator(p)) {
-                            PlayerHandler.this.respawnSpectator(p);
-                        }
-                    }
-                }
-                Bukkit.broadcastMessage(PlayerHandler.this.ctw.getLanguageHandler().getMessage("ChatMessages.NewGameBroadcast").replaceAll("&", "§"));
             }
+            if (!blue.isEmpty()) {
+                for (final Player p : blue) {
+                    if (p != null && p.isOnline()) {
+
+                        Bukkit.getScheduler().runTask(ctw, () -> {
+
+                            p.setGameMode(GameMode.SURVIVAL);
+                            p.teleport(PlayerHandler.this.ctw.getMapConfigHandler().blueSpawn);
+                            ctw.getTeamHandler().setBlueSuit(p);
+                            ctw.getStartupKit().giveStartupKit(p);
+                        });
+
+                        PlayerHandler.this.ctw.getKillStreakHandler().resetData(p);
+                    }
+                }
+            }
+            if (!spec.isEmpty()) {
+                for (final Player p : spec) {
+                    if (p != null && p.isOnline() && PlayerHandler.this.ctw.getTeamHandler().isSpectator(p)) {
+                        PlayerHandler.this.respawnSpectator(p);
+                    }
+                }
+            }
+            Bukkit.broadcastMessage(PlayerHandler.this.ctw.getLanguageHandler().getMessage("ChatMessages.NewGameBroadcast").replaceAll("&", "§"));
         }, 10L);
     }
 }
