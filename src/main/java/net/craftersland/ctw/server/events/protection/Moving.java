@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 public class Moving implements Listener {
     private final CTW ctw;
@@ -30,6 +31,7 @@ public class Moving implements Listener {
 
     @EventHandler
     public void onPlayerMove(final PlayerMoveEvent event) {
+        /*
         if (!event.isCancelled() && event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
             final Player p = event.getPlayer();
             final Location l = event.getTo();
@@ -54,11 +56,13 @@ public class Moving implements Listener {
                 p.teleport(event.getFrom());
             }
         }
+
+         */
     }
 
 
     @EventHandler
-    public void onPlayerMoveWool(final PlayerMoveEvent event) {
+    public void onPlayerMoveWool(final @NotNull PlayerMoveEvent event) {
         if (!event.isCancelled() && event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 
             if (ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
@@ -70,19 +74,14 @@ public class Moving implements Listener {
                     RegionManager regionManager = WGBukkit.getRegionManager(p.getWorld());
                     ApplicableRegionSet set = regionManager.getApplicableRegions(p.getLocation());
 
-                    if (set.size() == 0) {
-                        return;
-                    }
+                    if (set.size() == 0) return;
 
                     for (ProtectedRegion region : set) {
-
                         if (region.getId().equals("pink")) {
-
                             giveItems(p, 6, "pink");
                         }
 
                         if (region.getId().equals("red")) {
-
                             giveItems(p, 14, "red");
                         }
                     }
@@ -141,7 +140,6 @@ public class Moving implements Listener {
             p.getInventory().setChestplate(chestplate);
 
             if (invFull(p)) {
-
                 p.getWorld().dropItemNaturally(p.getLocation().add(0, 1, 0), new ItemStack(Material.GOLDEN_APPLE, 2));
             } else {
 
@@ -164,9 +162,7 @@ public class Moving implements Listener {
                     }
                 }
             } else {
-
                 p.getInventory().setItem(0, sword);
-
             }
 
             cooldownManager.setCooldown(p.getUniqueId(), CooldownManager.DEFAULT_COOLDOWN, color);

@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.craftersland.ctw.server.database.CTWPlayer;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,38 +67,28 @@ public class PAPI extends PlaceholderExpansion {
             return "Offline";
         }
 
-        CTWPlayer ctwPlayer = plugin.getCTWPlayerRepository().get(player.getUniqueId());
-
-        if (params.equalsIgnoreCase("player_total_kills")) {
-            return ctwPlayer.getTotalKills() + "";
-        }
-
-        if (params.equalsIgnoreCase("player_defense_kills")) {
-            return ctwPlayer.getDefenseKills() + "";
-        }
-
         if (params.equalsIgnoreCase("player_melee_kills")) {
-            return ctwPlayer.getMeleeKills() + "";
+            return plugin.getPlayerKillsHandler().getMeleeKills(player.getPlayer()) + "";
         }
 
         if (params.equalsIgnoreCase("player_bow_kills")) {
-            return ctwPlayer.getBowKills() + "";
+            return plugin.getPlayerKillsHandler().getBowKills(player.getPlayer()) + "";
         }
 
-        if (params.equalsIgnoreCase("player_match_total_kills")) {
-            return ctwPlayer.getMatchTotalKills() + "";
-        }
-
-        if (params.equalsIgnoreCase("player_match_defense_kills")) {
-            return ctwPlayer.getMatchDefenseKills() + "";
+        if (params.equalsIgnoreCase("player_total_kills")) {
+            return plugin.getPlayerKillsHandler().getTotalKills(player.getPlayer()) + "";
         }
 
         if (params.equalsIgnoreCase("player_match_melee_kills")) {
-            return ctwPlayer.getMatchMeleeKills() + "";
+            return plugin.getPlayerKillsHandler().getMeleeKillsMatch(player.getPlayer()) + "";
         }
 
         if (params.equalsIgnoreCase("player_match_bow_kills")) {
-            return ctwPlayer.getMatchBowKills() + "";
+            return plugin.getPlayerKillsHandler().getBowKillsMatch(player.getPlayer()) + "";
+        }
+
+        if (params.equalsIgnoreCase("player_match_total_kills")) {
+            return plugin.getPlayerKillsHandler().getTotalKillsMatch(player.getPlayer()) + "";
         }
 
         return "...";

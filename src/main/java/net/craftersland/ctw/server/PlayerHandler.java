@@ -4,7 +4,6 @@ import com.yapzhenyie.GadgetsMenu.api.GadgetsMenuAPI;
 import com.yapzhenyie.GadgetsMenu.cosmetics.particles.ParticleType;
 import com.yapzhenyie.GadgetsMenu.player.PlayerManager;
 import net.craftersland.ctw.server.achievements.*;
-import net.craftersland.ctw.server.database.CTWPlayer;
 import net.craftersland.ctw.server.game.GameEngine;
 import net.craftersland.ctw.server.utils.StartupKit;
 import org.bukkit.Bukkit;
@@ -12,7 +11,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,7 @@ public class PlayerHandler {
         this.ctw = ctw;
     }
 
-    public Boolean hasAchievement(final Player p, final @NotNull String achievement) {
+    public Boolean hasAchievement(final Player p, final String achievement) {
         if (achievement.matches("SNIPER1") || achievement.matches("SNIPER2") || achievement.matches("SNIPER3") || achievement.matches("SNIPER4")) {
             return this.ctw.getDistanceAchievementHandler().hasAchievement(p, DistanceAchievementHandler.SniperAchievements.valueOf(achievement));
         }
@@ -45,19 +43,22 @@ public class PlayerHandler {
 
     public void sendJoinMessage(final Player p) {
         final int delay = this.ctw.getConfigHandler().getInteger("Settings.JoinMessageDelay") / 1000;
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, () -> {
-            final List<String> rawMsg = new ArrayList<String>(PlayerHandler.this.ctw.getLanguageHandler().getMessageList("ChatMessages.JoinMessage"));
-            final List<String> processedMsg = new ArrayList<String>();
-            if (!rawMsg.isEmpty()) {
-                for (final String s : rawMsg) {
-                    processedMsg.add(s.replaceAll("&", "§"));
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, new Runnable() {
+            @Override
+            public void run() {
+                final List<String> rawMsg = new ArrayList<String>(PlayerHandler.this.ctw.getLanguageHandler().getMessageList("ChatMessages.JoinMessage"));
+                final List<String> processedMsg = new ArrayList<String>();
+                if (!rawMsg.isEmpty()) {
+                    for (final String s : rawMsg) {
+                        processedMsg.add(s.replaceAll("&", "§"));
+                    }
                 }
-            }
-            if (!processedMsg.isEmpty()) {
-                String[] msg = new String[processedMsg.size()];
-                msg = processedMsg.toArray(msg);
-                p.sendMessage(msg);
-                PlayerHandler.this.ctw.getSoundHandler().sendConfirmSound(p.getLocation(), p);
+                if (!processedMsg.isEmpty()) {
+                    String[] msg = new String[processedMsg.size()];
+                    msg = processedMsg.toArray(msg);
+                    p.sendMessage(msg);
+                    PlayerHandler.this.ctw.getSoundHandler().sendConfirmSound(p.getLocation(), p);
+                }
             }
         }, delay * 20L);
     }
@@ -118,7 +119,6 @@ public class PlayerHandler {
 
     public void respawnRedTeam(final Player p) {
         this.resetPlayer(p);
-        CTWPlayer ctwPlayer = ctw.getCTWPlayerRepository().get(p.getUniqueId());
         Bukkit.getScheduler().runTask(this.ctw, () -> {
 
             if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) {
@@ -126,7 +126,7 @@ public class PlayerHandler {
 
             } else if (PlayerHandler.this.ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
 
-                if (ctwPlayer.getEffects() != null) {
+                if (PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p) != null) {
 
                     PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
                     playerManager.unequipParticle();
@@ -192,7 +192,6 @@ public class PlayerHandler {
 
     public void respawnBlueTeam(final Player p) {
         this.resetPlayer(p);
-        CTWPlayer ctwPlayer = ctw.getCTWPlayerRepository().get(p.getUniqueId());
         Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
             @Override
             public void run() {
@@ -205,7 +204,7 @@ public class PlayerHandler {
                     p.setGameMode(GameMode.SURVIVAL);
                     p.setHealth(p.getMaxHealth());
 
-                    if (ctwPlayer.getEffects() != null) {
+                    if (PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p) != null) {
 
                         PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);
                         playerManager.unequipParticle();
@@ -272,12 +271,11 @@ public class PlayerHandler {
     // TODO Efecto
     public void playerSetWonSpectator(final Player p) {
         this.resetPlayer(p);
-        CTWPlayer ctwPlayer = ctw.getCTWPlayerRepository().get(p.getUniqueId());
         Bukkit.getScheduler().runTask(this.ctw, new Runnable() {
             @Override
             public void run() {
 
-                String effect = ctwPlayer.getEffects();
+                String effect = PlayerHandler.this.ctw.getPlayerScoreHandler().getEffect(p);
 
                 if (effect != null) {
                     PlayerManager playerManager = GadgetsMenuAPI.getPlayerManager(p);

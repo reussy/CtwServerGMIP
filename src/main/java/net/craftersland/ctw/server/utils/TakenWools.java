@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server.utils;
 
 import net.craftersland.ctw.server.CTW;
-import net.craftersland.ctw.server.database.CTWPlayer;
 import net.craftersland.ctw.server.game.TeamHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,7 +22,6 @@ public class TakenWools {
 
     public void redWoolTakenCheck(final Player p) {
         final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
-        CTWPlayer ctwPlayer = ctw.getCTWPlayerRepository().get(p.getUniqueId());
         if (team == TeamHandler.Teams.RED) {
             if (!this.ctw.getWoolHandler().isRedTaken()) {
                 this.ctw.getNewScoreboardHandler().redWoolTaken();
@@ -32,8 +30,7 @@ public class TakenWools {
                 this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.RedWoolCaptured.title"), this.ctw.getLanguageHandler().getMessage("TitleMessages.RedWoolCaptured.subtitle"));
                 this.ctw.getSoundHandler().broadcastFireworkLaunchSound();
                 this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.RedWoolCaptureFirst").replaceAll("%PlayerName%", p.getName()));
-                ctwPlayer.setScore(ctwPlayer.getScore() + 2);
-                //this.ctw.getPlayerScoreHandler().addScore(p, 2);
+                this.ctw.getPlayerScoreHandler().addScore(p, 2);
                 this.ctw.getEconomyHandler().addCoins(p, 25.0);
                 this.ctw.getMessageUtils().sendScoreMessage(p, "+2", 25);
                 this.ctw.getTeamWoolsCaptured().addRedCaptured();
@@ -49,7 +46,6 @@ public class TakenWools {
 
     public void pinkWoolTakenCheck(final Player p) {
         final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
-        CTWPlayer ctwPlayer = ctw.getCTWPlayerRepository().get(p.getUniqueId());
         if (team == TeamHandler.Teams.RED) {
             if (!this.ctw.getWoolHandler().isPinkTaken()) {
                 this.ctw.getNewScoreboardHandler().pinkWoolTaken();
@@ -58,8 +54,7 @@ public class TakenWools {
                 this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.PinkWoolCaptured.title"), this.ctw.getLanguageHandler().getMessage("TitleMessages.PinkWoolCaptured.subtitle"));
                 this.ctw.getSoundHandler().broadcastFireworkLaunchSound();
                 this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.PinkWoolCaptureFirst").replaceAll("%PlayerName%", p.getName()));
-                ctwPlayer.setScore(ctwPlayer.getScore() + 2);
-                //this.ctw.getPlayerScoreHandler().addScore(p, 2);
+                this.ctw.getPlayerScoreHandler().addScore(p, 2);
                 this.ctw.getEconomyHandler().addCoins(p, 25.0);
                 this.ctw.getMessageUtils().sendScoreMessage(p, "+2", 25);
                 this.ctw.getTeamWoolsCaptured().addRedCaptured();
@@ -75,7 +70,6 @@ public class TakenWools {
 
     public void blueWoolTakenCheck(final Player p) {
         final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
-        CTWPlayer ctwPlayer = ctw.getCTWPlayerRepository().get(p.getUniqueId());
         if (team == TeamHandler.Teams.BLUE) {
             if (!this.ctw.getWoolHandler().isBlueTaken()) {
                 this.ctw.getNewScoreboardHandler().blueWoolTaken();
@@ -84,8 +78,7 @@ public class TakenWools {
                 this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueWoolCaptured.title"), this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueWoolCaptured.subtitle"));
                 this.ctw.getSoundHandler().broadcastFireworkLaunchSound();
                 this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.BlueWoolCaptureFirst").replaceAll("%PlayerName%", p.getName()));
-                ctwPlayer.setScore(ctwPlayer.getScore() + 2);
-                //this.ctw.getPlayerScoreHandler().addScore(p, 2);
+                this.ctw.getPlayerScoreHandler().addScore(p, 2);
                 this.ctw.getEconomyHandler().addCoins(p, 25.0);
                 this.ctw.getMessageUtils().sendScoreMessage(p, "+2", 25);
                 this.ctw.getTeamWoolsCaptured().addBlueCaptured();
@@ -101,7 +94,6 @@ public class TakenWools {
 
     public void cyanWoolTakenCheck(final Player p) {
         final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
-        CTWPlayer ctwPlayer = ctw.getCTWPlayerRepository().get(p.getUniqueId());
         if (team == TeamHandler.Teams.BLUE) {
             if (!this.ctw.getWoolHandler().isCyanTaken()) {
                 this.ctw.getNewScoreboardHandler().cyanWoolTaken();
@@ -110,8 +102,7 @@ public class TakenWools {
                 this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.CyanWoolCaptured.title"), this.ctw.getLanguageHandler().getMessage("TitleMessages.CyanWoolCaptured.subtitle"));
                 this.ctw.getSoundHandler().broadcastFireworkLaunchSound();
                 this.ctw.getMessageUtils().broadcastActionBarMessage(this.ctw.getLanguageHandler().getMessage("ActionBarMessages.CyanWoolCaptureFirst").replaceAll("%PlayerName%", p.getName()));
-                ctwPlayer.setScore(ctwPlayer.getScore() + 2);
-                //this.ctw.getPlayerScoreHandler().addScore(p, 2);
+                this.ctw.getPlayerScoreHandler().addScore(p, 2);
                 this.ctw.getEconomyHandler().addCoins(p, 25.0);
                 this.ctw.getMessageUtils().sendScoreMessage(p, "+2", 25);
                 this.ctw.getTeamWoolsCaptured().addBlueCaptured();

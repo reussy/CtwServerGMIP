@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server.events;
 
 import net.craftersland.ctw.server.CTW;
-import net.craftersland.ctw.server.database.CTWPlayer;
 import net.craftersland.ctw.server.game.GameEngine;
 import net.craftersland.ctw.server.game.PlayerProjectile;
 import org.bukkit.*;
@@ -15,6 +14,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -58,12 +58,12 @@ public class Death implements Listener {
         final int y = (int) loc.getY();
 
         if (y < this.ctw.getMapConfigHandler().pinkWool.getY() - 40 && player.getGameMode() != GameMode.CREATIVE) {
-            if (!player.isDead()) {
-                player.setLastDamageCause(new EntityDamageEvent(player, EntityDamageEvent.DamageCause.VOID, player.getHealth()));
-                player.damage(player.getHealth(), null);
-                Bukkit.getScheduler().runTask(this.ctw, () -> player.spigot().respawn());
+                if (!player.isDead()) {
+                    player.setLastDamageCause(new EntityDamageEvent(player, EntityDamageEvent.DamageCause.VOID, player.getHealth()));
+                    player.damage(player.getHealth(), null);
+                    Bukkit.getScheduler().runTask(this.ctw, () -> player.spigot().respawn());
             }
-        }
+            }
     }
 
     @EventHandler
@@ -73,7 +73,6 @@ public class Death implements Listener {
         if (this.ctw.getGameEngine().gameStage == GameEngine.GameStages.COUNTDOWN) return;
 
         Player victim = event.getEntity();
-        CTWPlayer victimCTWPlayer = ctw.getCTWPlayerRepository().get(victim.getUniqueId());
 
         if (this.ctw.getWoolHandler().listPlayersred().contains(victim) || this.ctw.getWoolHandler().listPlayerspink().contains(victim) || this.ctw.getWoolHandler().listPlayersblue().contains(victim) || this.ctw.getWoolHandler().listPlayerscyan().contains(victim)) {
             Bukkit.getOnlinePlayers().forEach(player1 -> this.ctw.getSoundHandler().sendPlayerWoolDeathSound(player1));
@@ -102,17 +101,15 @@ public class Death implements Listener {
             return;
         }
 
-        // Verificamos que el asesino no sea null
-        if (victim.getKiller() == null){
-            return;
-        }
-
-        Player killer = victim.getKiller();
-        CTWPlayer killerCTWPlayer = ctw.getCTWPlayerRepository().get(killer.getUniqueId());
-
         // Empezamos a verificar las causas de la muerte de la victima
         // Si la causa de la muerte es un ataque de un jugador:
         if (victim.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+            // Verificamos que el asesino no sea null
+            if (victim.getKiller() == null){
+                return;
+            }
+
+            Player killer = victim.getKiller();
 
             // Mandamos sonido de kill al asesino
             killer.playSound(killer.getLocation(), Sound.LEVEL_UP, 3.0f, 3.0f);
@@ -122,22 +119,23 @@ public class Death implements Listener {
                     .replace("%KilledPlayer%", this.ctw.getMessageUtils().getTeamColor(victim))
                     .replace("%Killer%", this.ctw.getMessageUtils().getTeamColor(killer));
 
-            // Nueva forma de manejar las stats de los jugadores en la base de datos
-            killerCTWPlayer.setMeleeKills(killerCTWPlayer.getMeleeKills() + 1);
-            killerCTWPlayer.setTotalKills(killerCTWPlayer.getTotalKills() + 1);
-
-            killerCTWPlayer.setMatchMeleeKills(killerCTWPlayer.getMatchMeleeKills() + 1);
-            killerCTWPlayer.setMatchTotalKills(killerCTWPlayer.getTotalKills() + 1);
-
+            this.ctw.getPlayerKillsHandler().addMeleeKill(killer);
             this.ctw.getMeleeAchievementHandler().checkForAchievements(killer);
             this.ctw.getOverpoweredAchievementHandler().checkForAchievements(victim);
             this.ctw.getKillStreakHandler().addStreakKill(killer);
+            this.ctw.getPlayerKillsHandler().addMeleeKillMatch(killer);
 
             addPoints(victim, killer, meleeDeathBroadcast);
             addRegen(killer);
 
             // Si la causa de la muerte es un proyectil:
         } else if (victim.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+            // Verificamos que el asesino no sea null
+            if (victim.getKiller() == null){
+                return;
+            }
+
+            Player killer = victim.getKiller();
 
             // Mandamos sonido de kill al asesino
             killer.playSound(killer.getLocation(), Sound.LEVEL_UP, 3.0f, 3.0f);
@@ -158,18 +156,13 @@ public class Death implements Listener {
                     .replace("%Killer%", this.ctw.getMessageUtils().getTeamColor(killer))
                     .replace("%distance%", String.valueOf(distance));
 
-            // Nueva forma de manejar las stats de los jugadores en la base de datos
-            killerCTWPlayer.setBowKills(killerCTWPlayer.getDefenseKills() + 1);
-            killerCTWPlayer.setTotalKills(killerCTWPlayer.getTotalKills() + 1);
-
-            killerCTWPlayer.setMatchBowKills(killerCTWPlayer.getMatchBowKills() + 1);
-            killerCTWPlayer.setMatchTotalKills(killerCTWPlayer.getMatchTotalKills() + 1);
-
+            this.ctw.getPlayerKillsHandler().addBowKill(killer);
+            this.ctw.getPlayerBowDistanceKillHandler().setDistanceKill(killer, distance);
             this.ctw.getShooterAchievementHandler().checkForAchievements(killer);
             this.ctw.getOverpoweredAchievementHandler().checkForAchievements(killer);
             this.ctw.getDistanceAchievementHandler().checkForAchievements(killer);
             this.ctw.getKillStreakHandler().addStreakKill(killer);
-            //this.ctw.getPlayerKillsHandler().addBowKillMatch(killer);
+            this.ctw.getPlayerKillsHandler().addBowKillMatch(killer);
 
             addPoints2(victim, killer, bowDeathBroadcast);
             addRegen(killer);
@@ -198,22 +191,17 @@ public class Death implements Listener {
                 }
 
                 if (weaponType.matches("melee")) {
-                    killerCTWPlayer.setMeleeKills(killerCTWPlayer.getMeleeKills() + 1);
-                    killerCTWPlayer.setMatchMeleeKills(killerCTWPlayer.getTotalKills() + 1);
+                    this.ctw.getPlayerKillsHandler().addMeleeKill(lastDamagerKiller);
                     this.ctw.getMeleeAchievementHandler().checkForAchievements(lastDamagerKiller);
                     this.ctw.getOverpoweredAchievementHandler().checkForAchievements(lastDamagerKiller);
 
                 } else if (weaponType.matches("bow")) {
-                    killerCTWPlayer.setBowKills(killerCTWPlayer.getBowKills() + 1);
-                    killerCTWPlayer.setMatchBowKills(killerCTWPlayer.getTotalKills() + 1);
+                    this.ctw.getPlayerKillsHandler().addBowKill(lastDamagerKiller);
                     this.ctw.getShooterAchievementHandler().checkForAchievements(lastDamagerKiller);
                     this.ctw.getOverpoweredAchievementHandler().checkForAchievements(lastDamagerKiller);
                     this.ctw.getDistanceAchievementHandler().checkForAchievements(lastDamagerKiller);
                 }
 
-                // Nueva forma de manejar las stats de los jugadores en la base de datos
-                killerCTWPlayer.setTotalKills(victimCTWPlayer.getTotalKills() + 1);
-                killerCTWPlayer.setMatchTotalKills(killerCTWPlayer.getTotalKills() + 1);
                 addRegen(lastDamagerKiller);
                 addPoints(victim, lastDamagerKiller, voidDeathMessage);
             } else {
@@ -222,10 +210,7 @@ public class Death implements Listener {
                         .replace("%KilledPlayer%", this.ctw.getMessageUtils().getTeamColor(victim));
 
                 sendDeathMessage(ChatColor.translateAlternateColorCodes('&', voidSelfDeathBroadcast));
-
-                victimCTWPlayer.setScore(victimCTWPlayer.getScore() - 1);
-
-                //this.ctw.getPlayerScoreHandler().takeScore(victim, this.ctw.getConfigHandler().getInteger("Rewards.Score.death"));
+                this.ctw.getPlayerScoreHandler().takeScore(victim, this.ctw.getConfigHandler().getInteger("Rewards.Score.death"));
                 this.ctw.getMessageUtils().sendScoreMessage(victim, "-" + this.ctw.getConfigHandler().getInteger("Rewards.Score.death"), null);
             }
         }
@@ -239,22 +224,16 @@ public class Death implements Listener {
         addPoints2(victim, killer, rawMsg6);
     }
 
-    private void addPoints2(Player victim, @NotNull Player killer, @NotNull String rawMsg6) {
+    private void addPoints2(Player victim, Player killer, @NotNull String rawMsg6) {
 
-        CTWPlayer victimCTWPlayer = ctw.getCTWPlayerRepository().get(victim.getUniqueId());
-        CTWPlayer killerCTWPlayer = ctw.getCTWPlayerRepository().get(killer.getUniqueId());
         this.sendDeathMessage(ChatColor.translateAlternateColorCodes('&', rawMsg6));
 
         // Quitar puntos al jugador que muere
-        victimCTWPlayer.setScore(victimCTWPlayer.getScore() - 1);
-        //this.ctw.getPlayerScoreHandler().takeScore(victim, this.ctw.getConfigHandler().getInteger("Rewards.Score.death"));
+        this.ctw.getPlayerScoreHandler().takeScore(victim, this.ctw.getConfigHandler().getInteger("Rewards.Score.death"));
         this.ctw.getMessageUtils().sendScoreMessage(victim, "-" + this.ctw.getConfigHandler().getInteger("Rewards.Score.death"), null);
 
         // Añadir puntos al jugador que mata
-        // Nueva forma de manejar las stats de los jugadores en la base de datos
-        killerCTWPlayer.setScore(killerCTWPlayer.getScore() + 1);
-
-        //this.ctw.getPlayerScoreHandler().addScore(killer, this.ctw.getConfigHandler().getInteger("Rewards.Score.kill"));
+        this.ctw.getPlayerScoreHandler().addScore(killer, this.ctw.getConfigHandler().getInteger("Rewards.Score.kill"));
         this.ctw.getEconomyHandler().addCoins(killer, Double.valueOf(this.ctw.getConfigHandler().getInteger("Rewards.Coins.kill")));
         this.ctw.getMessageUtils().sendScoreMessage(killer, "+" + this.ctw.getConfigHandler().getInteger("Rewards.Score.kill"), this.ctw.getConfigHandler().getInteger("Rewards.Coins.kill"));
     }

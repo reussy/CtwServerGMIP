@@ -1,13 +1,13 @@
 package net.craftersland.ctw.server;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import de.slikey.effectlib.EffectManager;
 import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
 import net.craftersland.ctw.server.achievements.*;
 import net.craftersland.ctw.server.commands.*;
-import net.craftersland.ctw.server.database.CTWPlayerRepository;
 import net.craftersland.ctw.server.database.DataHandler;
 import net.craftersland.ctw.server.database.MysqlSetup;
 import net.craftersland.ctw.server.events.*;
@@ -69,18 +69,21 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     private static LanguageHandler lH;
     private static Tasks tsk;
     private static LobbyLink ll;
+    private static PlayerScoreHandler psH;
     private static MysqlSetup ms;
     private static DataHandler dH;
-    private static CTWPlayerRepository ctwPlayerRepository;
     private static TeamScoreHandler tsH;
+    private static PlayerKillsHandler pkH;
     private static TeamKillsHandler tkH;
     private static TeamWoolsCaptured twc;
+    private static PlayerWoolsPlacedHandler pwpH;
     private static TeamDamageHandler tdH;
     private static EconomyHandler eH;
     private static WoolAchievementHandler waH;
     private static ShooterAchievementHandler saH;
     private static MeleeAchievementHandler maH;
     private static OverpoweredAchievementHandler oaH;
+    private static PlayerBowDistanceKillHandler pbH;
     private static DistanceAchievementHandler daH;
     private static KillStreakHandler ksH;
     private static LastDamageHandler ldH;
@@ -194,7 +197,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         pm.registerEvents(new Connecting(this), this);
         pm.registerEvents(new ServerPing(this), this);
         pm.registerEvents(new AntiSkyBridge(this), this);
-        pm.registerEvents(new PlayerDataEvent(this), this);
+        pm.registerEvents(new Joining(this), this);
         pm.registerEvents(new Disconnecting(this), this);
         pm.registerEvents(new InventoryClick(this), this);
         pm.registerEvents(new Respawning(this), this);
@@ -254,17 +257,21 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         CTW.sendMessage = new SendCenteredMessage();
         CTW.tsk = new Tasks(this);
         CTW.ll = new LobbyLink(this);
-        setupDatabase();
-        CTW.ctwPlayerRepository = new CTWPlayerRepository();
+        CTW.psH = new PlayerScoreHandler(this);
+        CTW.ms = new MysqlSetup(this);
+        CTW.dH = new DataHandler(this);
         CTW.tsH = new TeamScoreHandler(this);
+        CTW.pkH = new PlayerKillsHandler(this);
         CTW.tkH = new TeamKillsHandler(this);
         CTW.twc = new TeamWoolsCaptured(this);
+        CTW.pwpH = new PlayerWoolsPlacedHandler(this);
         CTW.tdH = new TeamDamageHandler(this);
         CTW.eH = new EconomyHandler(this);
         CTW.waH = new WoolAchievementHandler(this);
         CTW.saH = new ShooterAchievementHandler(this);
         CTW.maH = new MeleeAchievementHandler(this);
         CTW.oaH = new OverpoweredAchievementHandler(this);
+        CTW.pbH = new PlayerBowDistanceKillHandler(this);
         CTW.daH = new DistanceAchievementHandler(this);
         CTW.ksH = new KillStreakHandler(this);
         CTW.ldH = new LastDamageHandler();
@@ -297,21 +304,6 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         CTW.ikH = new ItemKitHandler(this);
         CTW.dr = new DisableRecipe(this);
         CTW.pmH = new ProtectedMoveHandler(this);
-    }
-
-    public void setupDatabase(){
-        CTW.ms = new MysqlSetup(this);
-
-        if (!ms.connect()){
-            CTW.log.severe("No se pudo conectar a la base de datos. Deshabilitando plugin.");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-
-        ms.createTable();
-        ms.maintenanceTask();
-
-        CTW.dH = new DataHandler(this);
     }
 
     public void onDisable() {
@@ -351,6 +343,10 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
 
     public TeamHandler getTeamHandler() {
         return CTW.tH;
+    }
+
+    public ScoreboardHandler getScoreboardHandler() {
+        return CTW.sH;
     }
 
     public NewScoreboard getNewScoreboardHandler() {
@@ -417,6 +413,10 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         return CTW.ll;
     }
 
+    public PlayerScoreHandler getPlayerScoreHandler() {
+        return CTW.psH;
+    }
+
     public MysqlSetup getMysqlSetup() {
         return CTW.ms;
     }
@@ -425,12 +425,12 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         return CTW.dH;
     }
 
-    public CTWPlayerRepository getCTWPlayerRepository() {
-        return CTW.ctwPlayerRepository;
-    }
-
     public TeamScoreHandler getTeamScoreHandler() {
         return CTW.tsH;
+    }
+
+    public PlayerKillsHandler getPlayerKillsHandler() {
+        return CTW.pkH;
     }
 
     public TeamKillsHandler getTeamKillsHandler() {
@@ -439,6 +439,10 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
 
     public TeamWoolsCaptured getTeamWoolsCaptured() {
         return CTW.twc;
+    }
+
+    public PlayerWoolsPlacedHandler getPlayerWoolsPlacedHandler() {
+        return CTW.pwpH;
     }
 
     public TeamDamageHandler getTeamDamageHandler() {
@@ -463,6 +467,10 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
 
     public OverpoweredAchievementHandler getOverpoweredAchievementHandler() {
         return CTW.oaH;
+    }
+
+    public PlayerBowDistanceKillHandler getPlayerBowDistanceKillHandler() {
+        return CTW.pbH;
     }
 
     public DistanceAchievementHandler getDistanceAchievementHandler() {

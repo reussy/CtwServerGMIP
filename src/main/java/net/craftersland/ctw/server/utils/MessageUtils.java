@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server.utils;
 
 import net.craftersland.ctw.server.CTW;
-import net.craftersland.ctw.server.database.CTWPlayer;
 import net.craftersland.ctw.server.game.TeamHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -81,9 +80,8 @@ public class MessageUtils {
     }
 
     public void sendScoreMessage(final Player player, final String score, final Integer coins) {
-        CTWPlayer ctwPlayer = this.ctw.getCTWPlayerRepository().get(player.getUniqueId());
         String msg = this.ctw.getLanguageHandler().getMessage("ChatMessages.ScoreMessage").replaceAll("%points%", score);
-        msg = msg.replaceAll("%score%", String.valueOf(ctwPlayer.getScore()));
+        msg = msg.replaceAll("%score%", this.ctw.getPlayerScoreHandler().getScore(player).toString());
         if (coins != null) {
             if (player.hasPermission("CTW.3xCoinMultiplier")) {
                 final int coin = (int) (coins + (coins * 0.03));

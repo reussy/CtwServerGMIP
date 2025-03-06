@@ -1,11 +1,9 @@
 package net.craftersland.ctw.server.achievements;
 
 import net.craftersland.ctw.server.CTW;
-import net.craftersland.ctw.server.database.CTWPlayer;
 import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,9 +17,8 @@ public class MeleeAchievementHandler {
         this.ctw = ctw;
     }
 
-    public void loadInitialAchievements(final @NotNull Player p) {
-        CTWPlayer ctwPlayer = this.ctw.getCTWPlayerRepository().get(p.getUniqueId());
-        final int meleeKills = ctwPlayer.getMeleeKills();
+    public void loadInitialAchievements(final Player p) {
+        final int meleeKills = this.ctw.getPlayerKillsHandler().getMeleeKills(p);
         if (meleeKills >= this.ctw.getConfigHandler().getInteger("Achievements.Melee-Kills.Kills-For-IV")) {
             if (!this.achievements.containsKey(p)) {
                 this.achievements.put(p, MeleeAchievements.MELEE4);
@@ -47,9 +44,8 @@ public class MeleeAchievementHandler {
         this.achievements.remove(p);
     }
 
-    public void checkForAchievements(final @NotNull Player p) {
-        CTWPlayer ctwPlayer = this.ctw.getCTWPlayerRepository().get(p.getUniqueId());
-        final int meleeKills = ctwPlayer.getMeleeKills();
+    public void checkForAchievements(final Player p) {
+        final int meleeKills = this.ctw.getPlayerKillsHandler().getMeleeKills(p);
         final MeleeAchievements currentAcievement = this.achievements.get(p);
         if (meleeKills >= this.ctw.getConfigHandler().getInteger("Achievements.Melee-Kills.Kills-For-IV")) {
             if (currentAcievement != MeleeAchievements.MELEE4) {

@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server.events.protection;
 
 import net.craftersland.ctw.server.CTW;
-import net.craftersland.ctw.server.database.CTWPlayer;
 import net.craftersland.ctw.server.game.GameEngine;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -111,22 +110,20 @@ public class BlockPlace implements Listener {
     }
 
     private void redWoolPlaced(final Player p) {
-        CTWPlayer ctwPlayer = ctw.getCTWPlayerRepository().get(p.getUniqueId());
         Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, new Runnable() {
             @Override
             public void run() {
                 if (p.getWorld().getBlockAt(BlockPlace.this.ctw.getMapConfigHandler().redWool).getType() == Material.WOOL) {
                     BlockPlace.this.ctw.getWoolHandler().setRedPlaced(p);
                     BlockPlace.this.ctw.getFireworks().spawnRedFirework(BlockPlace.this.ctw.getMapConfigHandler().redSpawn);
-                    ctwPlayer.setWoolPlacements(ctwPlayer.getWoolPlacements() + 1);
+                    BlockPlace.this.ctw.getPlayerWoolsPlacedHandler().addWoolPlaced(p);
                     if (BlockPlace.this.ctw.getWoolHandler().isPinkPlaced()) {
                         if (p == BlockPlace.this.ctw.getWoolHandler().getWhoPlacedPinkWool()) {
                             final String title = BlockPlace.this.ctw.getLanguageHandler().getMessage("TitleMessages.RedDouble.title").replace("%PlayerName%", p.getName());
                             final String subtitle = BlockPlace.this.ctw.getLanguageHandler().getMessage("TitleMessages.RedDouble.subtitle").replace("%PlayerName%", p.getName());
                             BlockPlace.this.ctw.getMessageUtils().broadcastTitleMessage(title.replaceAll("&", "§"), subtitle.replaceAll("&", "§"));
                             BlockPlace.this.ctw.getSoundHandler().sendCompleteSound(p.getLocation(), p);
-                            ctwPlayer.setScore(ctwPlayer.getScore() + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"));
-                            //BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"));
+                            BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"));
                             BlockPlace.this.ctw.getEconomyHandler().addCoins(p, (double) BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.doubleBonus"));
                             BlockPlace.this.ctw.getMessageUtils().sendScoreMessage(p, "+" + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"), BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.doubleBonus"));
                         }
@@ -135,8 +132,7 @@ public class BlockPlace implements Listener {
                         final String subtitle = BlockPlace.this.ctw.getLanguageHandler().getMessage("TitleMessages.RedWool.subtitle").replace("%PlayerName%", p.getName());
                         BlockPlace.this.ctw.getMessageUtils().broadcastTitleMessage(title.replaceAll("&", "§"), subtitle.replaceAll("&", "§"));
                         BlockPlace.this.ctw.getSoundHandler().sendCompleteSound(p.getLocation(), p);
-                        ctwPlayer.setScore(ctwPlayer.getScore() + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"));
-                        //BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"));
+                        BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"));
                         BlockPlace.this.ctw.getEconomyHandler().addCoins(p, (double) BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.placeWool"));
                         BlockPlace.this.ctw.getMessageUtils().sendScoreMessage(p, "+" + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"), BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.placeWool"));
                     }
@@ -149,21 +145,20 @@ public class BlockPlace implements Listener {
     }
 
     private void pinkWoolPlaced(final Player p) {
-        CTWPlayer ctwPlayer = ctw.getCTWPlayerRepository().get(p.getUniqueId());
         Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, new Runnable() {
             @Override
             public void run() {
                 if (p.getWorld().getBlockAt(BlockPlace.this.ctw.getMapConfigHandler().pinkWool).getType() == Material.WOOL) {
                     BlockPlace.this.ctw.getWoolHandler().setPinkPlaced(p);
                     BlockPlace.this.ctw.getFireworks().spawnRedFirework(BlockPlace.this.ctw.getMapConfigHandler().redSpawn);
-                    ctwPlayer.setWoolPlacements(ctwPlayer.getWoolPlacements() + 1);
+                    BlockPlace.this.ctw.getPlayerWoolsPlacedHandler().addWoolPlaced(p);
                     if (BlockPlace.this.ctw.getWoolHandler().isRedPlaced()) {
                         if (p == BlockPlace.this.ctw.getWoolHandler().getWhoPlacedRedWool()) {
                             final String title = BlockPlace.this.ctw.getLanguageHandler().getMessage("TitleMessages.RedDouble.title").replace("%PlayerName%", p.getName());
                             final String subtitle = BlockPlace.this.ctw.getLanguageHandler().getMessage("TitleMessages.RedDouble.subtitle").replace("%PlayerName%", p.getName());
                             BlockPlace.this.ctw.getMessageUtils().broadcastTitleMessage(title.replaceAll("&", "§"), subtitle.replaceAll("&", "§"));
                             BlockPlace.this.ctw.getSoundHandler().sendCompleteSound(p.getLocation(), p);
-                            //BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"));
+                            BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"));
                             BlockPlace.this.ctw.getEconomyHandler().addCoins(p, (double) BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.doubleBonus"));
                             BlockPlace.this.ctw.getMessageUtils().sendScoreMessage(p, "+" + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"), BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.doubleBonus"));
                         }
@@ -172,8 +167,7 @@ public class BlockPlace implements Listener {
                         final String subtitle = BlockPlace.this.ctw.getLanguageHandler().getMessage("TitleMessages.PinkWool.subtitle").replace("%PlayerName%", p.getName());
                         BlockPlace.this.ctw.getMessageUtils().broadcastTitleMessage(title.replaceAll("&", "§"), subtitle.replaceAll("&", "§"));
                         BlockPlace.this.ctw.getSoundHandler().sendCompleteSound(p.getLocation(), p);
-                        ctwPlayer.setScore(ctwPlayer.getScore() + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"));
-                        //BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"));
+                        BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"));
                         BlockPlace.this.ctw.getEconomyHandler().addCoins(p, (double) BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.placeWool"));
                         BlockPlace.this.ctw.getMessageUtils().sendScoreMessage(p, "+" + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"), BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.placeWool"));
                     }
@@ -186,22 +180,20 @@ public class BlockPlace implements Listener {
     }
 
     private void blueWoolPlaced(final Player p) {
-        CTWPlayer ctwPlayer = ctw.getCTWPlayerRepository().get(p.getUniqueId());
         Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, new Runnable() {
             @Override
             public void run() {
                 if (p.getWorld().getBlockAt(BlockPlace.this.ctw.getMapConfigHandler().blueWool).getType() == Material.WOOL) {
                     BlockPlace.this.ctw.getWoolHandler().setBluePlaced(p);
                     BlockPlace.this.ctw.getFireworks().spawnBlueFirework(BlockPlace.this.ctw.getMapConfigHandler().blueSpawn);
-                    ctwPlayer.setWoolPlacements(ctwPlayer.getWoolPlacements() + 1);
+                    BlockPlace.this.ctw.getPlayerWoolsPlacedHandler().addWoolPlaced(p);
                     if (BlockPlace.this.ctw.getWoolHandler().isCyanPlaced()) {
                         if (p == BlockPlace.this.ctw.getWoolHandler().getWhoPlacedCyanWool()) {
                             final String title = BlockPlace.this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueDouble.title").replace("%PlayerName%", p.getName());
                             final String subtitle = BlockPlace.this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueDouble.subtitle").replace("%PlayerName%", p.getName());
                             BlockPlace.this.ctw.getMessageUtils().broadcastTitleMessage(title.replaceAll("&", "§"), subtitle.replaceAll("&", "§"));
                             BlockPlace.this.ctw.getSoundHandler().sendCompleteSound(p.getLocation(), p);
-                            ctwPlayer.setScore(ctwPlayer.getScore() + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"));
-                           // BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"));
+                            BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"));
                             BlockPlace.this.ctw.getEconomyHandler().addCoins(p, (double) BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.doubleBonus"));
                             BlockPlace.this.ctw.getMessageUtils().sendScoreMessage(p, "+" + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"), BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.doubleBonus"));
                         }
@@ -210,8 +202,7 @@ public class BlockPlace implements Listener {
                         final String subtitle = BlockPlace.this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueWool.subtitle").replace("%PlayerName%", p.getName());
                         BlockPlace.this.ctw.getMessageUtils().broadcastTitleMessage(title.replaceAll("&", "§"), subtitle.replaceAll("&", "§"));
                         BlockPlace.this.ctw.getSoundHandler().sendCompleteSound(p.getLocation(), p);
-                        ctwPlayer.setScore(ctwPlayer.getScore() + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"));
-                        //BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"));
+                        BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"));
                         BlockPlace.this.ctw.getEconomyHandler().addCoins(p, (double) BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.placeWool"));
                         BlockPlace.this.ctw.getMessageUtils().sendScoreMessage(p, "+" + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"), BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.placeWool"));
                     }
@@ -224,22 +215,20 @@ public class BlockPlace implements Listener {
     }
 
     private void cyanWoolPlaced(final Player p) {
-        CTWPlayer ctwPlayer = ctw.getCTWPlayerRepository().get(p.getUniqueId());
         Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, new Runnable() {
             @Override
             public void run() {
                 if (p.getWorld().getBlockAt(BlockPlace.this.ctw.getMapConfigHandler().cyanWool).getType() == Material.WOOL) {
                     BlockPlace.this.ctw.getWoolHandler().setCyanPlaced(p);
                     BlockPlace.this.ctw.getFireworks().spawnBlueFirework(BlockPlace.this.ctw.getMapConfigHandler().blueSpawn);
-                    ctwPlayer.setWoolPlacements(ctwPlayer.getWoolPlacements() + 1);
+                    BlockPlace.this.ctw.getPlayerWoolsPlacedHandler().addWoolPlaced(p);
                     if (BlockPlace.this.ctw.getWoolHandler().isBluePlaced()) {
                         if (p == BlockPlace.this.ctw.getWoolHandler().getWhoPlacedBlueWool()) {
                             final String title = BlockPlace.this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueDouble.title").replace("%PlayerName%", p.getName());
                             final String subtitle = BlockPlace.this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueDouble.subtitle").replace("%PlayerName%", p.getName());
                             BlockPlace.this.ctw.getMessageUtils().broadcastTitleMessage(title.replaceAll("&", "§"), subtitle.replaceAll("&", "§"));
                             BlockPlace.this.ctw.getSoundHandler().sendCompleteSound(p.getLocation(), p);
-                            ctwPlayer.setScore(ctwPlayer.getScore() + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"));
-                            //BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"));
+                            BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"));
                             BlockPlace.this.ctw.getEconomyHandler().addCoins(p, (double) BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.doubleBonus"));
                             BlockPlace.this.ctw.getMessageUtils().sendScoreMessage(p, "+" + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.doubleBonus"), BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.doubleBonus"));
                         }
@@ -248,8 +237,7 @@ public class BlockPlace implements Listener {
                         final String subtitle = BlockPlace.this.ctw.getLanguageHandler().getMessage("TitleMessages.CyanWool.subtitle").replace("%PlayerName%", p.getName());
                         BlockPlace.this.ctw.getMessageUtils().broadcastTitleMessage(title.replaceAll("&", "§"), subtitle.replaceAll("&", "§"));
                         BlockPlace.this.ctw.getSoundHandler().sendCompleteSound(p.getLocation(), p);
-                        ctwPlayer.setScore(ctwPlayer.getScore() + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"));
-                        //BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"));
+                        BlockPlace.this.ctw.getPlayerScoreHandler().addScore(p, BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"));
                         BlockPlace.this.ctw.getEconomyHandler().addCoins(p, (double) BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.placeWool"));
                         BlockPlace.this.ctw.getMessageUtils().sendScoreMessage(p, "+" + BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Score.placeWool"), BlockPlace.this.ctw.getConfigHandler().getInteger("Rewards.Coins.placeWool"));
                     }

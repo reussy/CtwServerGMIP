@@ -1,11 +1,9 @@
 package net.craftersland.ctw.server.achievements;
 
 import net.craftersland.ctw.server.CTW;
-import net.craftersland.ctw.server.database.CTWPlayer;
 import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,9 +17,8 @@ public class OverpoweredAchievementHandler {
         this.ctw = ctw;
     }
 
-    public void loadInitialAchievements(final @NotNull Player p) {
-        CTWPlayer ctwPlayer = this.ctw.getCTWPlayerRepository().get(p.getUniqueId());
-        final int kills = ctwPlayer.getTotalKills();
+    public void loadInitialAchievements(final Player p) {
+        final int kills = this.ctw.getPlayerKillsHandler().getTotalKills(p);
         if (kills >= this.ctw.getConfigHandler().getInteger("Achievements.Overpowered.Kills-For-IV")) {
             if (!this.achievements.containsKey(p)) {
                 this.achievements.put(p, OverpoweredAchievements.OVERPOWERED4);
@@ -47,9 +44,8 @@ public class OverpoweredAchievementHandler {
         this.achievements.remove(p);
     }
 
-    public void checkForAchievements(final @NotNull Player p) {
-        CTWPlayer ctwPlayer = this.ctw.getCTWPlayerRepository().get(p.getUniqueId());
-        final int kills = ctwPlayer.getTotalKills();
+    public void checkForAchievements(final Player p) {
+        final int kills = this.ctw.getPlayerKillsHandler().getTotalKills(p);
         final OverpoweredAchievements currentAcievement = this.achievements.get(p);
         if (kills >= this.ctw.getConfigHandler().getInteger("Achievements.Overpowered.Kills-For-IV")) {
             if (currentAcievement != OverpoweredAchievements.OVERPOWERED4) {
