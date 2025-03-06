@@ -1,19 +1,14 @@
 package net.craftersland.ctw.server.game;
 
 import net.craftersland.ctw.server.CTW;
-import net.craftersland.ctw.server.database.CTWPlayer;
 import net.craftersland.ctw.server.utils.StartupKit;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class GameEngine {
     private final CTW ctw;
@@ -63,7 +58,7 @@ public class GameEngine {
         try {
             if (countdown == 30) {
                 ctw.getMapHandler().getNextMap();
-                this.orderKills();
+                this.ctw.getPlayerKillsHandler().orderKills();
                 checkForServerRestart();
                 broadcastCountdown("CountdownStart");
             } else if (countdown == 20 || countdown == 10) {
@@ -101,7 +96,7 @@ public class GameEngine {
                 ctw.getLanguageHandler().getMessage("TitleMessages.CountdownOver.subtitle"));
         ctw.getSoundHandler().broadcastLevelUpSound();
         ctw.map = ctw.getMapHandler().currentMap;
-        setPlayerGameMode(GameMode.SURVIVAL);
+        changeGameMode(GameMode.SURVIVAL);
         Bukkit.getOnlinePlayers().forEach(StartupKit::setUnbreakableArmor);
     }
 
@@ -116,10 +111,10 @@ public class GameEngine {
     private void declareVictory(TeamHandler.Teams team, String victoryKey) {
         try {
             List<Player> winners = (team == TeamHandler.Teams.RED) ? ctw.getTeamHandler().redTeamCopy() : ctw.getTeamHandler().blueTeamCopy();
-            winners.forEach(p -> Bukkit.dispatchCommand(ctw.getServer().getConsoleSender(), "mysterydust add " + p.getName() + " 12"));
-            setWonSpectators(winners);
+            //winners.forEach(p -> Bukkit.dispatchCommand(ctw.getServer().getConsoleSender(), "mysterydust add " + p.getName() + " 12"));
+            setWonSpectators(winners); // ??
             ctw.getSoundHandler().broadcastDragon();
-            setPlayerGameMode(GameMode.SPECTATOR);
+            changeGameMode(GameMode.SPECTATOR);
             ctw.getMessageUtils().broadcastGameStats();
             ctw.getEffectUtils().sendTextParticles(team);
             Bukkit.getScheduler().runTaskLaterAsynchronously(ctw, () -> ctw.getMessageUtils().broadcastTitleMessage(
@@ -130,55 +125,21 @@ public class GameEngine {
         }
     }
 
-    private void setWonSpectators(List<Player> players) {
+    private void setWonSpectators(@NotNull List<Player> players) {
         players.forEach(p -> ctw.getPlayerHandler().playerSetWonSpectator(p));
     }
 
-    private void setPlayerGameMode(GameMode mode) {
-        Bukkit.getOnlinePlayers().forEach(p -> {
-            if (ctw.getTeamHandler().isBlueTeam(p) || ctw.getTeamHandler().isRedTeam(p)) {
-                p.setGameMode(mode);
-            }
-        });
-    }
-
-    private String formatColor(String message) {
-        return message.replaceAll("&", "§");
-    }
-
-    public void orderKills() {
-
-        Map<String, Integer> top = new HashMap<>();
-        for (CTWPlayer ctwPlayer : ctw.getCTWPlayerRepository().get()) {
-            if (ctwPlayer.getTotalKills() == 0) continue;
-            top.put(ctwPlayer.getName(), ctwPlayer.getTotalKills());
-        }
-
-        List<Map.Entry<String, Integer>> top3 = top.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(3).toList();
-
-
+    private void changeGameMode(GameMode gameMode) {
         Bukkit.getOnlinePlayers().forEach(player -> {
-            if (player != null) {
-
-                player.sendMessage(" ");
-                player.sendMessage(" ");
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8+--------------------------------------+"));
-                player.sendMessage(" ");
-
-                try {
-
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b       1ro Asesino &8- &7" + top3.get(0).getKey() + " &8- &e " + top3.get(0).getValue()));
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a         2do Asesino &8- &7" + top3.get(1).getKey() + " &8- &e " + top3.get(1).getValue()));
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&d           3er Asesino &8- &7" + top3.get(2).getKey() + " &8- &e " + top3.get(2).getValue()));
-
-                } catch (IndexOutOfBoundsException e) {
-                    ctw.getSendMessage().sendCenteredMessage(player, "&cNo han habido jugadores suficientes...");
-                }
-
-                player.sendMessage(" ");
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8+--------------------------------------+"));
+            if (ctw.getTeamHandler().isBlueTeam(player) || ctw.getTeamHandler().isRedTeam(player)) {
+                player.setGameMode(gameMode);
             }
         });
+    }
+
+    @Contract(pure = true)
+    private @NotNull String formatColor(@NotNull String message) {
+        return message.replaceAll("&", "§");
     }
 
     public enum GameStages {
