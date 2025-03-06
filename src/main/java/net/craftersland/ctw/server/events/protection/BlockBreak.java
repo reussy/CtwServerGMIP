@@ -57,7 +57,6 @@ public class BlockBreak implements Listener {
                     || event.getBlock().getType() != Material.WEB) {
                 event.setCancelled(true);
             }
-            return;
         }
 
         this.removeDrops(event);
