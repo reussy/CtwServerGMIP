@@ -63,7 +63,7 @@ public class GameEngine {
                 broadcastCountdown("CountdownStart");
             } else if (countdown == 20 || countdown == 10) {
                 broadcastCountdown("CountdownProgress");
-                if (countdown == 20) ctw.getMapHandler().loadNextMap();
+                ctw.getMapHandler().loadNextMap();
             } else if (countdown <= 5 && countdown > 0) {
                 broadcastCountdown("CountdownLast5sec");
             } else if (countdown == 0) {
@@ -90,13 +90,21 @@ public class GameEngine {
     }
 
     private void startGame() {
+
+        this.ctw.getMapHandler().startNextMap();
+        ctw.getPlayerKillsHandler().resetTotalKillsMatch();
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if (this.ctw.getTeamHandler().isSpectator(player)) return;
+            this.ctw.getEconomyHandler().resetCoins(player);
+        });
+
         countdown = 35;
         gameStage = GameStages.RUNNING;
         ctw.getMessageUtils().broadcastTitleMessage(ctw.getLanguageHandler().getMessage("TitleMessages.CountdownOver.title"),
                 ctw.getLanguageHandler().getMessage("TitleMessages.CountdownOver.subtitle"));
         ctw.getSoundHandler().broadcastLevelUpSound();
         ctw.map = ctw.getMapHandler().currentMap;
-        changeGameMode(GameMode.SURVIVAL);
+        Bukkit.getScheduler().runTaskLater(ctw, () -> changeGameMode(GameMode.SURVIVAL), 5L);
         Bukkit.getOnlinePlayers().forEach(StartupKit::setUnbreakableArmor);
     }
 
@@ -114,7 +122,6 @@ public class GameEngine {
             //winners.forEach(p -> Bukkit.dispatchCommand(ctw.getServer().getConsoleSender(), "mysterydust add " + p.getName() + " 12"));
             setWonSpectators(winners); // ??
             ctw.getSoundHandler().broadcastDragon();
-            changeGameMode(GameMode.SPECTATOR);
             ctw.getMessageUtils().broadcastGameStats();
             ctw.getEffectUtils().sendTextParticles(team);
             Bukkit.getScheduler().runTaskLaterAsynchronously(ctw, () -> ctw.getMessageUtils().broadcastTitleMessage(
@@ -123,6 +130,8 @@ public class GameEngine {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Bukkit.getScheduler().runTaskLater(ctw, () -> changeGameMode(GameMode.SPECTATOR), 5L);
     }
 
     private void setWonSpectators(@NotNull List<Player> players) {
