@@ -16,8 +16,6 @@ commands:
     description: Leave the game
   stats:
     description: Player stats
-  shop:
-    description: Shop menu
   setup:
     description: Setup the game
 
