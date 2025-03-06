@@ -17,6 +17,10 @@ public class MessageUtils {
         this.ctw = ctw;
     }
 
+    public void broadcastMessage(String message){
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', message));
+    }
+
     public void broadcastTitleMessage(final String title, final String subtitle) {
         Bukkit.getScheduler().runTask(this.ctw, () -> Bukkit.getOnlinePlayers().forEach(p -> {
             CTW.tm.sendTitle(p, title);

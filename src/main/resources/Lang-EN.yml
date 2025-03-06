@@ -141,6 +141,11 @@ ChatMessages:
   DelBlueNoAccessUsage: '&cCommand usage: &9/setup delbluenoaccess <area number>'
   SetTimeUsage: '&cCommand usage: &9/setup settime <time> &c(Options: day or night)'
   ReloadCmd: '&aConfiguration files reload complete!'
+  WoolCaptureFirst: '%PlayerName% &7&lis the first to capture the wool %Wool%'
+  WoolCapture: '%PlayerName% &7&lcaptured the wool %Wool%&7!'
+  WoolLost: '&4! %PlayerName% &7&llost the wool %Wool%&7!'
+  AllWoolsLost: '&4! %PlayerName% &7&llost the all wools!'
+  You: "&7You"
   #Setup help messages.
   SetupHelp:
     - ' '
