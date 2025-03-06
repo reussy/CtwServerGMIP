@@ -88,7 +88,9 @@ public class GameEngine {
     }
 
     private void broadcastCountdown(String key) {
-        String message = formatColor(ctw.getLanguageHandler().getMessage("ChatMessages." + key).replace("%countdown%", String.valueOf(countdown)));
+        String message = formatColor(ctw.getLanguageHandler().getMessage("ChatMessages." + key)
+                .replace("%MapName%", ctw.getMapHandler().currentMap)
+                .replace("%countdown%", String.valueOf(countdown)));
         Bukkit.broadcastMessage(message);
     }
 
