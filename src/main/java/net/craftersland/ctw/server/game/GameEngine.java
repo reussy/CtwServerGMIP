@@ -82,7 +82,16 @@ public class GameEngine {
         }
     }
 
-    private void broadcastCountdown(String key) {
+    private void broadcastCountdown(@NotNull String key) {
+        if (key.equals("CountdownStart")) {
+            for (int i = 0; i < ctw.getLanguageHandler().getMessageList("ChatMessages.CountdownStart").size(); i++) {
+                String message = formatColor(ctw.getLanguageHandler().getMessageList("ChatMessages.CountdownStart").get(i)
+                        .replace("%MapName%", ctw.getMapHandler().currentMap));
+                Bukkit.broadcastMessage(message);
+            }
+            return;
+        }
+
         String message = formatColor(ctw.getLanguageHandler().getMessage("ChatMessages." + key)
                 .replace("%MapName%", ctw.getMapHandler().currentMap)
                 .replace("%countdown%", String.valueOf(countdown)));
