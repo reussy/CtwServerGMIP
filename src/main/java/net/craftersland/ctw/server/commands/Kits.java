@@ -17,8 +17,7 @@ public class Kits implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, final Command command, final @NotNull String cmdlabel, final String[] args) {
         if (cmdlabel.equalsIgnoreCase("shop")) {
-            if (sender instanceof Player) {
-                final Player p = (Player) sender;
+            if (sender instanceof Player p) {
 
                 if (this.ctw.getTeamHandler().isSpectator(p)) return false;
 

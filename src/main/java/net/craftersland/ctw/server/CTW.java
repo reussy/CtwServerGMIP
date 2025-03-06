@@ -182,13 +182,13 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         final GlobalChat gChat = new GlobalChat(this);
         final Leave leave = new Leave(this);
         final Stats stats = new Stats(this);
-        final Kits kit = new Kits(this);
+        //final Kits kit = new Kits(this);
         final Setup setup = new Setup(this);
         this.getCommand("join").setExecutor(joinCmd);
         this.getCommand("g").setExecutor(gChat);
         this.getCommand("leave").setExecutor(leave);
         this.getCommand("stats").setExecutor(stats);
-        this.getCommand("shop").setExecutor(kit);
+        //this.getCommand("shop").setExecutor(kit); // Ahora se abre desde un NPC
         this.getCommand("setup").setExecutor(setup);
     }
 
@@ -222,8 +222,8 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         pm.registerEvents(new LiquidFlow(this), this);
         pm.registerEvents(new InventoryDrag(this), this);
         pm.registerEvents(new ShootBow(this), this);
+        pm.registerEvents(new NPCInteract(this), this);
         this.checkAacDependency(pm);
-
     }
 
     public void loadClass() {
