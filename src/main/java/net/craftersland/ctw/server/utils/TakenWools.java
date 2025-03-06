@@ -2,20 +2,27 @@ package net.craftersland.ctw.server.utils;
 
 import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.TeamHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TakenWools {
     private final CTW ctw;
+    private final Map<Player, BukkitTask> hatColorChangeTask;
 
     public TakenWools(final CTW ctw) {
         this.ctw = ctw;
+        this.hatColorChangeTask = new ConcurrentHashMap<>();
     }
 
     public void redWoolTakenCheck(final Player p) {
@@ -38,6 +45,7 @@ public class TakenWools {
                 this.announcePickup(p, "RED", false);
             }
             setNewEquipment(p);
+            tagPlayerWithWool(p, "RED");
         }
     }
 
@@ -61,6 +69,7 @@ public class TakenWools {
                 this.announcePickup(p, "PINK", false);
             }
             setNewEquipment(p);
+            tagPlayerWithWool(p, "PINK");
         }
     }
 
@@ -85,6 +94,7 @@ public class TakenWools {
                 this.announcePickup(p, "BLUE", false);
             }
             setNewEquipment(p);
+            tagPlayerWithWool(p, "BLUE");
         }
     }
 
@@ -108,10 +118,12 @@ public class TakenWools {
                 this.announcePickup(p, "CYAN", false);
             }
             setNewEquipment(p);
+            tagPlayerWithWool(p, "CYAN");
         }
     }
 
     public void checkForLostWool(final Player p, final List<ItemStack> items) {
+        this.hatColorChangeTask.get(p).cancel();
         final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
         if (team == TeamHandler.Teams.RED) {
             if (this.ctw.getWoolHandler().hadRedTakenByPlayer(p) && this.ctw.getWoolHandler().hadPinkTakenByPlayer(p)) {
@@ -207,25 +219,28 @@ public class TakenWools {
         switch (wool){
             case "CYAN":
                 this.ctw.getMessageUtils().broadcastMessage(this.ctw.getLanguageHandler().getMessage(path)
-                        .replace("%PlayerName%", "&3&l" + player.getName())
+                        .replace("%PlayerName%", "&9&l" + player.getName())
                         .replace("%Wool%", "&3&lCyan"));
                 this.sendSoundToEnemy("blue");
+                return;
 
             case "BLUE":
                 this.ctw.getMessageUtils().broadcastMessage(this.ctw.getLanguageHandler().getMessage(path)
                         .replace("%PlayerName%", "&9&l" + player.getName())
                         .replace("%Wool%", "&9&lAzul"));
                 this.sendSoundToEnemy("blue");
+                return;
 
             case "RED":
                 this.ctw.getMessageUtils().broadcastMessage(this.ctw.getLanguageHandler().getMessage(path)
                         .replace("%PlayerName%", "&c&l" + player.getName())
                         .replace("%Wool%", "&c&lRoja"));
                 this.sendSoundToEnemy("red");
+                return;
 
             case "PINK":
                 this.ctw.getMessageUtils().broadcastMessage(this.ctw.getLanguageHandler().getMessage(path)
-                        .replace("%PlayerName%", "&d&l" + player.getName())
+                        .replace("%PlayerName%", "&c&l" + player.getName())
                         .replace("%Wool%", "&d&lRosa"));
                 this.sendSoundToEnemy("red");
         }
@@ -239,23 +254,28 @@ public class TakenWools {
                         .replace("%PlayerName%", this.ctw.getTeamHandler().isBlueTeam(player) ? "&9&l" : "&c&l" + player.getName());
                 this.ctw.getMessageUtils().broadcastMessage(message);
                 this.sendSoundToEnemy("blue");
+                return;
+
             case "CYAN":
-                message = message.replace("%PlayerName%", "&3&l" + player.getName()).replace("%Wool%", "&3&lCyan");
+                message = message.replace("%PlayerName%", "&9&l" + player.getName()).replace("%Wool%", "&3&lCyan");
                 this.ctw.getMessageUtils().broadcastMessage(message);
                 this.sendSoundToEnemy("blue");
+                return;
 
             case "BLUE":
                 message = message.replace("%PlayerName%", "&9&l" + player.getName()).replace("%Wool%", "&9&lAzul");
                 this.ctw.getMessageUtils().broadcastMessage(message);
                 this.sendSoundToEnemy("blue");
+                return;
 
             case "RED":
                 message = message.replace("%PlayerName%", "&c&l" + player.getName()).replace("%Wool%", "&c&lRoja");
                 this.ctw.getMessageUtils().broadcastMessage(message);
                 this.sendSoundToEnemy("red");
+                return;
 
             case "PINK":
-                message = message.replace("%PlayerName%", "&d&l" + player.getName()).replace("%Wool%", "&d&lRosa");
+                message = message.replace("%PlayerName%", "&c&l" + player.getName()).replace("%Wool%", "&d&lRosa");
                 this.ctw.getMessageUtils().broadcastMessage(message);
                 this.sendSoundToEnemy("red");
         }
@@ -270,18 +290,61 @@ public class TakenWools {
     }
 
     private void tagPlayerWithWool(Player player, @NotNull String wool) {
-        ItemStack hat = switch (wool) {
-            case "CYAN" -> new ItemStack(Material.WOOL, 1, (short) 9);
-            case "BLUE" -> new ItemStack(Material.WOOL, 1, (short) 11);
-            case "RED" -> new ItemStack(Material.WOOL, 1, (short) 14);
-            case "PINK" -> new ItemStack(Material.WOOL, 1, (short) 6);
-            default -> new ItemStack(Material.WOOL, 1, (short) 0);
-        };
+        ItemStack hat;
+        switch (wool) {
+            case "CYAN":
+                hat = new ItemStack(Material.WOOL, 1, (short) 9);
+                if (this.ctw.getWoolHandler().hadBlueTakenByPlayer(player)) {
+                    this.changeHatColor(player);
+                }
+                break;
+
+            case "BLUE":
+                hat = new ItemStack(Material.WOOL, 1, (short) 11);
+                if (this.ctw.getWoolHandler().hadCyanTakenByPlayer(player)) {
+                    this.changeHatColor(player);
+                }
+                break;
+
+            case "RED":
+                hat = new ItemStack(Material.WOOL, 1, (short) 14);
+                if (this.ctw.getWoolHandler().hadPinkTakenByPlayer(player)) {
+                    this.changeHatColor(player);
+                }
+                break;
+
+            case "PINK":
+                hat = new ItemStack(Material.WOOL, 1, (short) 6);
+                if (this.ctw.getWoolHandler().hadRedTakenByPlayer(player)) {
+                    this.changeHatColor(player);
+                }
+                break;
+
+            default:
+                return;
+        }
 
         ItemMeta meta = hat.getItemMeta();
         hat.setItemMeta(meta);
         player.getInventory().setHelmet(hat);
+    }
 
-
+    private void changeHatColor(Player player){
+        BukkitTask task = Bukkit.getScheduler().runTaskTimer(this.ctw, () -> {
+            ItemStack hat = player.getInventory().getHelmet();
+            if (hat != null && hat.getType() == Material.WOOL) {
+                if (hat.getData().getData() == 14) {
+                    hat.setDurability((short) 6);
+                } else if (hat.getData().getData() == 6) {
+                    hat.setDurability((short) 14);
+                } else if (hat.getData().getData() == 11) {
+                    hat.setDurability((short) 9);
+                } else if (hat.getData().getData() == 9) {
+                    hat.setDurability((short) 11);
+                }
+                player.getInventory().setHelmet(hat);
+            }
+        }, 0L, 20L);
+        this.hatColorChangeTask.put(player, task);
     }
 }
