@@ -9,7 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -119,35 +118,27 @@ public class InventoryClick implements Listener {
                     }
 
                 } else if (event.getInventory().getTitle().matches(this.ctw.getJoinMenu().joinMenuTitle())) {
-                    if (event.isShiftClick()) {
+                    if (event.getSlot() == 4 || event.getRawSlot() == 4) {
+                        this.ctw.getPlayerHandler().autoAddTeam(p);
+                        event.setCancelled(true);
+                    } else if (event.getSlot() == 2 || event.getRawSlot() == 2) {
+                        if (p.hasPermission("CTW.pickupteam")) {
+                            this.ctw.getPlayerHandler().addRedTeam(p);
+                        } else {
+                            this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
+                            p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.SelectTeamNoPermission").replaceAll("&", "§"));
+                        }
+                        event.setCancelled(true);
+                    } else if (event.getSlot() == 6 || event.getRawSlot() == 6) {
+                        if (p.hasPermission("CTW.pickupteam")) {
+                            this.ctw.getPlayerHandler().addBlueTeam(p);
+                        } else {
+                            this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
+                            p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.SelectTeamNoPermission").replaceAll("&", "§"));
+                        }
                         event.setCancelled(true);
                     }
-
-                    if (event.getSlot() == 4) {
-                        this.closeInv(p);
-                        this.ctw.getPlayerHandler().autoAddTeam(p);
-                    } else if (event.getSlot() == 2) {
-                        if (p.hasPermission("CTW.pickupteam")) {
-
-                            this.closeInv(p);
-                            this.ctw.getPlayerHandler().addRedTeam(p);
-
-                        } else {
-                            this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
-                            p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.SelectTeamNoPermission").replaceAll("&", "§"));
-                        }
-                    } else if (event.getSlot() == 6) {
-                        if (p.hasPermission("CTW.pickupteam")) {
-
-                            this.closeInv(p);
-                            this.ctw.getPlayerHandler().addBlueTeam(p);
-
-                        } else {
-                            this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
-                            p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.SelectTeamNoPermission").replaceAll("&", "§"));
-                        }
-                    }
-
+                    this.closeInv(p);
                 } else if ((event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.WOOL && p.getGameMode() == GameMode.SURVIVAL) || (event.getCursor().getType() == Material.WOOL && p.getGameMode() == GameMode.SURVIVAL)) {
                     final ItemStack item = event.getCurrentItem();
                     final ItemStack cursor = event.getCursor();
@@ -175,7 +166,7 @@ public class InventoryClick implements Listener {
         }
     }
 
-    private void closeInv(final Player p) {
+    private void closeInv(final @NotNull Player p) {
         Bukkit.getScheduler().runTask(this.ctw, p::closeInventory);
     }
 }
