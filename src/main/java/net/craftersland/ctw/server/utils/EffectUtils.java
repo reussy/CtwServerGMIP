@@ -58,12 +58,12 @@ public class EffectUtils {
         effect.start();
     }
 
-    public void sendTextParticles(final TeamHandler.Teams victoryTeam) {
+    public void sendTextParticles(final TeamHandler.Team victoryTeam) {
         final TextEffect effect = new TextEffect(this.ctw.getEffectManager());
         effect.setDynamicOrigin(new DynamicLocation(this.ctw.getMapConfigHandler().redWonParticle));
-        if (victoryTeam == TeamHandler.Teams.RED) {
+        if (victoryTeam == TeamHandler.Team.RED) {
             effect.text = this.ctw.getLanguageHandler().getMessage("Words.RedTeamWon");
-        } else if (victoryTeam == TeamHandler.Teams.BLUE) {
+        } else if (victoryTeam == TeamHandler.Team.BLUE) {
             effect.text = this.ctw.getLanguageHandler().getMessage("Words.BlueTeamWon");
         }
         effect.particle = ParticleEffect.FLAME;
@@ -71,9 +71,9 @@ public class EffectUtils {
         effect.start();
         final TextEffect effect2 = new TextEffect(this.ctw.getEffectManager());
         effect2.setDynamicOrigin(new DynamicLocation(this.ctw.getMapConfigHandler().blueWonParticle));
-        if (victoryTeam == TeamHandler.Teams.RED) {
+        if (victoryTeam == TeamHandler.Team.RED) {
             effect2.text = this.ctw.getLanguageHandler().getMessage("Words.RedTeamWon");
-        } else if (victoryTeam == TeamHandler.Teams.BLUE) {
+        } else if (victoryTeam == TeamHandler.Team.BLUE) {
             effect2.text = this.ctw.getLanguageHandler().getMessage("Words.BlueTeamWon");
         }
         effect2.particle = ParticleEffect.FLAME;

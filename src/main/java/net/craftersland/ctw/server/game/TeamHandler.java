@@ -70,14 +70,14 @@ public class TeamHandler {
         return amount;
     }
 
-    public Teams getTeam(final Player p) {
-        Teams team = null;
+    public Team getTeam(final Player p) {
+        Team team = null;
         if (this.spectator.contains(p)) {
-            team = Teams.SPECTATOR;
+            team = Team.SPECTATOR;
         } else if (this.redTeam.contains(p)) {
-            team = Teams.RED;
+            team = Team.RED;
         } else if (this.blueTeam.contains(p)) {
-            team = Teams.BLUE;
+            team = Team.BLUE;
         }
         return team;
     }
@@ -181,12 +181,12 @@ public class TeamHandler {
         p.getInventory().setBoots(boots);
     }
 
-    public enum Teams {
+    public enum Team {
         SPECTATOR("SPECTATOR", 0),
         RED("RED", 1),
         BLUE("BLUE", 2);
 
-        Teams(final String s, final int n) {
+        Team(final String s, final int n) {
         }
     }
 }

@@ -43,7 +43,7 @@ public class PlayerChat implements Listener {
     }
 
     private void sendMessage(Player player, @NotNull String message) {
-        TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(player);
+        TeamHandler.Team team = this.ctw.getTeamHandler().getTeam(player);
         boolean isGlobal = message.startsWith("!");
 
         if (isGlobal) {
@@ -81,12 +81,12 @@ public class PlayerChat implements Listener {
         String teamFormat;
         List<Player> recipients;
 
-        if (team == TeamHandler.Teams.SPECTATOR) {
+        if (team == TeamHandler.Team.SPECTATOR) {
             teamFormat = "ChatFormat.Spectator";
             recipients = this.ctw.getTeamHandler().spectatorsCopy();
         } else {
-            teamFormat = (team == TeamHandler.Teams.BLUE) ? "ChatFormat.BlueTeam" : "ChatFormat.RedTeam";
-            recipients = (team == TeamHandler.Teams.BLUE) ? this.ctw.getTeamHandler().blueTeamCopy() : this.ctw.getTeamHandler().redTeamCopy();
+            teamFormat = (team == TeamHandler.Team.BLUE) ? "ChatFormat.BlueTeam" : "ChatFormat.RedTeam";
+            recipients = (team == TeamHandler.Team.BLUE) ? this.ctw.getTeamHandler().blueTeamCopy() : this.ctw.getTeamHandler().redTeamCopy();
         }
 
         String msg = this.ctw.getConfigHandler().getStringWithColor(teamFormat)

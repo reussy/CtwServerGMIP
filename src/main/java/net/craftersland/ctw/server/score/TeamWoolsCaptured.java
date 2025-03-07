@@ -8,36 +8,36 @@ import java.util.Map;
 
 public class TeamWoolsCaptured {
     private final CTW ctw;
-    private final Map<TeamHandler.Teams, Integer> woolsCaptured;
+    private final Map<TeamHandler.Team, Integer> woolsCaptured;
 
     public TeamWoolsCaptured(final CTW ctw) {
-        this.woolsCaptured = new HashMap<TeamHandler.Teams, Integer>();
+        this.woolsCaptured = new HashMap<TeamHandler.Team, Integer>();
         this.ctw = ctw;
         this.resetData();
     }
 
     public void resetData() {
-        this.woolsCaptured.put(TeamHandler.Teams.RED, 0);
-        this.woolsCaptured.put(TeamHandler.Teams.BLUE, 0);
+        this.woolsCaptured.put(TeamHandler.Team.RED, 0);
+        this.woolsCaptured.put(TeamHandler.Team.BLUE, 0);
     }
 
     public void addBlueCaptured() {
-        final int sc = this.woolsCaptured.get(TeamHandler.Teams.BLUE);
-        this.woolsCaptured.put(TeamHandler.Teams.BLUE, sc + 1);
+        final int sc = this.woolsCaptured.get(TeamHandler.Team.BLUE);
+        this.woolsCaptured.put(TeamHandler.Team.BLUE, sc + 1);
     }
 
     public void addRedCaptured() {
-        final int sc = this.woolsCaptured.get(TeamHandler.Teams.RED);
-        this.woolsCaptured.put(TeamHandler.Teams.RED, sc + 1);
+        final int sc = this.woolsCaptured.get(TeamHandler.Team.RED);
+        this.woolsCaptured.put(TeamHandler.Team.RED, sc + 1);
     }
 
     public Integer getBlueCaptured() {
-        final int sc = this.woolsCaptured.get(TeamHandler.Teams.BLUE);
+        final int sc = this.woolsCaptured.get(TeamHandler.Team.BLUE);
         return sc;
     }
 
     public Integer getRedCaptured() {
-        final int sc = this.woolsCaptured.get(TeamHandler.Teams.RED);
+        final int sc = this.woolsCaptured.get(TeamHandler.Team.RED);
         return sc;
     }
 }

@@ -9,17 +9,17 @@ import java.util.Map;
 
 public class TeamDamageHandler {
     private final CTW ctw;
-    private final Map<TeamHandler.Teams, Integer> damage;
+    private final Map<TeamHandler.Team, Integer> damage;
 
     public TeamDamageHandler(final CTW ctw) {
-        this.damage = new HashMap<TeamHandler.Teams, Integer>();
+        this.damage = new HashMap<TeamHandler.Team, Integer>();
         this.ctw = ctw;
         this.resetData();
     }
 
     public void resetData() {
-        this.damage.put(TeamHandler.Teams.RED, 0);
-        this.damage.put(TeamHandler.Teams.BLUE, 0);
+        this.damage.put(TeamHandler.Team.RED, 0);
+        this.damage.put(TeamHandler.Team.BLUE, 0);
     }
 
     public void autoAddDmg(final Player deadPlayer, final Double dmg) {
@@ -31,22 +31,22 @@ public class TeamDamageHandler {
     }
 
     public void addBlueDmg(final Integer dmg) {
-        final int sc = this.damage.get(TeamHandler.Teams.BLUE);
-        this.damage.put(TeamHandler.Teams.BLUE, sc + 1);
+        final int sc = this.damage.get(TeamHandler.Team.BLUE);
+        this.damage.put(TeamHandler.Team.BLUE, sc + 1);
     }
 
     public void addRedDmg(final Integer dmg) {
-        final int sc = this.damage.get(TeamHandler.Teams.RED);
-        this.damage.put(TeamHandler.Teams.RED, sc + 1);
+        final int sc = this.damage.get(TeamHandler.Team.RED);
+        this.damage.put(TeamHandler.Team.RED, sc + 1);
     }
 
     public Integer getBlueDmg() {
-        final int sc = this.damage.get(TeamHandler.Teams.BLUE);
+        final int sc = this.damage.get(TeamHandler.Team.BLUE);
         return sc;
     }
 
     public Integer getRedDmg() {
-        final int sc = this.damage.get(TeamHandler.Teams.RED);
+        final int sc = this.damage.get(TeamHandler.Team.RED);
         return sc;
     }
 }

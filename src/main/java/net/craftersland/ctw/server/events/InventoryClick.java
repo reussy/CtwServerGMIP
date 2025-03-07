@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,13 +27,17 @@ public class InventoryClick implements Listener {
         }
     }
 
+    /**
+     * Cancel removing the hat from the helmet slot
+     */
     @EventHandler
-    public void cancelRemoveArmor(InventoryClickEvent e) {
-        /*
-        if (e.getSlotType() == InventoryType.SlotType.ARMOR) {
-            e.setCancelled(true);
+    public void cancelRemoveHat(@NotNull InventoryClickEvent e) {
+
+        if (e.getSlotType() == InventoryType.SlotType.ARMOR && e.getSlot() == 39) {
+            if (e.getCurrentItem().getType().name().contains("WOOL")) {
+                e.setCancelled(true);
+            }
         }
-         */
     }
 
     @EventHandler
@@ -141,25 +146,8 @@ public class InventoryClick implements Listener {
                     this.closeInv(p);
                 } else if ((event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.WOOL && p.getGameMode() == GameMode.SURVIVAL) || (event.getCursor().getType() == Material.WOOL && p.getGameMode() == GameMode.SURVIVAL)) {
                     final ItemStack item = event.getCurrentItem();
-                    final ItemStack cursor = event.getCursor();
                     if (!event.getViewers().isEmpty()) {
-                        if (item.getData().getData() == 14) {
-                            this.ctw.getTakenWools().redWoolTakenCheck(p);
-                        } else if (item.getData().getData() == 6) {
-                            this.ctw.getTakenWools().pinkWoolTakenCheck(p);
-                        } else if (item.getData().getData() == 11) {
-                            this.ctw.getTakenWools().blueWoolTakenCheck(p);
-                        } else if (item.getData().getData() == 9) {
-                            this.ctw.getTakenWools().cyanWoolTakenCheck(p);
-                        } else if (cursor.getData().getData() == 14) {
-                            this.ctw.getTakenWools().redWoolTakenCheck(p);
-                        } else if (cursor.getData().getData() == 6) {
-                            this.ctw.getTakenWools().pinkWoolTakenCheck(p);
-                        } else if (cursor.getData().getData() == 11) {
-                            this.ctw.getTakenWools().blueWoolTakenCheck(p);
-                        } else if (cursor.getData().getData() == 9) {
-                            this.ctw.getTakenWools().cyanWoolTakenCheck(p);
-                        }
+                        this.ctw.getTakenWools().woolTakenCheck(p, item.getData().getData());
                     }
                 }
             }

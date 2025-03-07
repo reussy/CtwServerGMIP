@@ -10,7 +10,6 @@ import net.craftersland.ctw.server.game.TeamHandler;
 import net.craftersland.ctw.server.utils.CooldownManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -67,9 +66,9 @@ public class Moving implements Listener {
 
             if (ctw.getGameEngine().gameStage == GameEngine.GameStages.RUNNING) {
                 final Player p = event.getPlayer();
-                final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
+                final TeamHandler.Team team = this.ctw.getTeamHandler().getTeam(p);
 
-                if (team == TeamHandler.Teams.RED) {
+                if (team == TeamHandler.Team.RED) {
 
                     RegionManager regionManager = WGBukkit.getRegionManager(p.getWorld());
                     ApplicableRegionSet set = regionManager.getApplicableRegions(p.getLocation());
@@ -86,7 +85,7 @@ public class Moving implements Listener {
                         }
                     }
 
-                } else if (team == TeamHandler.Teams.BLUE) {
+                } else if (team == TeamHandler.Team.BLUE) {
 
                     RegionManager regionManager = WGBukkit.getRegionManager(p.getWorld());
                     ApplicableRegionSet set = regionManager.getApplicableRegions(p.getLocation());

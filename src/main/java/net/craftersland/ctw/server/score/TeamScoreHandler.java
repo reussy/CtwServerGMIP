@@ -8,36 +8,36 @@ import java.util.Map;
 
 public class TeamScoreHandler {
     private final CTW ctw;
-    private final Map<TeamHandler.Teams, Integer> earnedScore;
+    private final Map<TeamHandler.Team, Integer> earnedScore;
 
     public TeamScoreHandler(final CTW ctw) {
-        this.earnedScore = new HashMap<TeamHandler.Teams, Integer>();
+        this.earnedScore = new HashMap<TeamHandler.Team, Integer>();
         this.ctw = ctw;
         this.resetScores();
     }
 
     public void resetScores() {
-        this.earnedScore.put(TeamHandler.Teams.RED, 0);
-        this.earnedScore.put(TeamHandler.Teams.BLUE, 0);
+        this.earnedScore.put(TeamHandler.Team.RED, 0);
+        this.earnedScore.put(TeamHandler.Team.BLUE, 0);
     }
 
     public void addBlueScore(final Integer score) {
-        final int sc = this.earnedScore.get(TeamHandler.Teams.BLUE);
-        this.earnedScore.put(TeamHandler.Teams.BLUE, sc + score);
+        final int sc = this.earnedScore.get(TeamHandler.Team.BLUE);
+        this.earnedScore.put(TeamHandler.Team.BLUE, sc + score);
     }
 
     public void addRedScore(final Integer score) {
-        final int sc = this.earnedScore.get(TeamHandler.Teams.RED);
-        this.earnedScore.put(TeamHandler.Teams.RED, sc + score);
+        final int sc = this.earnedScore.get(TeamHandler.Team.RED);
+        this.earnedScore.put(TeamHandler.Team.RED, sc + score);
     }
 
     public Integer getBlueScore() {
-        final int sc = this.earnedScore.get(TeamHandler.Teams.BLUE);
+        final int sc = this.earnedScore.get(TeamHandler.Team.BLUE);
         return sc;
     }
 
     public Integer getRedScore() {
-        final int sc = this.earnedScore.get(TeamHandler.Teams.RED);
+        final int sc = this.earnedScore.get(TeamHandler.Team.RED);
         return sc;
     }
 }

@@ -28,12 +28,12 @@ public class Respawning implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onRespawn(final @NotNull PlayerRespawnEvent event) {
         final Player p = event.getPlayer();
-        final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
-        if (team == TeamHandler.Teams.RED) {
+        final TeamHandler.Team team = this.ctw.getTeamHandler().getTeam(p);
+        if (team == TeamHandler.Team.RED) {
             this.loadChunkCheck(this.ctw.getMapConfigHandler().redSpawn);
             event.setRespawnLocation(this.ctw.getMapConfigHandler().redSpawn);
             this.ctw.getPlayerHandler().respawnRedTeam(p);
-        } else if (team == TeamHandler.Teams.BLUE) {
+        } else if (team == TeamHandler.Team.BLUE) {
             this.loadChunkCheck(this.ctw.getMapConfigHandler().blueSpawn);
             event.setRespawnLocation(this.ctw.getMapConfigHandler().blueSpawn);
             this.ctw.getPlayerHandler().respawnBlueTeam(p);

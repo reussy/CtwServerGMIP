@@ -33,15 +33,7 @@ public class PickupItem implements Listener {
                 final ItemStack item = event.getItem().getItemStack();
                 final Player p = event.getPlayer();
 
-                if (item.getData().getData() == 14) {
-                    PickupItem.this.ctw.getTakenWools().redWoolTakenCheck(p);
-                } else if (item.getData().getData() == 6) {
-                    PickupItem.this.ctw.getTakenWools().pinkWoolTakenCheck(p);
-                } else if (item.getData().getData() == 11) {
-                    PickupItem.this.ctw.getTakenWools().blueWoolTakenCheck(p);
-                } else if (item.getData().getData() == 9) {
-                    PickupItem.this.ctw.getTakenWools().cyanWoolTakenCheck(p);
-                }
+                ctw.getTakenWools().woolTakenCheck(p, item.getData().getData());
             }
         });
     }

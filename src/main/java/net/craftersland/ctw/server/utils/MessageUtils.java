@@ -45,10 +45,10 @@ public class MessageUtils {
 
     public String getTeamColor(final @NotNull Player p) {
         String name = p.getName();
-        final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
-        if (team == TeamHandler.Teams.RED) {
+        final TeamHandler.Team team = this.ctw.getTeamHandler().getTeam(p);
+        if (team == TeamHandler.Team.RED) {
             name = ChatColor.RED + name;
-        } else if (team == TeamHandler.Teams.BLUE) {
+        } else if (team == TeamHandler.Team.BLUE) {
             name = ChatColor.BLUE + name;
         }
         return name;
@@ -56,10 +56,10 @@ public class MessageUtils {
 
     public String getTeamColorBolded(final @NotNull Player p) {
         String name = p.getName();
-        final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
-        if (team == TeamHandler.Teams.RED) {
+        final TeamHandler.Team team = this.ctw.getTeamHandler().getTeam(p);
+        if (team == TeamHandler.Team.RED) {
             name = String.valueOf(ChatColor.RED) + ChatColor.BOLD + name;
-        } else if (team == TeamHandler.Teams.BLUE) {
+        } else if (team == TeamHandler.Team.BLUE) {
             name = String.valueOf(ChatColor.BLUE) + ChatColor.BOLD + name;
         }
         return name;

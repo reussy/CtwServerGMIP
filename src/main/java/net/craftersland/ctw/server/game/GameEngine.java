@@ -118,16 +118,16 @@ public class GameEngine {
     }
 
     private void redTeamWonStage() {
-        declareVictory(TeamHandler.Teams.RED, "RedVictory");
+        declareVictory(TeamHandler.Team.RED, "RedVictory");
     }
 
     private void blueTeamWonStage() {
-        declareVictory(TeamHandler.Teams.BLUE, "BlueVictory");
+        declareVictory(TeamHandler.Team.BLUE, "BlueVictory");
     }
 
-    private void declareVictory(TeamHandler.Teams team, String victoryKey) {
+    private void declareVictory(TeamHandler.Team team, String victoryKey) {
         try {
-            List<Player> winners = (team == TeamHandler.Teams.RED) ? ctw.getTeamHandler().redTeamCopy() : ctw.getTeamHandler().blueTeamCopy();
+            List<Player> winners = (team == TeamHandler.Team.RED) ? ctw.getTeamHandler().redTeamCopy() : ctw.getTeamHandler().blueTeamCopy();
             //winners.forEach(p -> Bukkit.dispatchCommand(ctw.getServer().getConsoleSender(), "mysterydust add " + p.getName() + " 12"));
             setWonSpectators(winners); // ??
             ctw.getSoundHandler().broadcastDragon();
