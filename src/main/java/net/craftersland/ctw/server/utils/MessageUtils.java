@@ -40,7 +40,7 @@ public class MessageUtils {
     }
 
     public void sendActionBarMessage(final String msg, final Player p) {
-        Bukkit.getScheduler().runTask(this.ctw, () -> CTW.tm.sendActionbar(p, msg));
+        Bukkit.getScheduler().runTask(this.ctw, () -> CTW.tm.sendActionbar(p, ChatColor.translateAlternateColorCodes('&', msg)));
     }
 
     public String getTeamColor(final @NotNull Player p) {
