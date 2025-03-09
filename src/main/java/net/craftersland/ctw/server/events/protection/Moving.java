@@ -10,6 +10,7 @@ import net.craftersland.ctw.server.game.TeamHandler;
 import net.craftersland.ctw.server.utils.CooldownManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -29,34 +30,31 @@ public class Moving implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMove(final PlayerMoveEvent event) {
-        /*
+    public void onPlayerMove(final @NotNull PlayerMoveEvent event) {
         if (!event.isCancelled() && event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
-            final Player p = event.getPlayer();
-            final Location l = event.getTo();
-            final TeamHandler.Teams team = this.ctw.getTeamHandler().getTeam(p);
-            if (team == TeamHandler.Teams.RED) {
-                if (this.ctw.getProtectionHandler().isNoRedAccess(l)) {
-                    if (!this.ctw.getProtectedMoveHandler().isPlayerOnList(p)) {
-                        this.ctw.getProtectedMoveHandler().addPlayerToList(p);
-                        this.removePlayerFromListDelayed(p);
+            final Player player = event.getPlayer();
+            final Location location = event.getTo();
+            final TeamHandler.Team team = this.ctw.getTeamHandler().getTeam(player);
+            if (team == TeamHandler.Team.RED) {
+                if (this.ctw.getProtectionHandler().isNoRedAccess(location)) {
+                    if (!this.ctw.getProtectedMoveHandler().isPlayerOnList(player)) {
+                        this.ctw.getProtectedMoveHandler().addPlayerToList(player);
+                        this.removePlayerFromListDelayed(player);
                     }
-                    event.setCancelled(true);
-                    this.ctw.getProtectedMoveHandler().sendWarningMsg(p);
-                    p.teleport(event.getFrom());
+                    //event.setCancelled(true);
+                    this.ctw.getProtectedMoveHandler().sendWarningMsg(player);
+                    //player.teleport(event.getFrom());
                 }
-            } else if (team == TeamHandler.Teams.BLUE && this.ctw.getProtectionHandler().isNoBlueAccess(l)) {
-                if (!this.ctw.getProtectedMoveHandler().isPlayerOnList(p)) {
-                    this.ctw.getProtectedMoveHandler().addPlayerToList(p);
-                    this.removePlayerFromListDelayed(p);
+            } else if (team == TeamHandler.Team.BLUE && this.ctw.getProtectionHandler().isNoBlueAccess(location)) {
+                if (!this.ctw.getProtectedMoveHandler().isPlayerOnList(player)) {
+                    this.ctw.getProtectedMoveHandler().addPlayerToList(player);
+                    this.removePlayerFromListDelayed(player);
                 }
-                event.setCancelled(true);
-                this.ctw.getProtectedMoveHandler().sendWarningMsg(p);
-                p.teleport(event.getFrom());
+                //event.setCancelled(true);
+                this.ctw.getProtectedMoveHandler().sendWarningMsg(player);
+                //player.teleport(event.getFrom());
             }
         }
-
-         */
     }
 
 
@@ -109,12 +107,11 @@ public class Moving implements Listener {
         }
     }
 
-    public boolean invFull(Player p) {
+    public boolean invFull(@NotNull Player p) {
         return p.getInventory().firstEmpty() == -1;
     }
 
-
-    public void giveItems(Player p, int id, String color) {
+    public void giveItems(@NotNull Player p, int id, String color) {
 
         int timeLeft = cooldownManager.getCooldown(p.getUniqueId(), color);
 
@@ -179,11 +176,6 @@ public class Moving implements Listener {
     }
 
     private void removePlayerFromListDelayed(final Player p) {
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, new Runnable() {
-            @Override
-            public void run() {
-                Moving.this.ctw.getProtectedMoveHandler().removePlayerFromList(p);
-            }
-        }, 5L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, () -> Moving.this.ctw.getProtectedMoveHandler().removePlayerFromList(p), 5L);
     }
 }
