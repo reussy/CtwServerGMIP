@@ -21,14 +21,14 @@ Database:
     #Inactivity in days. Default 60 days.
     inactive: 60
 
-#Add here the maps names. The name must be the same (case sensitive) as the folder where the world files area.
+#Add here the maps names. The name must be the same (case-sensitive) as the folder where the world files area.
 #A server restart is required for changes here!
 GameMaps:
   - Map1
   - Map2
 
 #Add here the lobby servers, they will be used when players do /leave
-#If you add more then 1 server players will be teleported to the lobby with less players on.
+#If you add more than 1 server players will be teleported to the lobby with fewer players on.
 LobbyServers:
   - ctwLobby
 
@@ -100,7 +100,6 @@ Rewards:
     #Coins received if your team wins. (Will be awarded to the entire team.)
     victory: 5
 
-
 #Achievements settings
 Achievements:
   #Sniper achievement - is rewarded for distance bow kills.
@@ -139,6 +138,32 @@ Achievements:
     Wools-For-III: 50
     Wools-For-IV: 100
 
+Menus:
+  Join:
+    Title: 'Join Menu'
+    Size: 36
+    Items:
+      RedTeam:
+        Slot: 11
+        Material: 'RED_WOOL'
+        Data: 14
+        Name: '&cJoin Red Team'
+        Lore:
+          - '&7Click to join the red team.'
+      BlueTeam:
+        Slot: 13
+        Material: 'RED_WOOL'
+        Data: 11
+        Name: '&cJoin Red Team'
+        Lore:
+          - '&7Click to join the red team.'
+      AutoJoin:
+        Slot: 12
+        Material: 'NETHER_STAR'
+        Data: 0
+        Name: '&cJoin Red Team'
+        Lore:
+          - '&7Click to join the red team.'
 
 #This feature allows you to remove unneeded data when the server shuts down or restarts.
 #For example: Players data, stats, or other plugins that store data as file based and are not needed.

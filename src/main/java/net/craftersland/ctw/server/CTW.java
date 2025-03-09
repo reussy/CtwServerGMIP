@@ -1,7 +1,6 @@
 package net.craftersland.ctw.server;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import de.slikey.effectlib.EffectManager;
@@ -15,6 +14,7 @@ import net.craftersland.ctw.server.events.protection.*;
 import net.craftersland.ctw.server.game.*;
 import net.craftersland.ctw.server.game.map.MapConfigHandler;
 import net.craftersland.ctw.server.game.map.MapHandler;
+import net.craftersland.ctw.server.gui.JoinMenu;
 import net.craftersland.ctw.server.kits.KitHandler;
 import net.craftersland.ctw.server.kits.enchants.*;
 import net.craftersland.ctw.server.kits.items.ItemKitHandler;
