@@ -265,7 +265,7 @@ public class ScoreboardHandler {
         new BukkitRunnable() {
             public void run() {
                 if (!ScoreboardHandler.this.ctw.getWoolHandler().isRedPlaced()) {
-                    if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayersred().size() == 0) {
+                    if (ScoreboardHandler.this.ctw.getWoolHandler().getRedPlayers().size() == 0) {
 
                         ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.redWool);
                         ScoreboardHandler.this.redWool = ChatColor.RED + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Red");
@@ -295,7 +295,7 @@ public class ScoreboardHandler {
         new BukkitRunnable() {
             public void run() {
                 if (!ScoreboardHandler.this.ctw.getWoolHandler().isPinkPlaced()) {
-                    if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayerspink().size() == 0) {
+                    if (ScoreboardHandler.this.ctw.getWoolHandler().getPinkPlayers().size() == 0) {
 
                         ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.pinkWool);
                         ScoreboardHandler.this.pinkWool = ChatColor.LIGHT_PURPLE + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Pink");
@@ -326,7 +326,7 @@ public class ScoreboardHandler {
         new BukkitRunnable() {
             public void run() {
                 if (!ScoreboardHandler.this.ctw.getWoolHandler().isBluePlaced()) {
-                    if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayersblue().size() == 0) {
+                    if (ScoreboardHandler.this.ctw.getWoolHandler().getBluePlayers().size() == 0) {
 
                         ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.blueWool);
                         ScoreboardHandler.this.blueWool = ChatColor.BLUE + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Blue");
@@ -356,7 +356,7 @@ public class ScoreboardHandler {
         new BukkitRunnable() {
             public void run() {
                 if (!ScoreboardHandler.this.ctw.getWoolHandler().isCyanPlaced()) {
-                    if (ScoreboardHandler.this.ctw.getWoolHandler().listPlayerscyan().size() == 0) {
+                    if (ScoreboardHandler.this.ctw.getWoolHandler().getPinkPlayer().size() == 0) {
 
                         ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.cyanWool);
                         ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan");

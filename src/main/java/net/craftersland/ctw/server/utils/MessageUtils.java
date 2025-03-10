@@ -43,7 +43,7 @@ public class MessageUtils {
         Bukkit.getScheduler().runTask(this.ctw, () -> CTW.tm.sendActionbar(p, ChatColor.translateAlternateColorCodes('&', msg)));
     }
 
-    public String getTeamColor(final @NotNull Player p) {
+    public String getPlayerWithTeam(final @NotNull Player p) {
         String name = p.getName();
         final TeamHandler.Team team = this.ctw.getTeamHandler().getTeam(p);
         if (team == TeamHandler.Team.RED) {

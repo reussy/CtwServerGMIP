@@ -20,6 +20,7 @@ import net.craftersland.ctw.server.kits.enchants.*;
 import net.craftersland.ctw.server.kits.items.ItemKitHandler;
 import net.craftersland.ctw.server.kits.items.KitConfigHandler;
 import net.craftersland.ctw.server.score.*;
+import net.craftersland.ctw.server.scoreboard.NewScoreboard;
 import net.craftersland.ctw.server.utils.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;

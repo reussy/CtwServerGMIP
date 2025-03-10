@@ -1,4 +1,4 @@
-package net.craftersland.ctw.server.game;
+package net.craftersland.ctw.server.scoreboard;
 
 import dev.jcsoftware.jscoreboards.JGlobalScoreboard;
 import dev.jcsoftware.jscoreboards.JScoreboardTeam;
@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -163,7 +164,7 @@ public class NewScoreboard {
         new BukkitRunnable() {
             public void run() {
                 if (!NewScoreboard.this.ctw.getWoolHandler().isCyanPlaced()) {
-                    if (NewScoreboard.this.ctw.getWoolHandler().listPlayerscyan().isEmpty()) {
+                    if (NewScoreboard.this.ctw.getWoolHandler().getPinkPlayer().isEmpty()) {
                         NewScoreboard.this.cyanWool = ChatColor.DARK_AQUA + NewScoreboard.this.woolNotPlaced + ChatColor.GRAY + " " + NewScoreboard.this.ctw.getLanguageHandler().getMessage("Words.Cyan");
                     } else {
                         if (NewScoreboard.this.alertStatus == 0) {
@@ -186,7 +187,7 @@ public class NewScoreboard {
         new BukkitRunnable() {
             public void run() {
                 if (!ctw.getWoolHandler().isBluePlaced()) {
-                    if (ctw.getWoolHandler().listPlayersblue().isEmpty()) {
+                    if (ctw.getWoolHandler().getBluePlayers().isEmpty()) {
                         blueWool = ChatColor.BLUE + woolNotPlaced + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Blue");
                     } else {
                         if (alertStatus == 0) {
@@ -209,7 +210,7 @@ public class NewScoreboard {
         new BukkitRunnable() {
             public void run() {
                 if (!ctw.getWoolHandler().isRedPlaced()) {
-                    if (ctw.getWoolHandler().listPlayersred().isEmpty()) {
+                    if (ctw.getWoolHandler().getRedPlayers().isEmpty()) {
                         redWool = ChatColor.RED + woolNotPlaced + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Red");
                     } else {
                         if (alertStatus == 0) {
@@ -234,7 +235,7 @@ public class NewScoreboard {
         new BukkitRunnable() {
             public void run() {
                 if (!ctw.getWoolHandler().isPinkPlaced()) {
-                    if (ctw.getWoolHandler().listPlayerspink().isEmpty()) {
+                    if (ctw.getWoolHandler().getPinkPlayers().isEmpty()) {
                         pinkWool = ChatColor.LIGHT_PURPLE + woolNotPlaced + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Pink");
                     } else {
                         if (alertStatus == 0) {
@@ -296,5 +297,37 @@ public class NewScoreboard {
     private @NotNull List<String> replacePlaceholders(@NotNull List<String> messages) {
         messages.replaceAll(this::replacePlaceholders);
         return messages;
+    }
+
+    private List<String> you(Player player){
+        List<String> lines = this.ctw.getLanguageHandler().getMessageList("Scoreboard.Lines");
+        List<String> updatedLines = new ArrayList<>();
+        String placeholder = this.ctw.getLanguageHandler().getMessage("Scoreboard.You");
+        String playerTeam = this.ctw.getTeamHandler().isBlueTeam(player) ? "blue" : "red";
+
+       for (String line : lines){
+           String teamLine = getTeamLine(line);
+           String indicator = playerTeam.equalsIgnoreCase(teamLine) ? placeholder : "";
+
+           line = line.replace("%You%", indicator)
+                   .replace("%RedTeamPlayers%", this.ctw.getTeamHandler().countRedTeam() + "")
+                   .replace("%BlueTeamPlayers%", this.ctw.getTeamHandler().countBlueTeam() + "");
+
+           updatedLines.add(line);
+       }
+
+         return updatedLines;
+    }
+
+    @Contract(pure = true)
+    private String getTeamLine(@NotNull String line){
+        String clean = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', line));
+        if (clean.startsWith("EQUIPO ")){
+            String[] split = clean.split(" ");
+            if (split.length > 1){
+                return split[1];
+            }
+        }
+        return "";
     }
 }

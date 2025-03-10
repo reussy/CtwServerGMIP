@@ -63,10 +63,10 @@ ChatMessages:
   #    %KilledPlayer% - will be replaced by the killed player name and will have the team color.
   #    %Killer% - will be replaced by the killer name and will have the team color.
   #    %distance% - will be replaced by the distance a bow kill took place.
-  MeleeDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7was killed by %Killer%'
-  BowDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7was shoot by %Killer% &7from %distance% blocks.'
-  VoidDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7was sent into the void by %Killer%'
-  VoidSelfDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7fell into the void'
+  MeleeDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7was killed by %Killer% %WoolPlaceholder%'
+  BowDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7was shoot by %Killer% &7from %distance% blocks %WoolPlaceholder%'
+  VoidDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7was sent into the void by %Killer% %WoolPlaceholder%'
+  VoidSelfDeathBroadcast: '%WeaponLogo% %KilledPlayer% &7fell into the void %WoolPlaceholder%'
   #Countdown messages. Each line represents a new row, you can add/remove lines if you need.
   #To disable set to:  CountdownStart: {}
   #Variables:
@@ -143,8 +143,8 @@ ChatMessages:
   ReloadCmd: '&aConfiguration files reload complete!'
   WoolCaptureFirst: '%PlayerName% &7&lis the first to capture the wool %Wool%'
   WoolCapture: '%PlayerName% &7&lcaptured the wool %Wool%&7!'
-  WoolLost: '&4! %PlayerName% &7&llost the wool %Wool%&7!'
-  AllWoolsLost: '&4! %PlayerName% &7&llost the all wools!'
+  WoolLost: ' and lost the wool %Wool%'
+  AllWoolsLost: ' and lost the all wools!'
   You: "&7You"
   #Setup help messages.
   SetupHelp:

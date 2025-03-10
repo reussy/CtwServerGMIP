@@ -1,5 +1,7 @@
 package net.craftersland.ctw.server;
 
+import org.bukkit.ChatColor;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ public class ConfigHandler {
             this.ctw.getLogger().severe("Could not locate '" + key + "' in the config.yml inside of the CTWserver folder! (Try generating a new one by deleting the current)");
             return "errorCouldNotLocateInConfigYml: " + key;
         }
-        return this.ctw.getConfig().getString(key);
+        return this.ctw.getConfig().getString(ChatColor.translateAlternateColorCodes('&', key));
     }
 
     public String getStringWithColor(final String key) {
@@ -56,6 +58,14 @@ public class ConfigHandler {
             return null;
         }
         return this.ctw.getConfig().getInt(key);
+    }
+
+    public short getShort(final String key) {
+        if (!this.ctw.getConfig().contains(key)) {
+            this.ctw.getLogger().severe("Could not locate '" + key + "' in the config.yml inside of the CTWserver folder! (Try generating a new one by deleting the current)");
+            return 0;
+        }
+        return (short) this.ctw.getConfig().getInt(key);
     }
 
     public Boolean getBoolean(final String key) {

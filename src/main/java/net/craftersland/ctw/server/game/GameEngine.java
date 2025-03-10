@@ -86,6 +86,7 @@ public class GameEngine {
         if (key.equals("CountdownStart")) {
             for (int i = 0; i < ctw.getLanguageHandler().getMessageList("ChatMessages.CountdownStart").size(); i++) {
                 String message = formatColor(ctw.getLanguageHandler().getMessageList("ChatMessages.CountdownStart").get(i)
+                        .replace("%countdown%", String.valueOf(countdown))
                         .replace("%MapName%", ctw.getMapHandler().currentMap));
                 Bukkit.broadcastMessage(message);
             }
@@ -99,7 +100,6 @@ public class GameEngine {
     }
 
     private void startGame() {
-
         this.ctw.getMapHandler().startNextMap();
         ctw.getPlayerKillsHandler().resetTotalKillsMatch();
         Bukkit.getOnlinePlayers().forEach(player -> {
