@@ -51,37 +51,40 @@ public class JoinMenu {
     }
 
     public ItemStack autoJoinItem() {
-        final ItemStack item = new ItemStack(Material.valueOf(ctw.getConfigHandler().getString("Menus.Join.Items.AutoJoin.Material")), 1, Short.parseShort(ctw.getConfigHandler().getInteger("Menus.Join.Items.AutoJoin.Data").toString()));
+        final ItemStack item = new ItemStack(Material.valueOf(ctw.getConfigHandler().getString("Menus.Join.Items.AutoJoin.Material")), 1);
         final List<String> lore = new ArrayList<>(replacePlaceholders("Menus.Join.Items.AutoJoin.Lore"));
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(this.ctw.getLanguageHandler().getMessage("Menus.Join.Items.AutoJoin.Name"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.ctw.getConfigHandler().getString("Menus.Join.Items.AutoJoin.Name")));
         meta.setLore(lore);
+        item.setDurability(ctw.getConfigHandler().getShort("Menus.Join.Items.AutoJoin.Data"));
         item.setItemMeta(meta);
         return item;
     }
 
     public ItemStack joinRedTeam() {
-        final ItemStack item = new ItemStack(Material.valueOf(ctw.getConfigHandler().getString("Menus.Join.Items.RedTeam.Material")), 1, Short.parseShort(ctw.getConfigHandler().getInteger("Menus.Join.Items.RedTeam.Data").toString()));
+        final ItemStack item = new ItemStack(Material.valueOf(ctw.getConfigHandler().getString("Menus.Join.Items.RedTeam.Material")), 1, (short) 1, Byte.parseByte(ctw.getConfigHandler().getInteger("Menus.Join.Items.RedTeam.Data").toString()));
         final List<String> lore = new ArrayList<>(replacePlaceholders("Menus.Join.Items.RedTeam.Lore"));
         final ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(this.ctw.getLanguageHandler().getMessage("Menus.Join.Items.RedTeam.Name"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.ctw.getConfigHandler().getString("Menus.Join.Items.RedTeam.Name")));
         meta.setLore(lore);
+        item.setDurability(ctw.getConfigHandler().getShort("Menus.Join.Items.RedTeam.Data"));
         item.setItemMeta(meta);
         return item;
     }
 
     public ItemStack joinBlueTeam() {
-        final ItemStack item = new ItemStack(Material.valueOf(ctw.getConfigHandler().getString("Menus.Join.Items.BlueTeam.Material")), 1, Short.parseShort(ctw.getConfigHandler().getInteger("Menus.Join.Items.BlueTeam.Data").toString()));
+        final ItemStack item = new ItemStack(Material.valueOf(ctw.getConfigHandler().getString("Menus.Join.Items.BlueTeam.Material")), 1, (short) 1, Byte.parseByte(ctw.getConfigHandler().getInteger("Menus.Join.Items.BlueTeam.Data").toString()));
         final List<String> lore = new ArrayList<>(replacePlaceholders("Menus.Join.Items.BlueTeam.Lore"));
         final ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(this.ctw.getConfigHandler().getString("Menus.Join.Items.BlueTeam.Name"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.ctw.getConfigHandler().getString("Menus.Join.Items.BlueTeam.Name")));
         meta.setLore(lore);
+        item.setDurability(ctw.getConfigHandler().getShort("Menus.Join.Items.BlueTeam.Data"));
         item.setItemMeta(meta);
         return item;
     }
 
     public String joinMenuTitle() {
-        return this.ctw.getConfigHandler().getString("Menus.Join.Title");
+        return ChatColor.translateAlternateColorCodes('&', this.ctw.getConfigHandler().getString("Menus.Join.Title"));
     }
 
     public void menuUpdateTask() {
