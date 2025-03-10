@@ -1,9 +1,12 @@
 package net.craftersland.ctw.server.game.map;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.GameEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.nio.file.FileSystems;
@@ -16,7 +19,7 @@ public class MapHandler {
     private int playedMaps;
     private String mapToUnload;
 
-    public MapHandler(final CTW ctw) {
+    public MapHandler(final @NotNull CTW ctw) {
         this.mapIndex = 0;
         this.playedMaps = 1;
         this.ctw = ctw;
@@ -114,6 +117,10 @@ public class MapHandler {
                     Bukkit.getScheduler().runTaskLaterAsynchronously(MapHandler.this.ctw, () -> MapHandler.this.ctw.getWorldHandler().deleteWorld(MapHandler.this.mapToUnload), 20L);
                 }
             }, 100L);
+            for (NPC npc : CitizensAPI.getNPCRegistry()){
+                npc.despawn();
+                npc.spawn(npc.getStoredLocation());
+            }
         });
     }
 }
