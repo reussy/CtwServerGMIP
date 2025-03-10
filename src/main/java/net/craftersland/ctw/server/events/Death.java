@@ -3,6 +3,8 @@ package net.craftersland.ctw.server.events;
 import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.GameEngine;
 import net.craftersland.ctw.server.game.PlayerProjectile;
+import net.craftersland.ctw.server.game.TeamHandler;
+import net.craftersland.ctw.server.utils.PluginUtil;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,10 +16,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 public class Death implements Listener {
     private final CTW ctw;
@@ -74,15 +74,9 @@ public class Death implements Listener {
 
         Player victim = event.getEntity();
 
-        if (this.ctw.getWoolHandler().listPlayersred().contains(victim) || this.ctw.getWoolHandler().listPlayerspink().contains(victim) || this.ctw.getWoolHandler().listPlayersblue().contains(victim) || this.ctw.getWoolHandler().listPlayerscyan().contains(victim)) {
+        if (this.ctw.getWoolHandler().getRedPlayers().contains(victim) || this.ctw.getWoolHandler().getPinkPlayers().contains(victim) || this.ctw.getWoolHandler().getBluePlayers().contains(victim) || this.ctw.getWoolHandler().getPinkPlayer().contains(victim)) {
             Bukkit.getOnlinePlayers().forEach(player1 -> this.ctw.getSoundHandler().sendPlayerWoolDeathSound(player1));
         }
-
-        // Eliminar los jugadores de la lista de wools
-        this.ctw.getWoolHandler().listPlayersred().remove(victim);
-        this.ctw.getWoolHandler().listPlayerspink().remove(victim);
-        this.ctw.getWoolHandler().listPlayersblue().remove(victim);
-        this.ctw.getWoolHandler().listPlayerscyan().remove(victim);
 
         this.ctw.getTakenWools().checkForLostWool(event.getEntity(), event.getDrops());
         event.getDrops().clear();
@@ -115,9 +109,7 @@ public class Death implements Listener {
             killer.playSound(killer.getLocation(), Sound.LEVEL_UP, 3.0f, 3.0f);
 
             String meleeDeathBroadcast = this.ctw.getLanguageHandler().getMessage("ChatMessages.MeleeDeathBroadcast")
-                    .replace("%WeaponLogo%", this.getWeaponLogo(killer))
-                    .replace("%KilledPlayer%", this.ctw.getMessageUtils().getTeamColor(victim))
-                    .replace("%Killer%", this.ctw.getMessageUtils().getTeamColor(killer));
+                    .replace("%WeaponLogo%", this.getWeaponLogo(killer));
 
             this.ctw.getPlayerKillsHandler().addMeleeKill(killer);
             this.ctw.getMeleeAchievementHandler().checkForAchievements(killer);
@@ -125,8 +117,9 @@ public class Death implements Listener {
             this.ctw.getKillStreakHandler().addStreakKill(killer);
             this.ctw.getPlayerKillsHandler().addMeleeKillMatch(killer);
 
-            addPoints(victim, killer, meleeDeathBroadcast);
-            addRegen(killer);
+            sendDeathMessage(victim, killer, meleeDeathBroadcast);
+            modifyScores(victim, killer);
+            buffKiller(killer);
 
             // Si la causa de la muerte es un proyectil:
         } else if (victim.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
@@ -152,8 +145,6 @@ public class Death implements Listener {
 
             final String bowDeathBroadcast = this.ctw.getLanguageHandler().getMessage("ChatMessages.BowDeathBroadcast")
                     .replace("%WeaponLogo%", this.getWeaponLogo(killer))
-                    .replace("%KilledPlayer%", this.ctw.getMessageUtils().getTeamColor(victim))
-                    .replace("%Killer%", this.ctw.getMessageUtils().getTeamColor(killer))
                     .replace("%distance%", String.valueOf(distance));
 
             this.ctw.getPlayerKillsHandler().addBowKill(killer);
@@ -164,8 +155,9 @@ public class Death implements Listener {
             this.ctw.getKillStreakHandler().addStreakKill(killer);
             this.ctw.getPlayerKillsHandler().addBowKillMatch(killer);
 
-            addPoints2(victim, killer, bowDeathBroadcast);
-            addRegen(killer);
+            sendDeathMessage(victim, killer, bowDeathBroadcast);
+            modifyScores(victim, killer);
+            buffKiller(killer);
 
             // Si la causa de la muerte es tirado al vacio, lava o caida (altura):
         } else if (victim.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.VOID
@@ -179,8 +171,8 @@ public class Death implements Listener {
             if (lastDamagerKiller != null) {
                 String voidDeathMessage = this.ctw.getLanguageHandler().getMessage("ChatMessages.VoidDeathBroadcast")
                         .replace("%WeaponLogo%", this.ctw.getLanguageHandler().getMessage("Icons.Other"))
-                        .replace("%KilledPlayer%", this.ctw.getMessageUtils().getTeamColor(victim))
-                        .replace("%Killer%", this.ctw.getMessageUtils().getTeamColor(lastDamagerKiller));
+                        .replace("%KilledPlayer%", this.ctw.getMessageUtils().getPlayerWithTeam(victim))
+                        .replace("%Killer%", this.ctw.getMessageUtils().getPlayerWithTeam(lastDamagerKiller));
 
                 this.ctw.getKillStreakHandler().addStreakKill(lastDamagerKiller);
                 String weaponType = this.ctw.getLastDamageHandler().getWeaponType(lastDamagerKiller);
@@ -202,52 +194,41 @@ public class Death implements Listener {
                     this.ctw.getDistanceAchievementHandler().checkForAchievements(lastDamagerKiller);
                 }
 
-                addRegen(lastDamagerKiller);
-                addPoints(victim, lastDamagerKiller, voidDeathMessage);
+                buffKiller(lastDamagerKiller);
+                modifyScores(victim, lastDamagerKiller);
             } else {
                 String voidSelfDeathBroadcast = this.ctw.getLanguageHandler().getMessage("ChatMessages.VoidSelfDeathBroadcast")
                         .replace("%WeaponLogo%", this.ctw.getLanguageHandler().getMessage("Icons.Other"))
-                        .replace("%KilledPlayer%", this.ctw.getMessageUtils().getTeamColor(victim));
+                        .replace("%KilledPlayer%", this.ctw.getMessageUtils().getPlayerWithTeam(victim));
 
-                sendDeathMessage(ChatColor.translateAlternateColorCodes('&', voidSelfDeathBroadcast));
-                this.ctw.getPlayerScoreHandler().takeScore(victim, this.ctw.getConfigHandler().getInteger("Rewards.Score.death"));
-                this.ctw.getMessageUtils().sendScoreMessage(victim, "-" + this.ctw.getConfigHandler().getInteger("Rewards.Score.death"), null);
+                sendDeathMessage(victim, null, voidSelfDeathBroadcast);
+                modifyScores(victim, null);
             }
         }
 
         Bukkit.getScheduler().runTask(this.ctw, () -> victim.spigot().respawn());
     }
 
-    private void addPoints(Player victim, Player killer, @NotNull String rawMsg4) {
-        final String rawMsg5 = rawMsg4.replace("%KilledPlayer%", this.ctw.getMessageUtils().getTeamColor(victim));
-        final String rawMsg6 = rawMsg5.replace("%Killer%", this.ctw.getMessageUtils().getTeamColor(killer));
-        addPoints2(victim, killer, rawMsg6);
-    }
+    private void modifyScores(Player victim, Player killer) {
 
-    private void addPoints2(Player victim, Player killer, @NotNull String rawMsg6) {
-
-        this.sendDeathMessage(ChatColor.translateAlternateColorCodes('&', rawMsg6));
+        //this.sendDeathMessage(ChatColor.translateAlternateColorCodes('&', rawMsg6));
 
         // Quitar puntos al jugador que muere
         this.ctw.getPlayerScoreHandler().takeScore(victim, this.ctw.getConfigHandler().getInteger("Rewards.Score.death"));
         this.ctw.getMessageUtils().sendScoreMessage(victim, "-" + this.ctw.getConfigHandler().getInteger("Rewards.Score.death"), null);
 
         // Añadir puntos al jugador que mata
-        this.ctw.getPlayerScoreHandler().addScore(killer, this.ctw.getConfigHandler().getInteger("Rewards.Score.kill"));
-        this.ctw.getEconomyHandler().addCoins(killer, Double.valueOf(this.ctw.getConfigHandler().getInteger("Rewards.Coins.kill")));
-        this.ctw.getMessageUtils().sendScoreMessage(killer, "+" + this.ctw.getConfigHandler().getInteger("Rewards.Score.kill"), this.ctw.getConfigHandler().getInteger("Rewards.Coins.kill"));
+        if (killer != null) {
+            this.ctw.getPlayerScoreHandler().addScore(killer, this.ctw.getConfigHandler().getInteger("Rewards.Score.kill"));
+            this.ctw.getEconomyHandler().addCoins(killer, Double.valueOf(this.ctw.getConfigHandler().getInteger("Rewards.Coins.kill")));
+            this.ctw.getMessageUtils().sendScoreMessage(killer, "+" + this.ctw.getConfigHandler().getInteger("Rewards.Score.kill"), this.ctw.getConfigHandler().getInteger("Rewards.Coins.kill"));
+        }
     }
 
-    private void addRegen(Player killer) {
+    private void buffKiller(@NotNull Player killer) {
 
-        if (killer == null) {
-            return;
-        }
-
-        if (this.ctw.getGameEngine().gameStage != GameEngine.GameStages.COUNTDOWN) {
-            killer.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
-            killer.getInventory().addItem(new ItemStack(Material.ARROW, 2));
-        }
+        killer.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
+        killer.getInventory().addItem(new ItemStack(Material.ARROW, 2));
 
         if (!checkArmor(killer)) return;
 
@@ -289,24 +270,58 @@ public class Death implements Listener {
         return icon;
     }
 
-    private void sendDeathMessage(final String msg) {
-        final List<Player> redTeam = this.ctw.getTeamHandler().redTeamCopy();
-        final List<Player> blueTeam = this.ctw.getTeamHandler().blueTeamCopy();
-        if (!redTeam.isEmpty()) {
-            for (final Player p : redTeam) {
-                if (p != null && p.isOnline()) {
-                    p.sendMessage(msg);
+    private void sendDeathMessage(@NotNull Player victim, @Nullable Player killer, String msg) {
+        if (killer != null){
+            Bukkit.getOnlinePlayers().forEach(player -> PluginUtil.send(player, msg
+                    .replace("%KilledPlayer%", this.ctw.getMessageUtils().getPlayerWithTeam(victim))
+                    .replace("%Killer%", this.ctw.getMessageUtils().getPlayerWithTeam(killer)).replace("%WoolPlaceholder%", getWoolLostPlaceholder(victim, getWoolLost(victim)))));
+        } else {
+            Bukkit.getOnlinePlayers().forEach(player -> PluginUtil.send(player, msg
+                    .replace("%KilledPlayer%", this.ctw.getMessageUtils().getPlayerWithTeam(victim))
+                    .replace("%WoolPlaceholder%", getWoolLostPlaceholder(victim, getWoolLost(victim)))));
+        }
+    }
+
+    private @NotNull String getWoolLost(Player victim) {
+        TeamHandler.Team team = this.ctw.getTeamHandler().getTeam(victim);
+
+        switch (team){
+            case RED:
+                if (this.ctw.getWoolHandler().hadRedTakenByPlayer(victim) && this.ctw.getWoolHandler().hadPinkTakenByPlayer(victim)){
+                    return "ALL";
+                } else if (this.ctw.getWoolHandler().hadRedTakenByPlayer(victim)){
+                    return "RED";
+                } else if (this.ctw.getWoolHandler().hadPinkTakenByPlayer(victim)){
+                    return "PINK";
+                }
+
+            case BLUE:
+                if (this.ctw.getWoolHandler().hadBlueTakenByPlayer(victim) && this.ctw.getWoolHandler().hadCyanTakenByPlayer(victim)){
+                    return "ALL";
+                } else if (this.ctw.getWoolHandler().hadBlueTakenByPlayer(victim)){
+                    return "BLUE";
+                } else if (this.ctw.getWoolHandler().hadCyanTakenByPlayer(victim)){
+                    return "CYAN";
                 }
             }
+        return "";
         }
 
-        if (!blueTeam.isEmpty()) {
-            for (final Player p : blueTeam) {
-                if (p != null && p.isOnline()) {
-                    p.sendMessage(msg);
-                }
-            }
-        }
+    private String getWoolLostPlaceholder(@NotNull Player player, @NotNull String wool){
+        String placeholder = this.ctw.getLanguageHandler().getMessage("ChatMessages.WoolLost").replace("%PlayerName%", player.getName());
+        placeholder = switch (wool) {
+            case "ALL" -> this.ctw.getLanguageHandler().getMessage("ChatMessages.AllWoolsLost")
+                    .replace("%PlayerName%", this.ctw.getTeamHandler().isBlueTeam(player) ? "&9&l" : "&c&l" + player.getName());
+            case "CYAN" ->
+                    placeholder.replace("%Wool%", "&3&l" + this.ctw.getLanguageHandler().getMessage("Words.Cyan"));
+            case "BLUE" ->
+                    placeholder.replace("%Wool%", "&9&l" + this.ctw.getLanguageHandler().getMessage("Words.Blue"));
+            case "RED" -> placeholder.replace("%Wool%", "&c&l" + this.ctw.getLanguageHandler().getMessage("Words.Red"));
+            case "PINK" ->
+                    placeholder.replace("%Wool%", "&d&l" + this.ctw.getLanguageHandler().getMessage("Words.Pink"));
+            default -> placeholder;
+        };
+        return placeholder;
     }
 
     private boolean checkArmor(@NotNull Player player) {
@@ -340,9 +355,6 @@ public class Death implements Listener {
             return false;
         } else if (player.getInventory().getLeggings().getType() == Material.GOLD_LEGGINGS) {
             return false;
-        } else if (player.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
-            return false;
-        }
-        return true;
+        } else return player.getInventory().getHelmet().getType() != Material.GOLD_HELMET;
     }
 }

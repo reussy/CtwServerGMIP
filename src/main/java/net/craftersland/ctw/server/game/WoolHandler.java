@@ -96,27 +96,27 @@ public class WoolHandler {
         return this.woolsTaken.get(Wools.RED);
     }
 
-    public List<Player> listPlayersred() {
+    public List<Player> getRedPlayers() {
 
         return redTakenList;
     }
 
-    public Player listPlayerRed() {
+    public Player getRedPlayer() {
 
         return redTakenList.get(redTakenList.size() - 1);
     }
 
-    public List<Player> listPlayerspink() {
+    public List<Player> getPinkPlayers() {
 
         return pinkTakenList;
     }
 
-    public List<Player> listPlayerscyan() {
+    public List<Player> getPinkPlayer() {
 
         return cyanTakenList;
     }
 
-    public List<Player> listPlayersblue() {
+    public List<Player> getBluePlayers() {
 
         return blueTakenList;
     }
