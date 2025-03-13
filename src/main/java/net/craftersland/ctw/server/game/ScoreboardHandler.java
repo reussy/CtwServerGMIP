@@ -356,7 +356,7 @@ public class ScoreboardHandler {
         new BukkitRunnable() {
             public void run() {
                 if (!ScoreboardHandler.this.ctw.getWoolHandler().isCyanPlaced()) {
-                    if (ScoreboardHandler.this.ctw.getWoolHandler().getPinkPlayer().size() == 0) {
+                    if (ScoreboardHandler.this.ctw.getWoolHandler().getCyanPlayers().size() == 0) {
 
                         ScoreboardHandler.this.scoreboard.resetScores(ScoreboardHandler.this.cyanWool);
                         ScoreboardHandler.this.cyanWool = ChatColor.DARK_AQUA + ScoreboardHandler.this.woolNotPlaced + ChatColor.GRAY + " " + ScoreboardHandler.this.ctw.getLanguageHandler().getMessage("Words.Cyan");

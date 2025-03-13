@@ -97,22 +97,14 @@ public class WoolHandler {
     }
 
     public List<Player> getRedPlayers() {
-
         return redTakenList;
     }
 
-    public Player getRedPlayer() {
-
-        return redTakenList.get(redTakenList.size() - 1);
-    }
-
     public List<Player> getPinkPlayers() {
-
         return pinkTakenList;
     }
 
-    public List<Player> getPinkPlayer() {
-
+    public List<Player> getCyanPlayers() {
         return cyanTakenList;
     }
 
