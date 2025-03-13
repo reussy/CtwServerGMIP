@@ -21,6 +21,7 @@ import net.craftersland.ctw.server.kits.items.ItemKitHandler;
 import net.craftersland.ctw.server.kits.items.KitConfigHandler;
 import net.craftersland.ctw.server.score.*;
 import net.craftersland.ctw.server.scoreboard.NewScoreboard;
+import net.craftersland.ctw.server.scoreboard.task.WoolDistanceTracker;
 import net.craftersland.ctw.server.utils.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -78,6 +79,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
     private static TeamKillsHandler tkH;
     private static TeamWoolsCaptured twc;
     private static PlayerWoolsPlacedHandler pwpH;
+    private static WoolDistanceTracker woolDistanceTracker;
     private static TeamDamageHandler tdH;
     private static EconomyHandler eH;
     private static WoolAchievementHandler waH;
@@ -266,6 +268,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         CTW.tkH = new TeamKillsHandler(this);
         CTW.twc = new TeamWoolsCaptured(this);
         CTW.pwpH = new PlayerWoolsPlacedHandler(this);
+        CTW.woolDistanceTracker = new WoolDistanceTracker(this);
         CTW.tdH = new TeamDamageHandler(this);
         CTW.eH = new EconomyHandler(this);
         CTW.waH = new WoolAchievementHandler(this);
@@ -444,6 +447,10 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
 
     public PlayerWoolsPlacedHandler getPlayerWoolsPlacedHandler() {
         return CTW.pwpH;
+    }
+
+    public WoolDistanceTracker getWoolDistanceTracker() {
+        return CTW.woolDistanceTracker;
     }
 
     public TeamDamageHandler getTeamDamageHandler() {

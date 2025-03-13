@@ -39,7 +39,6 @@ public class NewScoreboard {
     private JScoreboardTeam teamRed;
     private Scoreboard scoreboardBukkit;
 
-
     public NewScoreboard(final CTW ctw) {
         this.ctw = ctw;
         this.initializeVariables();
@@ -164,7 +163,7 @@ public class NewScoreboard {
         new BukkitRunnable() {
             public void run() {
                 if (!NewScoreboard.this.ctw.getWoolHandler().isCyanPlaced()) {
-                    if (NewScoreboard.this.ctw.getWoolHandler().getPinkPlayer().isEmpty()) {
+                    if (NewScoreboard.this.ctw.getWoolHandler().getCyanPlayers().isEmpty()) {
                         NewScoreboard.this.cyanWool = ChatColor.DARK_AQUA + NewScoreboard.this.woolNotPlaced + ChatColor.GRAY + " " + NewScoreboard.this.ctw.getLanguageHandler().getMessage("Words.Cyan");
                     } else {
                         if (NewScoreboard.this.alertStatus == 0) {
@@ -282,6 +281,7 @@ public class NewScoreboard {
 
     private @NotNull String replacePlaceholders(@NotNull String message) {
         return message
+                .replace("%Duration%", "")
                 .replace("%Date%", this.date)
                 .replace("%MapName%", this.map)
                 .replace("%Time%", this.timer)
@@ -299,7 +299,8 @@ public class NewScoreboard {
         return messages;
     }
 
-    private List<String> you(Player player){
+    // TODO: Implement this method
+    private @NotNull List<String> you(Player player){
         List<String> lines = this.ctw.getLanguageHandler().getMessageList("Scoreboard.Lines");
         List<String> updatedLines = new ArrayList<>();
         String placeholder = this.ctw.getLanguageHandler().getMessage("Scoreboard.You");

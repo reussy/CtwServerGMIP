@@ -61,6 +61,10 @@ public class PAPI extends PlaceholderExpansion {
             return plugin.getTeamHandler().blueTeamCopy().size() + "";
         }
 
+        if (params.equalsIgnoreCase("near_wool_distance")) {
+            return plugin.getWoolDistanceTracker().checkNearestWoolCarrier(player.getPlayer());
+        }
+
         // Player specific placeholders
 
         if (!player.isOnline()) {

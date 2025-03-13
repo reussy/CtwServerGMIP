@@ -74,12 +74,11 @@ public class Death implements Listener {
 
         Player victim = event.getEntity();
 
-        if (this.ctw.getWoolHandler().getRedPlayers().contains(victim) || this.ctw.getWoolHandler().getPinkPlayers().contains(victim) || this.ctw.getWoolHandler().getBluePlayers().contains(victim) || this.ctw.getWoolHandler().getPinkPlayer().contains(victim)) {
+        if (this.ctw.getWoolHandler().getRedPlayers().contains(victim) || this.ctw.getWoolHandler().getPinkPlayers().contains(victim) || this.ctw.getWoolHandler().getBluePlayers().contains(victim) || this.ctw.getWoolHandler().getCyanPlayers().contains(victim)) {
             Bukkit.getOnlinePlayers().forEach(player1 -> this.ctw.getSoundHandler().sendPlayerWoolDeathSound(player1));
         }
 
-        this.ctw.getTakenWools().checkForLostWool(event.getEntity(), event.getDrops());
-        event.getDrops().clear();
+        ctw.getWoolDistanceTracker().getPlayerTeams().remove(victim);
 
         // Resetear los datos del jugador
         this.ctw.getKillStreakHandler().resetData(victim);
@@ -206,6 +205,9 @@ public class Death implements Listener {
             }
         }
 
+        this.ctw.getTakenWools().checkForLostWool(event.getEntity(), event.getDrops());
+        event.getDrops().clear();
+
         Bukkit.getScheduler().runTask(this.ctw, () -> victim.spigot().respawn());
     }
 
@@ -309,17 +311,16 @@ public class Death implements Listener {
 
     private String getWoolLostPlaceholder(@NotNull Player player, @NotNull String wool){
         String placeholder = this.ctw.getLanguageHandler().getMessage("ChatMessages.WoolLost").replace("%PlayerName%", player.getName());
-        placeholder = switch (wool) {
-            case "ALL" -> this.ctw.getLanguageHandler().getMessage("ChatMessages.AllWoolsLost")
+        switch (wool) {
+            case "ALL" -> placeholder = this.ctw.getLanguageHandler().getMessage("ChatMessages.AllWoolsLost")
                     .replace("%PlayerName%", this.ctw.getTeamHandler().isBlueTeam(player) ? "&9&l" : "&c&l" + player.getName());
             case "CYAN" ->
-                    placeholder.replace("%Wool%", "&3&l" + this.ctw.getLanguageHandler().getMessage("Words.Cyan"));
+                    placeholder = placeholder.replace("%Wool%", "&3&l" + this.ctw.getLanguageHandler().getMessage("Words.Cyan"));
             case "BLUE" ->
-                    placeholder.replace("%Wool%", "&9&l" + this.ctw.getLanguageHandler().getMessage("Words.Blue"));
-            case "RED" -> placeholder.replace("%Wool%", "&c&l" + this.ctw.getLanguageHandler().getMessage("Words.Red"));
+                    placeholder = placeholder.replace("%Wool%", "&9&l" + this.ctw.getLanguageHandler().getMessage("Words.Blue"));
+            case "RED" -> placeholder = placeholder.replace("%Wool%", "&c&l" + this.ctw.getLanguageHandler().getMessage("Words.Red"));
             case "PINK" ->
-                    placeholder.replace("%Wool%", "&d&l" + this.ctw.getLanguageHandler().getMessage("Words.Pink"));
-            default -> placeholder;
+                    placeholder = placeholder.replace("%Wool%", "&d&l" + this.ctw.getLanguageHandler().getMessage("Words.Pink"));
         };
         return placeholder;
     }
