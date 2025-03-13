@@ -1,6 +1,7 @@
 package net.craftersland.ctw.server.events;
 
 import net.craftersland.ctw.server.CTW;
+import net.craftersland.ctw.server.utils.PluginUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -100,6 +101,12 @@ public class InventoryClick implements Listener {
                             this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
                             p.sendMessage(ChatColor.translateAlternateColorCodes('&', this.ctw.getLanguageHandler().getMessage("ChatMessages.SelectTeamNoPermission")));
                         }
+                        event.setCancelled(true);
+                    } else if (event.getSlot() == ctw.getConfigHandler().getInteger("Menus.Join.Items.Leave.Slot")){
+                        Bukkit.getScheduler().runTaskLater(ctw, () -> p.performCommand("leave"), 1L);
+                        event.setCancelled(true);
+                    } else if (event.getSlot() == ctw.getConfigHandler().getInteger("Menus.Join.Items.KitEditor.Slot")) {
+                        //TODO: Open kit editor
                         event.setCancelled(true);
                     }
                     this.closeInv(p);

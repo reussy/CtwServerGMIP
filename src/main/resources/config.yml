@@ -151,23 +151,38 @@ Menus:
         Lore:
           - '&7Click to join the red team.'
       BlueTeam:
-        Slot: 13
+        Slot: 15
         Material: 'RED_WOOL'
         Data: 11
         Name: '&cJoin Red Team'
         Lore:
           - '&7Click to join the red team.'
       AutoJoin:
-        Slot: 12
+        Slot: 13
         Material: 'NETHER_STAR'
         Data: 0
         Name: '&cJoin Red Team'
         Lore:
           - '&7Click to join the red team.'
+      KitEditor:
+        Slot: 35
+        Material: 'BOOK'
+        Data: 0
+        Name: '&eKit Editor'
+        Lore:
+          - '&7Edit the kit of this match'
+          - '&7as you like and save it.'
+      Leave:
+        Slot: 31
+        Material: 'REDSTONE'
+        Data: 0
+        Name: '&cLeave'
+        Lore:
+          - '&7Click to be teleported to the lobby.'
 
 #This feature allows you to remove unneeded data when the server shuts down or restarts.
-#For example: Players data, stats, or other plugins that store data as file based and are not needed.
-#As in time the server will store many players data there is a need to clean up unneeded files.
+#For example, Player data, stats, or other plugins that store data as file-based and are not needed.
+#As in time the server will store many player data, there is a need to clean up unneeded files.
 DataCleanup:
   #Enable or disabled data clean up | true or false
   Enabled: false

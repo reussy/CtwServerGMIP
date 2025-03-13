@@ -43,6 +43,8 @@ public class JoinMenu {
                 inventory.setItem(autoJoinSlot, this.autoJoinItem());
                 inventory.setItem(redTeamSlot, this.joinRedTeam());
                 inventory.setItem(blueTeamSlot, this.joinBlueTeam());
+                inventory.setItem(ctw.getConfigHandler().getInteger("Menus.Join.Items.KitEditor.Slot"), this.getKitEditorItem());
+                inventory.setItem(ctw.getConfigHandler().getInteger("Menus.Join.Items.Leave.Slot"), this.getLeaveItem());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -79,6 +81,28 @@ public class JoinMenu {
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.ctw.getConfigHandler().getString("Menus.Join.Items.BlueTeam.Name")));
         meta.setLore(lore);
         item.setDurability(ctw.getConfigHandler().getShort("Menus.Join.Items.BlueTeam.Data"));
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public ItemStack getKitEditorItem() {
+        final ItemStack item = new ItemStack(Material.valueOf(ctw.getConfigHandler().getString("Menus.Join.Items.KitEditor.Material")), 1, (short) 1, Byte.parseByte(ctw.getConfigHandler().getInteger("Menus.Join.Items.KitEditor.Data").toString()));
+        final List<String> lore = new ArrayList<>(replacePlaceholders("Menus.Join.Items.KitEditor.Lore"));
+        final ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.ctw.getConfigHandler().getString("Menus.Join.Items.KitEditor.Name")));
+        meta.setLore(lore);
+        item.setDurability(ctw.getConfigHandler().getShort("Menus.Join.Items.KitEditor.Data"));
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public ItemStack getLeaveItem() {
+        final ItemStack item = new ItemStack(Material.valueOf(ctw.getConfigHandler().getString("Menus.Join.Items.Leave.Material")), 1, (short) 1, Byte.parseByte(ctw.getConfigHandler().getInteger("Menus.Join.Items.Leave.Data").toString()));
+        final List<String> lore = new ArrayList<>(replacePlaceholders("Menus.Join.Items.Leave.Lore"));
+        final ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.ctw.getConfigHandler().getString("Menus.Join.Items.Leave.Name")));
+        meta.setLore(lore);
+        item.setDurability(ctw.getConfigHandler().getShort("Menus.Join.Items.Leave.Data"));
         item.setItemMeta(meta);
         return item;
     }
