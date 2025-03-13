@@ -266,7 +266,7 @@ public class CTW extends JavaPlugin implements PluginMessageListener {
         CTW.tsH = new TeamScoreHandler(this);
         CTW.pkH = new PlayerKillsHandler(this);
         CTW.tkH = new TeamKillsHandler(this);
-        CTW.twc = new TeamWoolsCaptured(this);
+        CTW.twc = new TeamWoolsCaptured();
         CTW.pwpH = new PlayerWoolsPlacedHandler(this);
         CTW.woolDistanceTracker = new WoolDistanceTracker(this);
         CTW.tdH = new TeamDamageHandler(this);

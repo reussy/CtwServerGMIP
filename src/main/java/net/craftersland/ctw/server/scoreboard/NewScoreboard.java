@@ -159,7 +159,7 @@ public class NewScoreboard {
         }, 18L, 20L);
     }
 
-    public void cyanWoolTaken() {
+    public void startCyanWoolTask() {
         new BukkitRunnable() {
             public void run() {
                 if (!NewScoreboard.this.ctw.getWoolHandler().isCyanPlaced()) {
@@ -182,7 +182,7 @@ public class NewScoreboard {
         this.scoreboard.updateScoreboard();
     }
 
-    public void blueWoolTaken() {
+    public void startBlueWoolTask() {
         new BukkitRunnable() {
             public void run() {
                 if (!ctw.getWoolHandler().isBluePlaced()) {
@@ -205,7 +205,7 @@ public class NewScoreboard {
         this.scoreboard.updateScoreboard();
     }
 
-    public void redWoolTaken() {
+    public void startRedWoolTask() {
         new BukkitRunnable() {
             public void run() {
                 if (!ctw.getWoolHandler().isRedPlaced()) {
@@ -216,9 +216,7 @@ public class NewScoreboard {
                             redWool = ChatColor.RED + woolPickedUp + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Red") + " \u26a0";
                         }
                         if (alertStatus == 1) {
-
                             redWool = ChatColor.RED + woolPickedUp + ChatColor.GRAY + " " + ctw.getLanguageHandler().getMessage("Words.Red") + ChatColor.RED + " \u26a0";
-
                         }
                     }
                 } else {
@@ -230,7 +228,7 @@ public class NewScoreboard {
         this.scoreboard.updateScoreboard();
     }
 
-    public void pinkWoolTaken() {
+    public void startPinkWoolTask() {
         new BukkitRunnable() {
             public void run() {
                 if (!ctw.getWoolHandler().isPinkPlaced()) {

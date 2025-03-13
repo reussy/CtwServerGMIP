@@ -37,12 +37,11 @@ public class ProtectedMoveHandler {
                 //p.sendMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.CantEnterArea").replaceAll("&", "§"));
                 this.ctw.getMessageUtils().sendActionBarMessage(this.ctw.getLanguageHandler().getMessage("ChatMessages.CantEnterArea"), p);
                 this.removeMsgCooldown(p);
-                this.ctw.getSoundHandler().sendFailedSound(p.getLocation(), p);
             });
         }
     }
 
     private void removeMsgCooldown(final Player p) {
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, () -> this.msgCooldown.remove(p), 100L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this.ctw, () -> this.msgCooldown.remove(p), 2L);
     }
 }

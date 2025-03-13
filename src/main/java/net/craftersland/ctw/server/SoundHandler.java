@@ -36,23 +36,23 @@ public class SoundHandler {
         p.playSound(l, Sound.CREEPER_DEATH, 5.0f, 1.0f);
     }
 
-    public void sendChestOpenSound(final Location l, final Player p) {
+    public void sendChestOpenSound(final Location l, final @NotNull Player p) {
         p.playSound(l, Sound.CHEST_OPEN, 5.0f, 10.0f);
     }
 
-    public void sendAnvilLandSound(final Location l, final Player p) {
+    public void sendAnvilLandSound(final Location l, final @NotNull Player p) {
         p.playSound(l, Sound.ANVIL_LAND, 3.0f, 3.0f);
     }
 
-    public void sendItemPickupSound(final Location l, final Player p) {
+    public void sendItemPickupSound(final Location l, final @NotNull Player p) {
         p.playSound(l, Sound.ITEM_PICKUP, 3.0f, 1.0f);
     }
 
-    public void sendLavaPopSound(final Location l, final Player p) {
+    public void sendLavaPopSound(final Location l, final @NotNull Player p) {
         p.playSound(l, Sound.LAVA_POP, 1.0f, 5.0f);
     }
 
-    public void sendNewEquipmentSound(final Location l, final Player p) {
+    public void sendNewEquipmentSound(final Location l, final @NotNull Player p) {
         p.playSound(l, Sound.SPLASH, 2.0f, 2.0f);
     }
 

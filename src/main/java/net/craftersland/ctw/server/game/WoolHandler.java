@@ -13,9 +13,10 @@ import java.util.Map;
 
 public class WoolHandler {
     private final CTW ctw;
-    private final Map<Wools, Boolean> woolsTaken;
-    private final Map<Wools, Boolean> woolsPlaced;
-    private final Map<Wools, Player> woolsPlacedByPlayer;
+    private boolean isRedTaken, isPinkTaken, isBlueTaken, isCyanTaken, isRedPlaced, isPinkPlaced, isBluePlaced, isCyanPlaced;
+    private final Map<Wool, Boolean> woolsTaken;
+    private final Map<Wool, Boolean> woolsPlaced;
+    private final Map<Wool, Player> woolsPlacedByPlayer;
     private final List<Player> redTakenList;
     private final List<Player> pinkTakenList;
     private final List<Player> blueTakenList;
@@ -34,30 +35,30 @@ public class WoolHandler {
     }
 
     public void resetWoolsStats() {
-        this.woolsTaken.put(Wools.RED, false);
-        this.woolsTaken.put(Wools.PINK, false);
-        this.woolsTaken.put(Wools.BLUE, false);
-        this.woolsTaken.put(Wools.CYAN, false);
-        this.woolsPlaced.put(Wools.RED, false);
-        this.woolsPlaced.put(Wools.PINK, false);
-        this.woolsPlaced.put(Wools.BLUE, false);
-        this.woolsPlaced.put(Wools.CYAN, false);
+        this.woolsTaken.put(Wool.RED, false);
+        this.woolsTaken.put(Wool.PINK, false);
+        this.woolsTaken.put(Wool.BLUE, false);
+        this.woolsTaken.put(Wool.CYAN, false);
+        this.woolsPlaced.put(Wool.RED, false);
+        this.woolsPlaced.put(Wool.PINK, false);
+        this.woolsPlaced.put(Wool.BLUE, false);
+        this.woolsPlaced.put(Wool.CYAN, false);
         this.redTakenList.clear();
         this.pinkTakenList.clear();
         this.blueTakenList.clear();
         this.cyanTakenList.clear();
-        this.woolsPlacedByPlayer.put(Wools.RED, null);
-        this.woolsPlacedByPlayer.put(Wools.PINK, null);
-        this.woolsPlacedByPlayer.put(Wools.BLUE, null);
-        this.woolsPlacedByPlayer.put(Wools.CYAN, null);
+        this.woolsPlacedByPlayer.put(Wool.RED, null);
+        this.woolsPlacedByPlayer.put(Wool.PINK, null);
+        this.woolsPlacedByPlayer.put(Wool.BLUE, null);
+        this.woolsPlacedByPlayer.put(Wool.CYAN, null);
     }
 
-    public void removeWools() {
+    public void removeWoolsPlaced() {
         Bukkit.getScheduler().runTaskLater(this.ctw, () -> {
-            Block redWool = WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().redWool);
-            Block pinkWool = WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().pinkWool);
-            Block blueWool = WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().blueWool);
-            Block cyanWool = WoolHandler.this.ctw.getMapHandler().currentMapWorld.getBlockAt(WoolHandler.this.ctw.getMapConfigHandler().cyanWool);
+            Block redWool = this.ctw.getMapHandler().currentMapWorld.getBlockAt(this.ctw.getMapConfigHandler().redWool);
+            Block pinkWool = this.ctw.getMapHandler().currentMapWorld.getBlockAt(this.ctw.getMapConfigHandler().pinkWool);
+            Block blueWool = this.ctw.getMapHandler().currentMapWorld.getBlockAt(this.ctw.getMapConfigHandler().blueWool);
+            Block cyanWool = this.ctw.getMapHandler().currentMapWorld.getBlockAt(this.ctw.getMapConfigHandler().cyanWool);
             if (redWool != null) {
                 redWool.setType(Material.AIR);
             }
@@ -76,24 +77,76 @@ public class WoolHandler {
         }, 10L);
     }
 
+    public boolean isWoolTaken(final Wool wool) {
+        if (wool == Wool.RED){
+            return this.isRedTaken;
+        } else if (wool == Wool.PINK){
+            return this.isPinkTaken;
+        } else if (wool == Wool.BLUE){
+            return this.isBlueTaken;
+        } else if (wool == Wool.CYAN){
+            return this.isCyanTaken;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isWoolPlaced(final Wool wool) {
+        if (wool == Wool.RED){
+            return this.isRedPlaced;
+        } else if (wool == Wool.PINK){
+            return this.isPinkPlaced;
+        } else if (wool == Wool.BLUE){
+            return this.isBluePlaced;
+        } else if (wool == Wool.CYAN){
+            return this.isCyanPlaced;
+        } else {
+            return false;
+        }
+    }
+
+    public void setWoolTaken(final Wool wool) {
+        if (wool == Wool.RED){
+            this.isRedTaken = true;
+        } else if (wool == Wool.PINK){
+            this.isPinkTaken = true;
+        } else if (wool == Wool.BLUE){
+            this.isBlueTaken = true;
+        } else if (wool == Wool.CYAN){
+            this.isCyanTaken = true;
+        }
+    }
+
+    public void setWoolPlaced(final Wool wool) {
+        if (wool == Wool.RED){
+            this.isRedPlaced = true;
+        } else if (wool == Wool.PINK){
+            this.isPinkPlaced = true;
+        } else if (wool == Wool.BLUE){
+            this.isBluePlaced = true;
+        } else if (wool == Wool.CYAN){
+            this.isCyanPlaced = true;
+        }
+    }
+
     public void setRedTaken() {
-        this.woolsTaken.put(Wools.RED, true);
+        this.woolsTaken.put(Wool.RED, true);
     }
 
     public void setPinkTaken() {
-        this.woolsTaken.put(Wools.PINK, true);
+        this.woolsTaken.put(Wool.PINK, true);
     }
 
     public void setBlueTaken() {
-        this.woolsTaken.put(Wools.BLUE, true);
+        this.woolsTaken.put(Wool.BLUE, true);
     }
 
     public void setCyanTaken() {
-        this.woolsTaken.put(Wools.CYAN, true);
+        this.woolsTaken.put(Wool.CYAN, true);
     }
 
     public boolean isRedTaken() {
-        return this.woolsTaken.get(Wools.RED);
+        return this.woolsTaken.get(Wool.RED);
     }
 
     public List<Player> getRedPlayers() {
@@ -114,51 +167,51 @@ public class WoolHandler {
     }
 
     public boolean isPinkTaken() {
-        return this.woolsTaken.get(Wools.PINK);
+        return this.woolsTaken.get(Wool.PINK);
     }
 
     public boolean isBlueTaken() {
-        return this.woolsTaken.get(Wools.BLUE);
+        return this.woolsTaken.get(Wool.BLUE);
     }
 
     public boolean isCyanTaken() {
-        return this.woolsTaken.get(Wools.CYAN);
+        return this.woolsTaken.get(Wool.CYAN);
     }
 
     public boolean isRedPlaced() {
-        return this.woolsPlaced.get(Wools.RED);
+        return this.woolsPlaced.get(Wool.RED);
     }
 
     public void setRedPlaced(final Player p) {
-        this.woolsPlaced.put(Wools.RED, true);
-        this.woolsPlacedByPlayer.put(Wools.RED, p);
+        this.woolsPlaced.put(Wool.RED, true);
+        this.woolsPlacedByPlayer.put(Wool.RED, p);
     }
 
     public boolean isPinkPlaced() {
-        return this.woolsPlaced.get(Wools.PINK);
+        return this.woolsPlaced.get(Wool.PINK);
     }
 
     public void setPinkPlaced(final Player p) {
-        this.woolsPlaced.put(Wools.PINK, true);
-        this.woolsPlacedByPlayer.put(Wools.PINK, p);
+        this.woolsPlaced.put(Wool.PINK, true);
+        this.woolsPlacedByPlayer.put(Wool.PINK, p);
     }
 
     public boolean isBluePlaced() {
-        return this.woolsPlaced.get(Wools.BLUE);
+        return this.woolsPlaced.get(Wool.BLUE);
     }
 
     public void setBluePlaced(final Player p) {
-        this.woolsPlaced.put(Wools.BLUE, true);
-        this.woolsPlacedByPlayer.put(Wools.BLUE, p);
+        this.woolsPlaced.put(Wool.BLUE, true);
+        this.woolsPlacedByPlayer.put(Wool.BLUE, p);
     }
 
     public boolean isCyanPlaced() {
-        return this.woolsPlaced.get(Wools.CYAN);
+        return this.woolsPlaced.get(Wool.CYAN);
     }
 
     public void setCyanPlaced(final Player p) {
-        this.woolsPlaced.put(Wools.CYAN, true);
-        this.woolsPlacedByPlayer.put(Wools.CYAN, p);
+        this.woolsPlaced.put(Wool.CYAN, true);
+        this.woolsPlacedByPlayer.put(Wool.CYAN, p);
     }
 
     public void addRedTakenByPlayer(final Player p) {
@@ -210,7 +263,7 @@ public class WoolHandler {
     }
 
     public Player getWhoPlacedRedWool() {
-        final Player p = this.woolsPlacedByPlayer.get(Wools.RED);
+        final Player p = this.woolsPlacedByPlayer.get(Wool.RED);
         if (p != null && p.isOnline()) {
             return p;
         }
@@ -218,7 +271,7 @@ public class WoolHandler {
     }
 
     public Player getWhoPlacedPinkWool() {
-        final Player p = this.woolsPlacedByPlayer.get(Wools.PINK);
+        final Player p = this.woolsPlacedByPlayer.get(Wool.PINK);
         if (p != null && p.isOnline()) {
             return p;
         }
@@ -226,7 +279,7 @@ public class WoolHandler {
     }
 
     public Player getWhoPlacedBlueWool() {
-        final Player p = this.woolsPlacedByPlayer.get(Wools.BLUE);
+        final Player p = this.woolsPlacedByPlayer.get(Wool.BLUE);
         if (p != null && p.isOnline()) {
             return p;
         }
@@ -234,20 +287,20 @@ public class WoolHandler {
     }
 
     public Player getWhoPlacedCyanWool() {
-        final Player p = this.woolsPlacedByPlayer.get(Wools.CYAN);
+        final Player p = this.woolsPlacedByPlayer.get(Wool.CYAN);
         if (p != null && p.isOnline()) {
             return p;
         }
         return null;
     }
 
-    public enum Wools {
+    public enum Wool {
         RED("RED", 0),
         PINK("PINK", 1),
         BLUE("BLUE", 2),
         CYAN("CYAN", 3);
 
-        Wools(final String s, final int n) {
+        Wool(final String s, final int n) {
         }
     }
 }

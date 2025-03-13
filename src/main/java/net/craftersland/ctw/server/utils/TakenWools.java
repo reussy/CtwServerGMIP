@@ -2,12 +2,14 @@ package net.craftersland.ctw.server.utils;
 
 import net.craftersland.ctw.server.CTW;
 import net.craftersland.ctw.server.game.TeamHandler;
+import net.craftersland.ctw.server.game.WoolHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,86 +26,93 @@ public class TakenWools {
         this.hatColorChangeTask = new ConcurrentHashMap<>();
     }
 
-    public void woolTakenCheck(Player p, byte wool) {
-        TeamHandler.Team team = this.ctw.getTeamHandler().getTeam(p);
+    public void woolTakenCheck(Player player, byte wool) {
+        TeamHandler.Team team = this.ctw.getTeamHandler().getTeam(player);
 
         switch (team) {
             case RED -> {
-                this.sendSoundToEnemy("blue");
+                // Sumamos una lana capturaa al equipo rojo
+                this.ctw.getTeamWoolsCaptured().addRedWoolsCaptured();
                 if (wool == 14) {
-                    tagPlayerWithWool(p, "RED");
-                    this.ctw.getWoolHandler().addRedTakenByPlayer(p);
-                    this.ctw.getTeamWoolsCaptured().addRedCaptured();
-                    if (!this.ctw.getWoolHandler().isRedTaken()) {
-                        this.ctw.getNewScoreboardHandler().redWoolTaken();
-                        this.ctw.getWoolHandler().setRedTaken();
-                        this.ctw.getSoundHandler().broadcastFireworkLaunchSound();
-                        this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.RedWoolCaptured.title"), this.ctw.getLanguageHandler().getMessage("TitleMessages.RedWoolCaptured.subtitle"));
-                        this.announcePickup(p, "RED", true);
-                        this.ctw.getPlayerScoreHandler().addScore(p, 2);
-                        this.ctw.getEconomyHandler().addCoins(p, 25.0);
-                        this.ctw.getMessageUtils().sendScoreMessage(p, "+2", 25);
-                    } else if (!this.ctw.getWoolHandler().hadRedTakenByPlayer(p)) {
-                        this.announcePickup(p, "RED", false);
+                    if (!this.ctw.getWoolHandler().isWoolTaken(WoolHandler.Wool.RED)) {
+                        // Iniciamos la tarea de la alerta en la scoreboard
+                        this.ctw.getNewScoreboardHandler().startRedWoolTask();
+                        // Establecemos la lana roja como tomada
+                        this.ctw.getWoolHandler().setWoolTaken(WoolHandler.Wool.RED);
+                        //this.ctw.getWoolHandler().setRedTaken(); VIEJO
+
+                        // Lo agregamos a los jugaores que han capturado la lana
+                        this.ctw.getWoolHandler().addRedTakenByPlayer(player);
+
+                        // Notificamos sobre la captura de la lana a todos los jugadores
+                        this.announcePickup(player, "RED", true);
+
+                        // Modificamos puntaje al jugador
+                        this.ctw.getPlayerScoreHandler().addScore(player, 2);
+                        this.ctw.getEconomyHandler().addCoins(player, 25.0);
+                        this.ctw.getMessageUtils().sendScoreMessage(player, "+2", 25);
+                        break;
+                    }
+
+                    if (!this.ctw.getWoolHandler().getRedPlayers().contains(player)) {
+                        this.announcePickup(player, "RED", false);
+                        this.ctw.getWoolHandler().addRedTakenByPlayer(player);
                     }
                 } else if (wool == 6) {
-                    tagPlayerWithWool(p, "PINK");
-                    this.ctw.getWoolHandler().addPinkTakenByPlayer(p);
-                    this.ctw.getTeamWoolsCaptured().addRedCaptured();
-                    if (!this.ctw.getWoolHandler().isPinkTaken()) {
-                        this.ctw.getNewScoreboardHandler().pinkWoolTaken();
-                        this.ctw.getWoolHandler().setPinkTaken();
-                        this.ctw.getSoundHandler().broadcastFireworkLaunchSound();
-                        this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.PinkWoolCaptured.title"), this.ctw.getLanguageHandler().getMessage("TitleMessages.PinkWoolCaptured.subtitle"));
-                        this.announcePickup(p, "PINK", true);
-                        this.ctw.getPlayerScoreHandler().addScore(p, 2);
-                        this.ctw.getEconomyHandler().addCoins(p, 25.0);
-                        this.ctw.getMessageUtils().sendScoreMessage(p, "+2", 25);
-                    } else if (!this.ctw.getWoolHandler().hadPinkTakenByPlayer(p)) {
-                        this.announcePickup(p, "PINK", false);
+                    if (!this.ctw.getWoolHandler().isWoolTaken(WoolHandler.Wool.PINK)) {
+                        this.ctw.getNewScoreboardHandler().startPinkWoolTask();
+                        this.ctw.getWoolHandler().setWoolTaken(WoolHandler.Wool.PINK);
+                        this.ctw.getWoolHandler().addPinkTakenByPlayer(player);
+                        this.announcePickup(player, "PINK", true);
+                        this.ctw.getPlayerScoreHandler().addScore(player, 2);
+                        this.ctw.getEconomyHandler().addCoins(player, 25.0);
+                        this.ctw.getMessageUtils().sendScoreMessage(player, "+2", 25);
+                        break;
+                    }
+
+                    if (!this.ctw.getWoolHandler().getPinkPlayers().contains(player)) {
+                        this.announcePickup(player, "PINK", false);
+                        this.ctw.getWoolHandler().addPinkTakenByPlayer(player);
                     }
                 }
             }
 
             case BLUE -> {
-                this.sendSoundToEnemy("red");
+                this.ctw.getTeamWoolsCaptured().addBlueWoolsCapture();
                 if (wool == 11) {
-                    tagPlayerWithWool(p, "BLUE");
-                    this.ctw.getWoolHandler().addBlueTakenByPlayer(p);
-                    this.ctw.getTeamWoolsCaptured().addBlueCaptured();
-                    if (!this.ctw.getWoolHandler().isBlueTaken()) {
-                        this.ctw.getNewScoreboardHandler().blueWoolTaken();
-                        this.ctw.getWoolHandler().setBlueTaken();
-                        this.ctw.getSoundHandler().broadcastFireworkLaunchSound();
-                        this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueWoolCaptured.title"), this.ctw.getLanguageHandler().getMessage("TitleMessages.BlueWoolCaptured.subtitle"));
-                        this.announcePickup(p, "BLUE", true);
-                        this.ctw.getPlayerScoreHandler().addScore(p, 2);
-                        this.ctw.getEconomyHandler().addCoins(p, 25.0);
-                        this.ctw.getMessageUtils().sendScoreMessage(p, "+2", 25);
-                    } else if (!this.ctw.getWoolHandler().hadBlueTakenByPlayer(p)) {
-                        this.announcePickup(p, "BLUE", false);
+                    if (!this.ctw.getWoolHandler().isWoolTaken(WoolHandler.Wool.BLUE)) {
+                        this.ctw.getNewScoreboardHandler().startBlueWoolTask();
+                        this.ctw.getWoolHandler().setWoolTaken(WoolHandler.Wool.BLUE);
+                        this.ctw.getWoolHandler().addBlueTakenByPlayer(player);
+                        this.announcePickup(player, "BLUE", true);
+                        this.ctw.getPlayerScoreHandler().addScore(player, 2);
+                        this.ctw.getEconomyHandler().addCoins(player, 25.0);
+                        this.ctw.getMessageUtils().sendScoreMessage(player, "+2", 25);
+                        break;
+                    }
+
+                    if (!this.ctw.getWoolHandler().getBluePlayers().contains(player)) {
+                        this.announcePickup(player, "BLUE", false);
+                        this.ctw.getWoolHandler().addBlueTakenByPlayer(player);
                     }
                 } else if (wool == 9){
-                    tagPlayerWithWool(p, "CYAN");
-                    this.ctw.getWoolHandler().addCyanTakenByPlayer(p);
-                    this.ctw.getTeamWoolsCaptured().addBlueCaptured();
-                    if (!this.ctw.getWoolHandler().isCyanTaken()) {
-                        this.ctw.getNewScoreboardHandler().blueWoolTaken();
-                        this.ctw.getWoolHandler().setCyanTaken();
-                        this.ctw.getSoundHandler().broadcastFireworkLaunchSound();
-                        this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.CyanWoolCaptured.title"), this.ctw.getLanguageHandler().getMessage("TitleMessages.CyanWoolCaptured.subtitle"));
-                        this.announcePickup(p, "CYAN", true);
-                        this.ctw.getPlayerScoreHandler().addScore(p, 2);
-                        this.ctw.getEconomyHandler().addCoins(p, 25.0);
-                        this.ctw.getMessageUtils().sendScoreMessage(p, "+2", 25);
-                    } else if (!this.ctw.getWoolHandler().hadCyanTakenByPlayer(p)) {
-                        this.announcePickup(p, "CYAN", false);
+                    if (!this.ctw.getWoolHandler().isWoolTaken(WoolHandler.Wool.CYAN)) {
+                        this.ctw.getNewScoreboardHandler().startCyanWoolTask();
+                        this.ctw.getWoolHandler().setWoolTaken(WoolHandler.Wool.CYAN);
+                        this.ctw.getWoolHandler().addCyanTakenByPlayer(player);
+                        this.announcePickup(player, "CYAN", true);
+                       this.ctw.getPlayerScoreHandler().addScore(player, 2);
+                        this.ctw.getEconomyHandler().addCoins(player, 25.0);
+                        this.ctw.getMessageUtils().sendScoreMessage(player, "+2", 25);
+                    }
+
+                    if (!this.ctw.getWoolHandler().getCyanPlayers().contains(player)) {
+                        this.announcePickup(player, "CYAN", false);
+                        this.ctw.getWoolHandler().addCyanTakenByPlayer(player);
                     }
                 }
             }
         }
-
-        setNewEquipment(p);
     }
 
     public void checkForLostWool(Player player, List<ItemStack> items) {
@@ -189,7 +198,7 @@ public class TakenWools {
 
         p.getInventory().setChestplate(ironChestplate);
         p.getInventory().setBoots(ironBoot);
-        p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 12));
+        p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 8));
 
         CTW.getPlayersAlreadyEquipped().add(p.getUniqueId());
         StartupKit.setUnbreakableArmor(p);
@@ -197,11 +206,19 @@ public class TakenWools {
 
     private void announcePickup(Player player, @NotNull String wool, boolean first){
         String path = first ? "ChatMessages.WoolCaptureFirst" : "ChatMessages.WoolCapture";
+
+        if (first) this.ctw.getSoundHandler().broadcastFireworkLaunchSound();
+
+        this.tagPlayerWithWool(player);
+        this.setNewEquipment(player);
+
         switch (wool){
             case "CYAN":
                 this.ctw.getMessageUtils().broadcastMessage(this.ctw.getLanguageHandler().getMessage(path)
                         .replace("%PlayerName%", "&9&l" + player.getName())
                         .replace("%Wool%", "&3&lCyan"));
+                this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.CyanWoolCaptured.title"),
+                        this.ctw.getLanguageHandler().getMessage("TitleMessages.CyanWoolCaptured.subtitle"));
                 this.sendSoundToEnemy("blue");
                 return;
 
@@ -209,6 +226,8 @@ public class TakenWools {
                 this.ctw.getMessageUtils().broadcastMessage(this.ctw.getLanguageHandler().getMessage(path)
                         .replace("%PlayerName%", "&9&l" + player.getName())
                         .replace("%Wool%", "&9&lAzul"));
+                this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.PinkWoolCaptured.title"),
+                        this.ctw.getLanguageHandler().getMessage("TitleMessages.PinkWoolCaptured.subtitle"));
                 this.sendSoundToEnemy("blue");
                 return;
 
@@ -216,6 +235,8 @@ public class TakenWools {
                 this.ctw.getMessageUtils().broadcastMessage(this.ctw.getLanguageHandler().getMessage(path)
                         .replace("%PlayerName%", "&c&l" + player.getName())
                         .replace("%Wool%", "&c&lRoja"));
+                this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.RedWoolCaptured.title"),
+                        this.ctw.getLanguageHandler().getMessage("TitleMessages.RedWoolCaptured.subtitle"));
                 this.sendSoundToEnemy("red");
                 return;
 
@@ -223,6 +244,8 @@ public class TakenWools {
                 this.ctw.getMessageUtils().broadcastMessage(this.ctw.getLanguageHandler().getMessage(path)
                         .replace("%PlayerName%", "&c&l" + player.getName())
                         .replace("%Wool%", "&d&lRosa"));
+                this.ctw.getMessageUtils().broadcastTitleMessage(this.ctw.getLanguageHandler().getMessage("TitleMessages.PinkWoolCaptured.title"),
+                        this.ctw.getLanguageHandler().getMessage("TitleMessages.PinkWoolCaptured.subtitle"));
                 this.sendSoundToEnemy("red");
         }
     }
@@ -235,44 +258,33 @@ public class TakenWools {
         }
     }
 
-    private void tagPlayerWithWool(Player player, @NotNull String wool) {
-        ItemStack hat;
-        switch (wool) {
-            case "CYAN":
-                hat = new ItemStack(Material.WOOL, 1, (short) 9);
-                if (this.ctw.getWoolHandler().hadBlueTakenByPlayer(player)) {
-                    this.changeHatColor(player);
-                }
-                break;
+    private void tagPlayerWithWool(Player player) {
+        TeamHandler.Team team = this.ctw.getTeamHandler().getTeam(player);
+        ItemStack hat = null;
 
-            case "BLUE":
-                hat = new ItemStack(Material.WOOL, 1, (short) 11);
-                if (this.ctw.getWoolHandler().hadCyanTakenByPlayer(player)) {
+        switch (team){
+            case RED:
+                if (ctw.getWoolHandler().hadRedTakenByPlayer(player) && ctw.getWoolHandler().hadPinkTakenByPlayer(player)) {
                     this.changeHatColor(player);
+                } else if (ctw.getWoolHandler().hadPinkTakenByPlayer(player)) {
+                    hat = new ItemStack(Material.WOOL, 1, (short) 6);
+                } else if (ctw.getWoolHandler().hadRedTakenByPlayer(player)) {
+                    hat = new ItemStack(Material.WOOL, 1, (short) 14);
                 }
-                break;
 
-            case "RED":
-                hat = new ItemStack(Material.WOOL, 1, (short) 14);
-                if (this.ctw.getWoolHandler().hadPinkTakenByPlayer(player)) {
+                case BLUE:
+                if (ctw.getWoolHandler().hadBlueTakenByPlayer(player) && ctw.getWoolHandler().hadCyanTakenByPlayer(player)) {
                     this.changeHatColor(player);
+                } else if (ctw.getWoolHandler().hadCyanTakenByPlayer(player)) {
+                    hat = new ItemStack(Material.WOOL, 1, (short) 9);
+                } else if (ctw.getWoolHandler().hadBlueTakenByPlayer(player)) {
+                    hat = new ItemStack(Material.WOOL, 1, (short) 11);
                 }
-                break;
-
-            case "PINK":
-                hat = new ItemStack(Material.WOOL, 1, (short) 6);
-                if (this.ctw.getWoolHandler().hadRedTakenByPlayer(player)) {
-                    this.changeHatColor(player);
-                }
-                break;
-
-            default:
-                return;
         }
 
-        ItemMeta meta = hat.getItemMeta();
-        hat.setItemMeta(meta);
-        player.getInventory().setHelmet(hat);
+        if (hat != null) {
+            player.getInventory().setHelmet(hat);
+        }
     }
 
     private void changeHatColor(Player player){

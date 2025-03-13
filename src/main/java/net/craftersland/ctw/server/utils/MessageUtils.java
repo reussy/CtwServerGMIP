@@ -118,8 +118,8 @@ public class MessageUtils {
             s = s.replaceAll("%BlueTeamKills%", this.ctw.getTeamKillsHandler().getBlueKills().toString());
             s = s.replaceAll("%RedTeamDamage%", this.ctw.getTeamDamageHandler().getRedDmg().toString());
             s = s.replaceAll("%BlueTeamDamage%", this.ctw.getTeamDamageHandler().getBlueDmg().toString());
-            s = s.replaceAll("%RedTeamWools%", this.ctw.getTeamWoolsCaptured().getRedCaptured().toString());
-            s = s.replaceAll("%BlueTeamWools%", this.ctw.getTeamWoolsCaptured().getBlueCaptured().toString());
+            s = s.replaceAll("%RedTeamWools%", this.ctw.getTeamWoolsCaptured().getRedWoolsCaptured().toString());
+            s = s.replaceAll("%BlueTeamWools%", this.ctw.getTeamWoolsCaptured().getBlueWoolsCaptured().toString());
             mList.add(s);
         }
         for (final String msg : mList) {

@@ -49,7 +49,7 @@ public class MapHandler {
             public void run() {
                 MapHandler.this.currentMapWorld = Bukkit.getWorld(copyMapName);
                 MapHandler.this.ctw.getMapConfigHandler().loadConfig(MapHandler.this.currentMap);
-                MapHandler.this.ctw.getWoolHandler().removeWools();
+                MapHandler.this.ctw.getWoolHandler().removeWoolsPlaced();
                 MapHandler.this.setMapTime();
                 //MapHandler.this.ctw.getScoreboardHandler().startTimer();
                 MapHandler.this.ctw.getGameEngine().gameStage = GameEngine.GameStages.RUNNING;
@@ -106,7 +106,7 @@ public class MapHandler {
             MapHandler.this.ctw.getNewScoreboardHandler().initializeVariables();
             //MapHandler.this.ctw.getScoreboardHandler().startTimer();
             MapHandler.this.ctw.getPlayerHandler().respawnAllPlayers();
-            MapHandler.this.ctw.getWoolHandler().removeWools();
+            MapHandler.this.ctw.getWoolHandler().removeWoolsPlaced();
             MapHandler.this.ctw.getTeamScoreHandler().resetScores();
             MapHandler.this.ctw.getTeamKillsHandler().resetScores();
             MapHandler.this.ctw.getTeamWoolsCaptured().resetData();
