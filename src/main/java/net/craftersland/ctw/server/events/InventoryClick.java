@@ -109,7 +109,7 @@ public class InventoryClick implements Listener {
                         //TODO: Open kit editor
                         event.setCancelled(true);
                     }
-                    this.closeInv(p);
+                    //this.closeInv(p);
                 } else if ((event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.WOOL && p.getGameMode() == GameMode.SURVIVAL) || (event.getCursor().getType() == Material.WOOL && p.getGameMode() == GameMode.SURVIVAL)) {
                     final ItemStack item = event.getCurrentItem();
                     if (!event.getViewers().isEmpty()) {
